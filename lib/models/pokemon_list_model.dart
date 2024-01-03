@@ -16,7 +16,7 @@ class PokemonList {
     factory PokemonList.fromJson(Map<String, dynamic> json) {
       var resultsJson = json['results'] as List;
 
-      List<ListPokemon> pokemonList =  resultsJson.map((i) => ListPokemon.fromJson(i)).toList();
+      List<ListPokemon> pokemonList = resultsJson.map((i) => ListPokemon.fromJson(i)).toList();
 
       return PokemonList(
         count: json['count'] as int, 
@@ -37,6 +37,7 @@ class ListPokemon {
     });
 
     factory ListPokemon.fromJson(Map<String, dynamic> json) {
+      
       return ListPokemon(
         name: json['name'] as String, 
         url: json['url'] as String
