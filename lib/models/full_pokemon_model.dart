@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 class FullPokemon {
     // List<Ability> abilities;
     int baseExperience;
@@ -43,37 +45,30 @@ class FullPokemon {
 
     factory FullPokemon.fromJson(Map<String, dynamic> json) {
 
+      var speciesJson = json['species'];
+      var spritesJson = json['sprites'];
+
+      Species species = Species.fromJson(speciesJson);
+      Sprites sprites = Sprites.fromJson(spritesJson);
+
       return FullPokemon(
-        baseExperience: json['baseExperience'] as int, 
+        baseExperience: json['base_experience'] as int, 
         height: json['height'] as int, 
         id: json['id'] as int, 
-        isDefault: json['isDefault'] as bool, 
-        locationAreaEncounters: json['locationAreaEncounters'] as String, 
+        isDefault: json['is_default'] as bool, 
+        locationAreaEncounters: json['location_area_encounters'] as String, 
         name: json['name'] as String, 
         order: json['order'] as int, 
-        species: json['species'] as Species, 
-        sprites: json['sprites'] as Sprites, 
+        species: species, 
+        sprites: sprites, 
         weight: json['weight'] as int
         );
     }
 }
 
-class Ability {
-    Species ability;
-    bool isHidden;
-    int slot;
-
-    Ability({
-        required this.ability,
-        required this.isHidden,
-        required this.slot,
-    });
-
-}
-
 class Species {
-    String name;
-    String url;
+    final String name;
+    final String url;
 
     Species({
         required this.name,
@@ -88,116 +83,14 @@ class Species {
     }
 }
 
-class GameIndex {
-    int gameIndex;
-    Species version;
-
-    GameIndex({
-        required this.gameIndex,
-        required this.version,
-    });
-
-}
-
-class HeldItem {
-    Species item;
-    List<VersionDetail> versionDetails;
-
-    HeldItem({
-        required this.item,
-        required this.versionDetails,
-    });
-
-}
-
-class VersionDetail {
-    int rarity;
-    Species version;
-
-    VersionDetail({
-        required this.rarity,
-        required this.version,
-    });
-
-}
-
-class Move {
-    Species move;
-    List<VersionGroupDetail> versionGroupDetails;
-
-    Move({
-        required this.move,
-        required this.versionGroupDetails,
-    });
-
-}
-
-class VersionGroupDetail {
-    int levelLearnedAt;
-    Species moveLearnMethod;
-    Species versionGroup;
-
-    VersionGroupDetail({
-        required this.levelLearnedAt,
-        required this.moveLearnMethod,
-        required this.versionGroup,
-    });
-
-}
-
-class GenerationV {
-    Sprites blackWhite;
-
-    GenerationV({
-        required this.blackWhite,
-    });
-
-}
-
-class GenerationIv {
-    Sprites diamondPearl;
-    Sprites heartgoldSoulsilver;
-    Sprites platinum;
-
-    GenerationIv({
-        required this.diamondPearl,
-        required this.heartgoldSoulsilver,
-        required this.platinum,
-    });
-
-}
-
-class Versions {
-    GenerationI generationI;
-    GenerationIi generationIi;
-    GenerationIii generationIii;
-    GenerationIv generationIv;
-    GenerationV generationV;
-    Map<String, Home> generationVi;
-    GenerationVii generationVii;
-    GenerationViii generationViii;
-
-    Versions({
-        required this.generationI,
-        required this.generationIi,
-        required this.generationIii,
-        required this.generationIv,
-        required this.generationV,
-        required this.generationVi,
-        required this.generationVii,
-        required this.generationViii,
-    });
-
-}
-
 class Sprites {
-    String backDefault;
+    final String backDefault;
     // dynamic backFemale;
-    String backShiny;
+    final String backShiny;
     // dynamic backShinyFemale;
-    String frontDefault;
+    final String frontDefault;
     // dynamic frontFemale;
-    String frontShiny;
+    final String frontShiny;
     // dynamic frontShinyFemale;
     // Other? other;
     // Versions? versions;
@@ -219,201 +112,315 @@ class Sprites {
 
     factory Sprites.fromJson(Map<String, dynamic> json) {
       return Sprites(
-        backDefault: json['backDefault'] as String, 
-        backShiny: json['backShiny'] as String, 
-        frontDefault: json['frontDefault'] as String, 
-        frontShiny: json['frontShiny'] as String
+        backDefault: json['back_default'] as String, 
+        backShiny: json['back_shiny'] as String, 
+        frontDefault: json['front_default'] as String, 
+        frontShiny: json['front_shiny'] as String
       );
     }
-
 }
 
-class GenerationI {
-    RedBlue redBlue;
-    RedBlue yellow;
+// class Ability {
+//     Species ability;
+//     bool isHidden;
+//     int slot;
 
-    GenerationI({
-        required this.redBlue,
-        required this.yellow,
-    });
+//     Ability({
+//         required this.ability,
+//         required this.isHidden,
+//         required this.slot,
+//     });
 
-}
+// }
 
-class RedBlue {
-    String backDefault;
-    String backGray;
-    String backTransparent;
-    String frontDefault;
-    String frontGray;
-    String frontTransparent;
+// class GameIndex {
+//     int gameIndex;
+//     Species version;
 
-    RedBlue({
-        required this.backDefault,
-        required this.backGray,
-        required this.backTransparent,
-        required this.frontDefault,
-        required this.frontGray,
-        required this.frontTransparent,
-    });
+//     GameIndex({
+//         required this.gameIndex,
+//         required this.version,
+//     });
 
-}
+// }
 
-class GenerationIi {
-    Crystal crystal;
-    Gold gold;
-    Gold silver;
+// class HeldItem {
+//     Species item;
+//     List<VersionDetail> versionDetails;
 
-    GenerationIi({
-        required this.crystal,
-        required this.gold,
-        required this.silver,
-    });
+//     HeldItem({
+//         required this.item,
+//         required this.versionDetails,
+//     });
 
-}
+// }
 
-class Crystal {
-    String backDefault;
-    String backShiny;
-    String backShinyTransparent;
-    String backTransparent;
-    String frontDefault;
-    String frontShiny;
-    String frontShinyTransparent;
-    String frontTransparent;
+// class VersionDetail {
+//     int rarity;
+//     Species version;
 
-    Crystal({
-        required this.backDefault,
-        required this.backShiny,
-        required this.backShinyTransparent,
-        required this.backTransparent,
-        required this.frontDefault,
-        required this.frontShiny,
-        required this.frontShinyTransparent,
-        required this.frontTransparent,
-    });
+//     VersionDetail({
+//         required this.rarity,
+//         required this.version,
+//     });
 
-}
+// }
 
-class Gold {
-    String backDefault;
-    String backShiny;
-    String frontDefault;
-    String frontShiny;
-    String? frontTransparent;
+// class Move {
+//     Species move;
+//     List<VersionGroupDetail> versionGroupDetails;
 
-    Gold({
-        required this.backDefault,
-        required this.backShiny,
-        required this.frontDefault,
-        required this.frontShiny,
-        this.frontTransparent,
-    });
+//     Move({
+//         required this.move,
+//         required this.versionGroupDetails,
+//     });
 
-}
+// }
 
-class GenerationIii {
-    OfficialArtwork emerald;
-    Gold fireredLeafgreen;
-    Gold rubySapphire;
+// class VersionGroupDetail {
+//     int levelLearnedAt;
+//     Species moveLearnMethod;
+//     Species versionGroup;
 
-    GenerationIii({
-        required this.emerald,
-        required this.fireredLeafgreen,
-        required this.rubySapphire,
-    });
+//     VersionGroupDetail({
+//         required this.levelLearnedAt,
+//         required this.moveLearnMethod,
+//         required this.versionGroup,
+//     });
 
-}
+// }
 
-class OfficialArtwork {
-    String frontDefault;
-    String frontShiny;
+// class GenerationV {
+//     Sprites blackWhite;
 
-    OfficialArtwork({
-        required this.frontDefault,
-        required this.frontShiny,
-    });
+//     GenerationV({
+//         required this.blackWhite,
+//     });
 
-}
+// }
 
-class Home {
-    String frontDefault;
-    dynamic frontFemale;
-    String frontShiny;
-    dynamic frontShinyFemale;
+// class GenerationIv {
+//     Sprites diamondPearl;
+//     Sprites heartgoldSoulsilver;
+//     Sprites platinum;
 
-    Home({
-        required this.frontDefault,
-        required this.frontFemale,
-        required this.frontShiny,
-        required this.frontShinyFemale,
-    });
+//     GenerationIv({
+//         required this.diamondPearl,
+//         required this.heartgoldSoulsilver,
+//         required this.platinum,
+//     });
 
-}
+// }
 
-class GenerationVii {
-    DreamWorld icons;
-    Home ultraSunUltraMoon;
+// class Versions {
+//     GenerationI generationI;
+//     GenerationIi generationIi;
+//     GenerationIii generationIii;
+//     GenerationIv generationIv;
+//     GenerationV generationV;
+//     Map<String, Home> generationVi;
+//     GenerationVii generationVii;
+//     GenerationViii generationViii;
 
-    GenerationVii({
-        required this.icons,
-        required this.ultraSunUltraMoon,
-    });
+//     Versions({
+//         required this.generationI,
+//         required this.generationIi,
+//         required this.generationIii,
+//         required this.generationIv,
+//         required this.generationV,
+//         required this.generationVi,
+//         required this.generationVii,
+//         required this.generationViii,
+//     });
 
-}
+// }
 
-class DreamWorld {
-    String frontDefault;
-    dynamic frontFemale;
+// class GenerationI {
+//     RedBlue redBlue;
+//     RedBlue yellow;
 
-    DreamWorld({
-        required this.frontDefault,
-        required this.frontFemale,
-    });
+//     GenerationI({
+//         required this.redBlue,
+//         required this.yellow,
+//     });
 
-}
+// }
 
-class GenerationViii {
-    DreamWorld icons;
+// class RedBlue {
+//     String backDefault;
+//     String backGray;
+//     String backTransparent;
+//     String frontDefault;
+//     String frontGray;
+//     String frontTransparent;
 
-    GenerationViii({
-        required this.icons,
-    });
+//     RedBlue({
+//         required this.backDefault,
+//         required this.backGray,
+//         required this.backTransparent,
+//         required this.frontDefault,
+//         required this.frontGray,
+//         required this.frontTransparent,
+//     });
 
-}
+// }
 
-class Other {
-    DreamWorld dreamWorld;
-    Home home;
-    OfficialArtwork officialArtwork;
+// class GenerationIi {
+//     Crystal crystal;
+//     Gold gold;
+//     Gold silver;
 
-    Other({
-        required this.dreamWorld,
-        required this.home,
-        required this.officialArtwork,
-    });
+//     GenerationIi({
+//         required this.crystal,
+//         required this.gold,
+//         required this.silver,
+//     });
 
-}
+// }
 
-class Stat {
-    int baseStat;
-    int effort;
-    Species stat;
+// class Crystal {
+//     String backDefault;
+//     String backShiny;
+//     String backShinyTransparent;
+//     String backTransparent;
+//     String frontDefault;
+//     String frontShiny;
+//     String frontShinyTransparent;
+//     String frontTransparent;
 
-    Stat({
-        required this.baseStat,
-        required this.effort,
-        required this.stat,
-    });
+//     Crystal({
+//         required this.backDefault,
+//         required this.backShiny,
+//         required this.backShinyTransparent,
+//         required this.backTransparent,
+//         required this.frontDefault,
+//         required this.frontShiny,
+//         required this.frontShinyTransparent,
+//         required this.frontTransparent,
+//     });
 
-}
+// }
 
-class Type {
-    int slot;
-    Species type;
+// class Gold {
+//     String backDefault;
+//     String backShiny;
+//     String frontDefault;
+//     String frontShiny;
+//     String? frontTransparent;
 
-    Type({
-        required this.slot,
-        required this.type,
-    });
+//     Gold({
+//         required this.backDefault,
+//         required this.backShiny,
+//         required this.frontDefault,
+//         required this.frontShiny,
+//         this.frontTransparent,
+//     });
 
-}
+// }
+
+// class GenerationIii {
+//     OfficialArtwork emerald;
+//     Gold fireredLeafgreen;
+//     Gold rubySapphire;
+
+//     GenerationIii({
+//         required this.emerald,
+//         required this.fireredLeafgreen,
+//         required this.rubySapphire,
+//     });
+
+// }
+
+// class OfficialArtwork {
+//     String frontDefault;
+//     String frontShiny;
+
+//     OfficialArtwork({
+//         required this.frontDefault,
+//         required this.frontShiny,
+//     });
+
+// }
+
+// class Home {
+//     String frontDefault;
+//     dynamic frontFemale;
+//     String frontShiny;
+//     dynamic frontShinyFemale;
+
+//     Home({
+//         required this.frontDefault,
+//         required this.frontFemale,
+//         required this.frontShiny,
+//         required this.frontShinyFemale,
+//     });
+
+// }
+
+// class GenerationVii {
+//     DreamWorld icons;
+//     Home ultraSunUltraMoon;
+
+//     GenerationVii({
+//         required this.icons,
+//         required this.ultraSunUltraMoon,
+//     });
+
+// }
+
+// class DreamWorld {
+//     String frontDefault;
+//     dynamic frontFemale;
+
+//     DreamWorld({
+//         required this.frontDefault,
+//         required this.frontFemale,
+//     });
+
+// }
+
+// class GenerationViii {
+//     DreamWorld icons;
+
+//     GenerationViii({
+//         required this.icons,
+//     });
+
+// }
+
+// class Other {
+//     DreamWorld dreamWorld;
+//     Home home;
+//     OfficialArtwork officialArtwork;
+
+//     Other({
+//         required this.dreamWorld,
+//         required this.home,
+//         required this.officialArtwork,
+//     });
+
+// }
+
+// class Stat {
+//     int baseStat;
+//     int effort;
+//     Species stat;
+
+//     Stat({
+//         required this.baseStat,
+//         required this.effort,
+//         required this.stat,
+//     });
+
+// }
+
+// class Type {
+//     int slot;
+//     Species type;
+
+//     Type({
+//         required this.slot,
+//         required this.type,
+//     });
+
+// }

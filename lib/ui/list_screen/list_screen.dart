@@ -18,7 +18,7 @@ class ListScreen extends StatefulWidget {
 class _ListScreenState extends State<ListScreen> {
   NetworkService networkService = NetworkService();
   Future<PokemonList>? takenPokemonList;
-  List<FullPokemon>? fullPokemonList;
+  Future<List<FullPokemon>>? fullPokemonList;
   var _isGridEnabled = false;
   var _axis = 1;
   dynamic icon = Icons.grid_view;
@@ -28,21 +28,21 @@ class _ListScreenState extends State<ListScreen> {
   @override
   void initState() {
     super.initState();
-    takenPokemonList = networkService.getPokemonList();
-    getPokemons();
+    // takenPokemonList = networkService.getPokemonList();
+
+    fullPokemonList = getPokemons();
   }
 
-  void getPokemons() {
-    print('asdas');
-    takenPokemonList?.then((value) => {
-      value.results.map((e) => {
+  Future<List<FullPokemon>> getPokemons() async {
+    List<FullPokemon> list = [];
+     networkService.getPokemonList().then((value) => {
+      value.results.forEach((e) => {
         networkService.getFullPokemon(e.url).then((value) => {
-          print('aaaaaa ${value.name}'),
-          fullPokemonList?.add(value)
+          list.add(value)
         })
       })
     });
-    print(fullPokemonList?.length);
+    return list;
   }
 
   @override
@@ -86,10 +86,11 @@ class _ListScreenState extends State<ListScreen> {
         ),
         backgroundColor: ColorConstants.wildSand,
       ),
-      body: FutureBuilder<PokemonList>(
-        future: takenPokemonList,
+      body: FutureBuilder<List<FullPokemon>>(
+        future: fullPokemonList,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
+            print(snapshot.data);
             var view = _isGridEnabled 
               ? twinColumnGrid(snapshot)
               : singleColumnGrid(snapshot);
@@ -111,7 +112,7 @@ class _ListScreenState extends State<ListScreen> {
       mainAxisSpacing: 16,
       crossAxisSpacing: 16,
     ), 
-    itemCount: snapshot.data?.results.length,
+    itemCount: snapshot.data?.length,
     itemBuilder: (context, index) {
       return twinColumnCell(snapshot, index);
     }
@@ -125,7 +126,7 @@ class _ListScreenState extends State<ListScreen> {
         mainAxisSpacing: 16,
         crossAxisSpacing: 16,
       ), 
-      itemCount: snapshot.data?.results.length,
+      itemCount: snapshot.data?.length,
       itemBuilder: (context, index) {
         return singleColumnCell(snapshot, index);
       }
@@ -137,10 +138,10 @@ class _ListScreenState extends State<ListScreen> {
     child: Row(
       children: [
         Image(
-          image: AssetImage('assets/images/dashboard/dashboard_all.png'),
+          image: NetworkImage(snapshot.data[index].sprites.frontDefault),
           ),
         Spacer(),
-        Text('${snapshot.data?.results[index].name}')
+        Text('${snapshot.data[index].name}')
       ],
     ),
   );
@@ -151,10 +152,10 @@ class _ListScreenState extends State<ListScreen> {
     child: Column(
       children:[
         Image(
-          image: AssetImage('assets/images/dashboard/dashboard_all.png'),
+          image: NetworkImage(snapshot.data[index].sprites.frontDefault),
           ),
         Spacer(),
-        Text('${snapshot.data?.results[index].name}')
+        Text('${snapshot.data[index].name}')
       ],
     ),
   );

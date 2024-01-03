@@ -13,7 +13,6 @@ class NetworkService {
   Future<PokemonList> getPokemonList() async {
     var url = Uri.https(authority, path, {'limit': '20', 'offset': '20'});
     final response = await http.get(url);
-
     if (response.statusCode == 200) {
       return PokemonList.fromJson(json.decode(response.body));
     } else {
@@ -22,9 +21,8 @@ class NetworkService {
   }
 
   Future<FullPokemon> getFullPokemon(String stringUrl) async {
-    var url = Uri.https(stringUrl);
+    var url = Uri.parse(stringUrl);
     final response = await http.get(url);
-
     if(response.statusCode == 200) {
       return FullPokemon.fromJson(json.decode(response.body));
     } else {
