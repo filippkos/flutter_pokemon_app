@@ -1,6 +1,7 @@
 import 'dart:ffi';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_pokemon_app/const/color_constants.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
@@ -22,15 +23,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
     const Image(image: AssetImage('assets/images/dashboard/dashboard_purple.png')),
     const Image(image: AssetImage('assets/images/dashboard/dashboard_all.png'))
   ]; 
-  final Color gold = Color(0xFFFFD606);
-  final Color heather = Color(0xFFBAC4CE);
-  final Color abbey = Color(0xFF494F54);
-  final Color wildSand = Color(0xFFF5F5F5);
+
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: wildSand,
+      backgroundColor: ColorConstants.wildSand,
       body: Container(
         child: PageView.builder(
           controller: _pageController,
@@ -57,7 +55,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
             child: Text(
               'Skip',
               style: TextStyle(
-                color: gold,
+                color: ColorConstants.gold,
                 fontFamily: 'Plus Jakarta Sans',
                 fontWeight: FontWeight.bold,
               ),
@@ -79,7 +77,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     child: Text(
       'Next',
       style: TextStyle(
-        color: gold,
+        color: ColorConstants.gold,
         fontFamily: 'Plus Jakarta Sans',
         fontWeight: FontWeight.bold
       ),
@@ -98,7 +96,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
       widthFactor: 1 / _pageController.viewportFraction,
       child: DecoratedBox(
         decoration: BoxDecoration(
-          color: wildSand
+          color: ColorConstants.wildSand
         ),
         child: Column(
           children: [
@@ -122,7 +120,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         borderRadius: BorderRadius.circular(32.0)
                       )
                     ),
-                    backgroundColor: MaterialStateProperty.all(gold)
+                    backgroundColor: MaterialStateProperty.all(ColorConstants.gold)
                   ),
                   onPressed: () {
                     Navigator.of(context).pushNamed('/list');
@@ -133,7 +131,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       fontSize: 20,
                       color: Colors.black,
                       fontWeight: FontWeight.w800,
-                      backgroundColor: gold
+                      backgroundColor: ColorConstants.gold
                     ),
                   ),
                 ),
@@ -161,12 +159,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
               child: Container(
                 decoration: BoxDecoration(
                   color: _currentPage == index
-                            ? abbey
-                            : wildSand,
+                            ? ColorConstants.abbey
+                            : ColorConstants.wildSand,
                   border: Border.all(
                     color: _currentPage == index
-                            ? abbey
-                            : heather,
+                            ? ColorConstants.abbey
+                            : ColorConstants.heather,
                     width: 2
                   ),
                   shape: BoxShape.circle,

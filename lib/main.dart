@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_pokemon_app/ui/list_screen/list_screen.dart';
 import 'ui/dashboard_screen/dashboard_screen.dart';
 
 void main() {
@@ -22,7 +23,7 @@ class PokemonApp extends StatelessWidget {
       ),
       routes: {
         '/dashboard': (context) => DashboardScreen(),
-        '/list': (context) => MyHomePage(title: 'dsds'),
+        '/list': (context) => ListScreen(),
       },
       initialRoute: '/dashboard',
     );
