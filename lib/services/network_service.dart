@@ -10,8 +10,8 @@ class NetworkService {
   var authority = 'pokeapi.co';
   var path = '/api/v2/pokemon/';
 
-  Future<PokemonList> getPokemonList() async {
-    var url = Uri.https(authority, path, {'limit': '20', 'offset': '20'});
+  Future<PokemonList> getPokemonList(int limit, String offset) async {
+    var url = Uri.https(authority, path, {'limit': '${limit}', 'offset': '${offset}'});
     final response = await http.get(url);
     if (response.statusCode == 200) {
       return PokemonList.fromJson(json.decode(response.body));

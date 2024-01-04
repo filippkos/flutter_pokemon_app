@@ -76,22 +76,25 @@ flutter:
   # example:
   
   fonts:
+    - family: Paytone One
+      fonts:
+        - asset: assets/fonts/paytone_one/PaytoneOne-Regular.ttf
     - family: Plus Jakarta Sans
       fonts:
-        - asset: assets/fonts/PlusJakartaSans-Bold.ttf
-        - asset: assets/fonts/PlusJakartaSans-BoldItalic.ttf
-        - asset: assets/fonts/PlusJakartaSans-ExtraBold.ttf
-        - asset: assets/fonts/PlusJakartaSans-ExtraBoldItalic.ttf
-        - asset: assets/fonts/PlusJakartaSans-ExtraLight.ttf
-        - asset: assets/fonts/PlusJakartaSans-ExtraLightItalic.ttf
-        - asset: assets/fonts/PlusJakartaSans-Italic.ttf
-        - asset: assets/fonts/PlusJakartaSans-Light.ttf
-        - asset: assets/fonts/PlusJakartaSans-LightItalic.ttf
-        - asset: assets/fonts/PlusJakartaSans-Medium.ttf
-        - asset: assets/fonts/PlusJakartaSans-MediumItalic.ttf  
-        - asset: assets/fonts/PlusJakartaSans-Regular.ttf
-        - asset: assets/fonts/PlusJakartaSans-SemiBold.ttf    
-        - asset: assets/fonts/PlusJakartaSans-SemiBoldItalic.ttf
+        - asset: assets/fonts/plus_jakarta_sans/PlusJakartaSans-Bold.ttf
+        - asset: assets/fonts/plus_jakarta_sans/PlusJakartaSans-BoldItalic.ttf
+        - asset: assets/fonts/plus_jakarta_sans/PlusJakartaSans-ExtraBold.ttf
+        - asset: assets/fonts/plus_jakarta_sans/PlusJakartaSans-ExtraBoldItalic.ttf
+        - asset: assets/fonts/plus_jakarta_sans/PlusJakartaSans-ExtraLight.ttf
+        - asset: assets/fonts/plus_jakarta_sans/PlusJakartaSans-ExtraLightItalic.ttf
+        - asset: assets/fonts/plus_jakarta_sans/PlusJakartaSans-Italic.ttf
+        - asset: assets/fonts/plus_jakarta_sans/PlusJakartaSans-Light.ttf
+        - asset: assets/fonts/plus_jakarta_sans/PlusJakartaSans-LightItalic.ttf
+        - asset: assets/fonts/plus_jakarta_sans/PlusJakartaSans-Medium.ttf
+        - asset: assets/fonts/plus_jakarta_sans/PlusJakartaSans-MediumItalic.ttf  
+        - asset: assets/fonts/plus_jakarta_sans/PlusJakartaSans-Regular.ttf
+        - asset: assets/fonts/plus_jakarta_sans/PlusJakartaSans-SemiBold.ttf    
+        - asset: assets/fonts/plus_jakarta_sans/PlusJakartaSans-SemiBoldItalic.ttf
 
   #
   # For details regarding fonts from package dependencies,
