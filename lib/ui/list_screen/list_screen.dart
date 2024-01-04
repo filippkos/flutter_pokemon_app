@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_pokemon_app/const/color_constants.dart';
+import 'package:flutter_pokemon_app/extensions/string_capitalize_first_letter.dart';
 import 'package:flutter_pokemon_app/models/pokemon_list_model.dart';
 import 'package:flutter_pokemon_app/models/full_pokemon_model.dart';
 import 'package:flutter_pokemon_app/services/network_service.dart';
@@ -17,32 +18,45 @@ class ListScreen extends StatefulWidget {
 
 class _ListScreenState extends State<ListScreen> {
   NetworkService networkService = NetworkService();
+  ScrollController scrollController = ScrollController();
   Future<PokemonList>? takenPokemonList;
   Future<List<FullPokemon>>? fullPokemonList;
+  List<FullPokemon> fullList = [];
   var _isGridEnabled = false;
   var _axis = 1;
   dynamic icon = Icons.grid_view;
   List<Widget> cells = [];
   var aspect = 3.0;
+  var page = 0;
 
   @override
   void initState() {
     super.initState();
-    // takenPokemonList = networkService.getPokemonList();
 
-    fullPokemonList = getPokemons();
+    scrollController.addListener(() {
+      if (scrollController.position.pixels ==
+          scrollController.position.maxScrollExtent) {
+        fetchCommonlist();
+      }
+    });
+    fullPokemonList = fetchCommonlist();
+  }
+
+  Future<List<FullPokemon>> fetchCommonlist() async {
+    getPokemons().then((list) {
+      setState(() {
+        fullList.addAll(list);
+      });
+    });
+
+    return fullList;
   }
 
   Future<List<FullPokemon>> getPokemons() async {
-    List<FullPokemon> list = [];
-     networkService.getPokemonList().then((value) => {
-      value.results.forEach((e) => {
-        networkService.getFullPokemon(e.url).then((value) => {
-          list.add(value)
-        })
-      })
-    });
-    return list;
+    final list = await networkService.getPokemonList(20, fullList.length.toString());
+    final array = list.results.map((e) => networkService.getFullPokemon(e.url));
+
+    return Future.wait(array);
   }
 
   @override
@@ -86,25 +100,31 @@ class _ListScreenState extends State<ListScreen> {
         ),
         backgroundColor: ColorConstants.wildSand,
       ),
-      body: FutureBuilder<List<FullPokemon>>(
-        future: fullPokemonList,
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            print(snapshot.data);
-            var view = _isGridEnabled 
-              ? twinColumnGrid(snapshot)
-              : singleColumnGrid(snapshot);
-            return view;
-          } else if (snapshot.hasError) {
-            return Text('Error');
-          }
-          return Container();
-        }
-      )
+      body: bodyView()
     );
   }
 
+  Widget bodyView() => FutureBuilder<List<FullPokemon>>(
+    future: fullPokemonList,
+    builder: (context, snapshot) {
+      if (snapshot.connectionState == ConnectionState.waiting) {
+        return  Center(
+          child: CircularProgressIndicator(),
+        );
+      } else if (snapshot.hasData) {
+        var view = _isGridEnabled 
+          ? twinColumnGrid(snapshot)
+          : singleColumnGrid(snapshot);
+        return view;
+      } else if (snapshot.hasError) {
+        return Text('Error');
+      }
+      return Container();
+    }
+  );
+
   Widget twinColumnGrid(snapshot) => GridView.builder(
+    controller: scrollController,
     padding: EdgeInsets.all(16),
     gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
       crossAxisCount: 2,
@@ -119,6 +139,7 @@ class _ListScreenState extends State<ListScreen> {
   );
 
     Widget singleColumnGrid(snapshot) => GridView.builder(
+      controller: scrollController,
       padding: EdgeInsets.all(16),
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 1,
@@ -137,11 +158,51 @@ class _ListScreenState extends State<ListScreen> {
     color: Colors.white,
     child: Row(
       children: [
-        Image(
-          image: NetworkImage(snapshot.data[index].sprites.frontDefault),
-          ),
-        Spacer(),
-        Text('${snapshot.data[index].name}')
+        Stack(
+          children: [
+            Container(
+              height: 80, 
+              width: 80, 
+              alignment: Alignment.center, 
+              decoration: BoxDecoration(
+                color: ColorConstants.heather,
+                borderRadius: BorderRadius.all(Radius.circular(40)),
+                 border: Border.all(
+                  color: ColorConstants.heather,
+                ),
+              ),
+            ),
+            Image(
+              image: NetworkImage(snapshot.data[index].sprites.frontDefault),
+              alignment: Alignment.center,
+            ),
+         ],
+        ),
+        Spacer(flex: 1),
+        Column(
+          crossAxisAlignment:CrossAxisAlignment.start,
+          children: [
+            Text('${snapshot.data[index].name}'.capitalizeFirst(),
+              style: TextStyle(
+                fontFamily: 'Paytone One',
+                fontWeight: FontWeight.bold,
+                fontSize: 22,
+                color: ColorConstants.abbey
+              ),
+            ),
+            Spacer(),
+            Text(
+              '#'+'${snapshot.data[index].id}'.padLeft(3, '0'),
+              style: TextStyle(
+                fontFamily: 'Plus Jakarta Sans',
+                fontWeight: FontWeight.bold,
+                fontSize: 12,
+                color: ColorConstants.heather
+              ),
+            ),
+          ],
+        ),
+        Spacer(flex: 4)
       ],
     ),
   );
@@ -151,11 +212,49 @@ class _ListScreenState extends State<ListScreen> {
     color: Colors.white,
     child: Column(
       children:[
-        Image(
-          image: NetworkImage(snapshot.data[index].sprites.frontDefault),
+        Align(
+          alignment: Alignment.topRight, 
+          child: Text(
+            '#'+'${snapshot.data[index].id}'.padLeft(3, '0'),
+            style: TextStyle(
+              fontFamily: 'Plus Jakarta Sans',
+              fontWeight: FontWeight.bold,
+              fontSize: 12,
+              color: ColorConstants.heather
+            ),
           ),
-        Spacer(),
-        Text('${snapshot.data[index].name}')
+        ),
+        Stack(
+          children: [
+            Container(
+              height: 100, 
+              width: 100, 
+              alignment: Alignment.center, 
+              decoration: BoxDecoration(
+                color: ColorConstants.heather,
+                borderRadius: BorderRadius.all(Radius.circular(50)),
+                 border: Border.all(
+                  color: ColorConstants.heather,
+                ),
+              ),
+            ),
+            Image(
+              image: NetworkImage(snapshot.data[index].sprites.frontDefault),
+              alignment: Alignment.center,
+            ),
+         ],
+        ),
+        Spacer(flex: 1),
+        Text(
+          '${snapshot.data[index].name}'.capitalizeFirst(),
+          style: TextStyle(
+            fontFamily: 'Paytone One',
+            fontWeight: FontWeight.bold,
+            fontSize: 22,
+            color: ColorConstants.abbey
+          ),
+        ),
+        Spacer(flex: 5)
       ],
     ),
   );

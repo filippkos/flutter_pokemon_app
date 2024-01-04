@@ -3,7 +3,7 @@ import 'dart:convert';
 class PokemonList {
     int count;
     String next;
-    String previous;
+    String? previous;
     List<ListPokemon> results;
 
     PokemonList({
@@ -21,7 +21,7 @@ class PokemonList {
       return PokemonList(
         count: json['count'] as int, 
         next: json['next'] as String, 
-        previous: json['previous'] as String, 
+        previous: json['previous'] as String?, 
         results: pokemonList
       );
     }
