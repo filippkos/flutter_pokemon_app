@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_pokemon_app/ui/details_screen/details_screen.dart';
 import 'package:flutter_pokemon_app/ui/list_screen/list_screen.dart';
 import 'ui/dashboard_screen/dashboard_screen.dart';
 
@@ -24,6 +25,7 @@ class PokemonApp extends StatelessWidget {
       routes: {
         '/dashboard': (context) => DashboardScreen(),
         '/list': (context) => ListScreen(),
+        '/details': (context) => DetailsScreen(),
       },
       initialRoute: '/dashboard',
     );
