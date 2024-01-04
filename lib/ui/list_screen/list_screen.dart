@@ -22,12 +22,12 @@ class _ListScreenState extends State<ListScreen> {
   Future<PokemonList>? takenPokemonList;
   Future<List<FullPokemon>>? fullPokemonList;
   List<FullPokemon> fullList = [];
+  
   var _isGridEnabled = false;
   var _axis = 1;
   dynamic icon = Icons.grid_view;
   List<Widget> cells = [];
-  var aspect = 3.0;
-  var page = 0;
+  // var aspect = 3.0;
 
   @override
   void initState() {
@@ -78,12 +78,12 @@ class _ListScreenState extends State<ListScreen> {
                     _axis = 2;
                     icon = Icons.view_agenda_outlined;
                     cells = [];
-                    aspect = 0.8;
+                    // aspect = 0.8;
                   } else {
                     _axis = 1;
                     icon = Icons.grid_view;
                     cells = [];
-                    aspect = 3;
+                    // aspect = 3;
                   }
                 }
                 );
@@ -106,7 +106,7 @@ class _ListScreenState extends State<ListScreen> {
 
   Widget bodyView() => FutureBuilder<List<FullPokemon>>(
     future: fullPokemonList,
-    builder: (context, snapshot) {
+    builder: (context, AsyncSnapshot snapshot) {
       if (snapshot.connectionState == ConnectionState.waiting) {
         return  Center(
           child: CircularProgressIndicator(),
@@ -143,7 +143,7 @@ class _ListScreenState extends State<ListScreen> {
       padding: EdgeInsets.all(16),
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 1,
-        childAspectRatio: 3,
+        childAspectRatio: 2.7,
         mainAxisSpacing: 16,
         crossAxisSpacing: 16,
       ), 
@@ -153,58 +153,71 @@ class _ListScreenState extends State<ListScreen> {
       }
     );
 
-  Widget singleColumnCell(snapshot, index) => Container(
-    padding: EdgeInsets.all(16),
-    color: Colors.white,
-    child: Row(
-      children: [
-        Stack(
-          children: [
-            Container(
-              height: 80, 
-              width: 80, 
-              alignment: Alignment.center, 
-              decoration: BoxDecoration(
-                color: ColorConstants.heather,
-                borderRadius: BorderRadius.all(Radius.circular(40)),
-                 border: Border.all(
+  Widget singleColumnCell(snapshot, index) => InkWell(
+    focusColor: Colors.transparent,
+    hoverColor: Colors.transparent,
+    highlightColor: Colors.transparent,
+    splashColor: Colors.transparent,
+    onTap: (){
+      Navigator.pushNamed(
+        context,
+      '/details',
+      arguments: snapshot.data[index]);
+      // Navigator.of(context).pushNamed('/details');
+    },
+    child: Container(
+      padding: EdgeInsets.all(16),
+      color: Colors.white,
+      child: Row(
+        children: [
+          Stack(
+            children: [
+              Container(
+                height: MediaQuery.of(context).size.height * 0.12, 
+                width: MediaQuery.of(context).size.height * 0.12, 
+                alignment: Alignment.center, 
+                decoration: BoxDecoration(
                   color: ColorConstants.heather,
+                  borderRadius: BorderRadius.all(Radius.circular(MediaQuery.of(context).size.height * 0.6)),
+                  border: Border.all(
+                    color: ColorConstants.heather,
+                  ),
                 ),
               ),
-            ),
-            Image(
-              image: NetworkImage(snapshot.data[index].sprites.frontDefault),
-              alignment: Alignment.center,
-            ),
-         ],
-        ),
-        Spacer(flex: 1),
-        Column(
-          crossAxisAlignment:CrossAxisAlignment.start,
-          children: [
-            Text('${snapshot.data[index].name}'.capitalizeFirst(),
-              style: TextStyle(
-                fontFamily: 'Paytone One',
-                fontWeight: FontWeight.bold,
-                fontSize: 22,
-                color: ColorConstants.abbey
+              Image(
+                image: NetworkImage(snapshot.data[index].sprites.frontDefault),
+                alignment: Alignment.center,
               ),
-            ),
-            Spacer(),
-            Text(
-              '#'+'${snapshot.data[index].id}'.padLeft(3, '0'),
-              style: TextStyle(
-                fontFamily: 'Plus Jakarta Sans',
-                fontWeight: FontWeight.bold,
-                fontSize: 12,
-                color: ColorConstants.heather
-              ),
-            ),
           ],
-        ),
-        Spacer(flex: 4)
-      ],
-    ),
+          ),
+          Spacer(flex: 1),
+          Column(
+            crossAxisAlignment:CrossAxisAlignment.start,
+            children: [
+              Text('${snapshot.data[index].name}'.capitalizeFirst(),
+                style: TextStyle(
+                  fontFamily: 'Paytone One',
+                  fontWeight: FontWeight.w400,
+                  fontSize: 22,
+                  color: ColorConstants.abbey
+                ),
+              ),
+              Spacer(),
+              Text(
+                '#'+'${snapshot.data[index].id}'.padLeft(3, '0'),
+                style: TextStyle(
+                  fontFamily: 'Plus Jakarta Sans',
+                  fontWeight: FontWeight.w600,
+                  fontSize: 12,
+                  color: ColorConstants.heather
+                ),
+              ),
+            ],
+          ),
+          Spacer(flex: 4)
+        ],
+      ),
+    )
   );
 
   Widget twinColumnCell(snapshot, index) => Container(
@@ -218,7 +231,7 @@ class _ListScreenState extends State<ListScreen> {
             '#'+'${snapshot.data[index].id}'.padLeft(3, '0'),
             style: TextStyle(
               fontFamily: 'Plus Jakarta Sans',
-              fontWeight: FontWeight.bold,
+              fontWeight: FontWeight.w600,
               fontSize: 12,
               color: ColorConstants.heather
             ),
@@ -227,12 +240,12 @@ class _ListScreenState extends State<ListScreen> {
         Stack(
           children: [
             Container(
-              height: 100, 
-              width: 100, 
+              height: MediaQuery.of(context).size.height * 0.123, 
+              width: MediaQuery.of(context).size.height * 0.123, 
               alignment: Alignment.center, 
               decoration: BoxDecoration(
                 color: ColorConstants.heather,
-                borderRadius: BorderRadius.all(Radius.circular(50)),
+                borderRadius: BorderRadius.all(Radius.circular(MediaQuery.of(context).size.height * 0.0615)),
                  border: Border.all(
                   color: ColorConstants.heather,
                 ),
@@ -249,7 +262,7 @@ class _ListScreenState extends State<ListScreen> {
           '${snapshot.data[index].name}'.capitalizeFirst(),
           style: TextStyle(
             fontFamily: 'Paytone One',
-            fontWeight: FontWeight.bold,
+            fontWeight: FontWeight.w400,
             fontSize: 22,
             color: ColorConstants.abbey
           ),
