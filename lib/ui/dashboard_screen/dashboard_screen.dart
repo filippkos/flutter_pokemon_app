@@ -17,32 +17,29 @@ class _DashboardScreenState extends State<DashboardScreen> {
   );
   final _pagesCount = 3;
   var _currentPage = 0;
-  final bgImage = Image(image: AssetImage('assets/images/dashboard/dashboard_bg.png'));
+  final bgImage = const Image(image: AssetImage('assets/images/dashboard/dashboard_bg.png'));
   final List<Widget> _images = [
     const Image(image: AssetImage('assets/images/dashboard/dashboard_shadow.png')),
     const Image(image: AssetImage('assets/images/dashboard/dashboard_purple.png')),
     const Image(image: AssetImage('assets/images/dashboard/dashboard_all.png'))
   ]; 
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: ColorConstants.wildSand,
-      body: Container(
-        child: PageView.builder(
-          controller: _pageController,
-          scrollDirection: Axis.horizontal,
-          itemCount: _pagesCount,
-          onPageChanged: (index) { 
-            setState(() {
-              _currentPage = index;
-            }); 
-          },
-          itemBuilder: (context, index) {
-            return dashboardPage(index);
-          }
-        )
+      body: PageView.builder(
+        controller: _pageController,
+        scrollDirection: Axis.horizontal,
+        itemCount: _pagesCount,
+        onPageChanged: (index) { 
+          setState(() {
+            _currentPage = index;
+          }); 
+        },
+        itemBuilder: (context, index) {
+          return dashboardPage(index);
+        }
       ),
       bottomNavigationBar: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -52,7 +49,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
             onPressed: () {
               Navigator.of(context).pushNamed('/list');
             },
-            child: Text(
+            child: const Text(
               'Skip',
               style: TextStyle(
                 color: ColorConstants.gold,
@@ -74,7 +71,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     onPressed: () {
       _pageController.nextPage(duration: Duration(milliseconds: 300), curve: Curves.linear);
     }, 
-    child: Text(
+    child: const Text(
       'Next',
       style: TextStyle(
         color: ColorConstants.gold,
@@ -84,7 +81,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     ),
   );
 
-  Widget emptySpace() => TextButton(
+  Widget emptySpace() => const TextButton(
     onPressed: null, 
     child: Text(' ')
   );
@@ -95,7 +92,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     child: FractionallySizedBox(
       widthFactor: 1 / _pageController.viewportFraction,
       child: DecoratedBox(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           color: ColorConstants.wildSand
         ),
         child: Column(
@@ -125,7 +122,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   onPressed: () {
                     Navigator.of(context).pushNamed('/list');
                   },
-                  child: Text(
+                  child: const Text(
                     'GO!',
                     style: TextStyle(
                       fontSize: 20,
@@ -151,10 +148,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
       children:
         List<Widget>.generate(
           _pagesCount, (index) => Padding(
-            padding: EdgeInsets.symmetric(horizontal: 8),
+            padding: const EdgeInsets.symmetric(horizontal: 8),
             child: InkWell(
               onTap: () {
-                _pageController.animateToPage(index, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
+                _pageController.animateToPage(index, duration: const Duration(milliseconds: 300), curve: Curves.easeIn);
               },
               child: Container(
                 decoration: BoxDecoration(
@@ -171,7 +168,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 ),
                 height: 16.0,
                 width: 16.0,
-                child: Center(
+                child: const Center(
                     // Your Widget
                 ),
               ),

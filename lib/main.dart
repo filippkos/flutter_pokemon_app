@@ -3,9 +3,7 @@ import 'package:flutter_pokemon_app/ui/details_screen/details_screen.dart';
 import 'package:flutter_pokemon_app/ui/list_screen/list_screen.dart';
 import 'ui/dashboard_screen/dashboard_screen.dart';
 
-void main() {
-  runApp(const PokemonApp());
-}
+void main() => runApp(const PokemonApp());
 
 class PokemonApp extends StatelessWidget {
   const PokemonApp({super.key});
@@ -91,7 +89,7 @@ class _MyHomePageState extends State<MyHomePage> {
           // children horizontally, and tries to be as tall as its parent.
           //
           // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
+          // how it positions its children. Here we use m∏ainAxisAlignment to
           // center the children vertically; the main axis here is the vertical
           // axis because Columns are vertical (the cross axis would be
           // horizontal).

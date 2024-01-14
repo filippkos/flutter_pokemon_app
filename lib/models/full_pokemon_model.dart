@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 
 class FullPokemon {
-    // List<Ability> abilities;
+    List<Ability> abilities;
     int baseExperience;
-    // List<Species> forms;
+    List<Species> forms;
     // List<GameIndex> gameIndices;
     int height;
     // List<HeldItem> heldItems;
     int id;
     bool isDefault;
     String locationAreaEncounters;
-    // List<Move> moves;
+    List<Move> moves;
     String name;
     int order;
     // List<dynamic> pastAbilities;
@@ -18,20 +18,20 @@ class FullPokemon {
     Species species;
     Sprites sprites;
     // List<Stat> stats;
-    // List<Type> types;
+    List<Type> types;
     int weight;
 
     FullPokemon({
-        // required this.abilities,
+        required this.abilities,
         required this.baseExperience,
-        // required this.forms,
+        required this.forms,
         // required this.gameIndices,
         required this.height,
         // required this.heldItems,
         required this.id,
         required this.isDefault,
         required this.locationAreaEncounters,
-        // required this.moves,
+        required this.moves,
         required this.name,
         required this.order,
         // required this.pastAbilities,
@@ -39,7 +39,7 @@ class FullPokemon {
         required this.species,
         required this.sprites,
         // required this.stats,
-        // required this.types,
+        required this.types,
         required this.weight,
     });
 
@@ -47,22 +47,115 @@ class FullPokemon {
 
       var speciesJson = json['species'];
       var spritesJson = json['sprites'];
+      var typesJson = json['types'] as List;
+      var abilitiesJson = json['abilities'] as List;
+      var formsJson = json['forms'] as List;
+      var movesJson = json['moves'] as List;
 
       Species species = Species.fromJson(speciesJson);
       Sprites sprites = Sprites.fromJson(spritesJson);
+      List<Type> types = typesJson.map((i) => Type.fromJson(i)).toList();
+      List<Ability> abilities = abilitiesJson.map((i) => Ability.fromJson(i)).toList();
+      List<Species> forms = formsJson.map((i) => Species.fromJson(i)).toList();
+      List<Move> moves = movesJson.map((i) => Move.fromJson(i)).toList();
 
       return FullPokemon(
+        abilities: abilities,
         baseExperience: json['base_experience'] as int, 
+        forms: forms,
         height: json['height'] as int, 
         id: json['id'] as int, 
         isDefault: json['is_default'] as bool, 
         locationAreaEncounters: json['location_area_encounters'] as String, 
+        moves: moves,
         name: json['name'] as String, 
         order: json['order'] as int, 
         species: species, 
         sprites: sprites, 
-        weight: json['weight'] as int
+        weight: json['weight'] as int,
+        types: types
         );
+    }
+}
+
+class Move {
+    Species move;
+    // List<VersionGroupDetail> versionGroupDetails;
+
+    Move({
+        required this.move,
+        // required this.versionGroupDetails,
+    });
+
+    factory Move.fromJson(Map<String, dynamic> json) {
+      var moveJson = json['move'];
+
+      Species species = Species.fromJson(moveJson);
+
+      return Move(
+        move: species
+      );
+    }
+
+}
+
+// class VersionGroupDetail {
+//     int levelLearnedAt;
+//     Species moveLearnMethod;
+//     Species versionGroup;
+
+//     VersionGroupDetail({
+//         required this.levelLearnedAt,
+//         required this.moveLearnMethod,
+//         required this.versionGroup,
+//     });
+
+// }
+
+class Ability {
+    Species ability;
+    bool isHidden;
+    int slot;
+
+    Ability({
+        required this.ability,
+        required this.isHidden,
+        required this.slot,
+    });
+
+    factory Ability.fromJson(Map<String, dynamic> json) {
+
+      var abilityJson = json['ability'];
+
+      Species species = Species.fromJson(abilityJson);
+
+      return Ability(
+        ability: species, 
+        isHidden: json['is_hidden'] as bool, 
+        slot: json['slot'] as int
+      );
+    }
+}
+
+class Type {
+    int slot;
+    Species type;
+
+    Type({
+        required this.slot,
+        required this.type,
+    });
+
+    factory Type.fromJson(Map<String, dynamic> json) {
+
+      var typeJson = json['type'];
+      
+      Species type = Species.fromJson(typeJson);
+
+      return Type(
+        slot: json['slot'] as int, 
+        type: type
+      );
     }
 }
 
@@ -120,19 +213,6 @@ class Sprites {
     }
 }
 
-// class Ability {
-//     Species ability;
-//     bool isHidden;
-//     int slot;
-
-//     Ability({
-//         required this.ability,
-//         required this.isHidden,
-//         required this.slot,
-//     });
-
-// }
-
 // class GameIndex {
 //     int gameIndex;
 //     Species version;
@@ -162,30 +242,6 @@ class Sprites {
 //     VersionDetail({
 //         required this.rarity,
 //         required this.version,
-//     });
-
-// }
-
-// class Move {
-//     Species move;
-//     List<VersionGroupDetail> versionGroupDetails;
-
-//     Move({
-//         required this.move,
-//         required this.versionGroupDetails,
-//     });
-
-// }
-
-// class VersionGroupDetail {
-//     int levelLearnedAt;
-//     Species moveLearnMethod;
-//     Species versionGroup;
-
-//     VersionGroupDetail({
-//         required this.levelLearnedAt,
-//         required this.moveLearnMethod,
-//         required this.versionGroup,
 //     });
 
 // }
@@ -410,17 +466,6 @@ class Sprites {
 //         required this.baseStat,
 //         required this.effort,
 //         required this.stat,
-//     });
-
-// }
-
-// class Type {
-//     int slot;
-//     Species type;
-
-//     Type({
-//         required this.slot,
-//         required this.type,
 //     });
 
 // }
