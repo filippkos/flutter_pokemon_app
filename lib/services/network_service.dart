@@ -5,7 +5,6 @@ import 'package:flutter_pokemon_app/models/pokemon_list_model.dart';
 import 'package:flutter_pokemon_app/models/full_pokemon_model.dart';
 import 'package:http/http.dart' as http;
 
-
 class NetworkService {
   var authority = 'pokeapi.co';
   var path = '/api/v2/pokemon/';

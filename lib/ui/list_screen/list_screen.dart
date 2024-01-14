@@ -3,15 +3,16 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_pokemon_app/const/color_constants.dart';
 import 'package:flutter_pokemon_app/extensions/string_capitalize_first_letter.dart';
+import 'package:flutter_pokemon_app/models/chip_model.dart';
 import 'package:flutter_pokemon_app/models/pokemon_list_model.dart';
 import 'package:flutter_pokemon_app/models/full_pokemon_model.dart';
 import 'package:flutter_pokemon_app/services/network_service.dart';
+import 'package:flutter_pokemon_app/ui/views/chip_view.dart';
 import 'package:http/http.dart' as http;
-
 
 class ListScreen extends StatefulWidget {
   const ListScreen({super.key});
-  
+
   @override
   State<StatefulWidget> createState() => _ListScreenState();
 }
@@ -22,7 +23,7 @@ class _ListScreenState extends State<ListScreen> {
   Future<PokemonList>? takenPokemonList;
   Future<List<FullPokemon>>? fullPokemonList;
   List<FullPokemon> fullList = [];
-  
+
   var _isGridEnabled = false;
   var _axis = 1;
   dynamic icon = Icons.grid_view;
@@ -53,7 +54,8 @@ class _ListScreenState extends State<ListScreen> {
   }
 
   Future<List<FullPokemon>> getPokemons() async {
-    final list = await networkService.getPokemonList(20, fullList.length.toString());
+    final list =
+        await networkService.getPokemonList(20, fullList.length.toString());
     final array = list.results.map((e) => networkService.getFullPokemon(e.url));
 
     return Future.wait(array);
@@ -61,10 +63,9 @@ class _ListScreenState extends State<ListScreen> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
-      backgroundColor: ColorConstants.wildSand,
-      appBar: AppBar(
+        backgroundColor: ColorConstants.wildSand,
+        appBar: AppBar(
           actions: <Widget>[
             IconButton(
               icon: Icon(
@@ -85,60 +86,54 @@ class _ListScreenState extends State<ListScreen> {
                     cells = [];
                     // aspect = 3;
                   }
-                }
-                );
+                });
               },
             ),
           ],
-        surfaceTintColor:  ColorConstants.wildSand,
-        title: Text(
-          'All pokemon',
-          style: TextStyle(
-            fontFamily: 'Plus Jakarta Sans',
-            fontWeight: FontWeight.bold
+          surfaceTintColor: ColorConstants.wildSand,
+          title: const Text(
+            'All pokemon',
+            style: TextStyle(
+                fontFamily: 'Plus Jakarta Sans', fontWeight: FontWeight.bold),
           ),
+          backgroundColor: ColorConstants.wildSand,
         ),
-        backgroundColor: ColorConstants.wildSand,
-      ),
-      body: bodyView()
-    );
+        body: bodyView());
   }
 
   Widget bodyView() => FutureBuilder<List<FullPokemon>>(
-    future: fullPokemonList,
-    builder: (context, AsyncSnapshot snapshot) {
-      if (snapshot.connectionState == ConnectionState.waiting) {
-        return  Center(
-          child: CircularProgressIndicator(),
-        );
-      } else if (snapshot.hasData) {
-        var view = _isGridEnabled 
-          ? twinColumnGrid(snapshot)
-          : singleColumnGrid(snapshot);
-        return view;
-      } else if (snapshot.hasError) {
-        return Text('Error');
-      }
-      return Container();
-    }
-  );
+      future: fullPokemonList,
+      builder: (context, AsyncSnapshot snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        } else if (snapshot.hasData) {
+          var view = _isGridEnabled
+              ? twinColumnGrid(snapshot)
+              : singleColumnGrid(snapshot);
+          return view;
+        } else if (snapshot.hasError) {
+          return Text('Error');
+        }
+        return Container();
+      });
 
   Widget twinColumnGrid(snapshot) => GridView.builder(
-    controller: scrollController,
-    padding: EdgeInsets.all(16),
-    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-      crossAxisCount: 2,
-      childAspectRatio: 0.8,
-      mainAxisSpacing: 16,
-      crossAxisSpacing: 16,
-    ), 
-    itemCount: snapshot.data?.length,
-    itemBuilder: (context, index) {
-      return twinColumnCell(snapshot, index);
-    }
-  );
+      controller: scrollController,
+      padding: const EdgeInsets.all(16),
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        childAspectRatio: 0.7,
+        mainAxisSpacing: 9,
+        crossAxisSpacing: 9,
+      ),
+      itemCount: snapshot.data?.length,
+      itemBuilder: (context, index) {
+        return twinColumnCell(snapshot, index);
+      });
 
-    Widget singleColumnGrid(snapshot) => GridView.builder(
+  Widget singleColumnGrid(snapshot) => GridView.builder(
       controller: scrollController,
       padding: EdgeInsets.all(16),
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -146,129 +141,166 @@ class _ListScreenState extends State<ListScreen> {
         childAspectRatio: 2.7,
         mainAxisSpacing: 16,
         crossAxisSpacing: 16,
-      ), 
+      ),
       itemCount: snapshot.data?.length,
       itemBuilder: (context, index) {
         return singleColumnCell(snapshot, index);
-      }
-    );
+      });
 
   Widget singleColumnCell(snapshot, index) => InkWell(
-    focusColor: Colors.transparent,
-    hoverColor: Colors.transparent,
-    highlightColor: Colors.transparent,
-    splashColor: Colors.transparent,
-    onTap: (){
-      Navigator.pushNamed(
-        context,
-      '/details',
-      arguments: snapshot.data[index]);
-      // Navigator.of(context).pushNamed('/details');
+      onTap: () {
+        Navigator.pushNamed(context, '/details',
+            arguments: snapshot.data[index]);
+      },
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(16),
+          color: Colors.white,
+          boxShadow: [
+            BoxShadow(
+              color: ColorConstants.heather.withAlpha(60),
+              spreadRadius: 0,
+              blurRadius: 10
+            ),
+          ],
+        ),
+        padding: const EdgeInsets.all(16),
+        child: Row(
+          children: [
+            Stack(
+              children: [
+                Container(
+                  height: MediaQuery.of(context).size.height * 0.12,
+                  width: MediaQuery.of(context).size.height * 0.12,
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                      color: _modelList(snapshot.data[index].types)
+                          .first
+                          .backgroundColor,
+                      borderRadius: BorderRadius.all(Radius.circular(
+                          MediaQuery.of(context).size.height * 0.6))),
+                ),
+                Image(
+                  image:
+                      NetworkImage(snapshot.data[index].sprites.frontDefault),
+                  alignment: Alignment.center,
+                ),
+              ],
+            ),
+            Container(width: 8),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  '${snapshot.data[index].name}'.capitalizeFirst(),
+                  maxLines: 1,
+                  style: const TextStyle(
+                      fontFamily: 'Paytone One',
+                      fontWeight: FontWeight.w400,
+                      fontSize: 22,
+                      color: ColorConstants.abbey),
+                ),
+                Spacer(),
+                ChipView(
+                  format: ChipViewFormat.imageAndText,
+                  items: _modelList(snapshot.data[index].types),
+                ),
+                Spacer(),
+                Text(
+                  '#' + '${snapshot.data[index].id}'.padLeft(3, '0'),
+                  style: const TextStyle(
+                      fontFamily: 'Plus Jakarta Sans',
+                      fontWeight: FontWeight.w600,
+                      fontSize: 12,
+                      color: ColorConstants.heather),
+                ),
+              ],
+            ),
+            Spacer()
+          ],
+        ),
+      ));
+
+  Widget twinColumnCell(snapshot, index) => InkWell(
+    onTap: () {
+      Navigator.pushNamed(context, '/details',
+          arguments: snapshot.data[index]);
     },
     child: Container(
-      padding: EdgeInsets.all(16),
-      color: Colors.white,
-      child: Row(
-        children: [
-          Stack(
-            children: [
-              Container(
-                height: MediaQuery.of(context).size.height * 0.12, 
-                width: MediaQuery.of(context).size.height * 0.12, 
-                alignment: Alignment.center, 
-                decoration: BoxDecoration(
-                  color: ColorConstants.heather,
-                  borderRadius: BorderRadius.all(Radius.circular(MediaQuery.of(context).size.height * 0.6)),
-                  border: Border.all(
-                    color: ColorConstants.heather,
-                  ),
-                ),
-              ),
-              Image(
-                image: NetworkImage(snapshot.data[index].sprites.frontDefault),
-                alignment: Alignment.center,
-              ),
-          ],
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(16),
+        color: Colors.white,
+        boxShadow: [
+          BoxShadow(
+            color: ColorConstants.heather.withAlpha(60),
+            spreadRadius: 0,
+            blurRadius: 10
           ),
-          Spacer(flex: 1),
-          Column(
-            crossAxisAlignment:CrossAxisAlignment.start,
-            children: [
-              Text('${snapshot.data[index].name}'.capitalizeFirst(),
-                style: TextStyle(
-                  fontFamily: 'Paytone One',
-                  fontWeight: FontWeight.w400,
-                  fontSize: 22,
-                  color: ColorConstants.abbey
-                ),
-              ),
-              Spacer(),
-              Text(
-                '#'+'${snapshot.data[index].id}'.padLeft(3, '0'),
-                style: TextStyle(
+        ],
+      ),
+      padding: EdgeInsets.all(16),
+      child: Column(
+        children: [
+          Align(
+            alignment: Alignment.topRight,
+            child: Text(
+              '#' + '${snapshot.data[index].id}'.padLeft(3, '0'),
+              style: const TextStyle(
                   fontFamily: 'Plus Jakarta Sans',
                   fontWeight: FontWeight.w600,
                   fontSize: 12,
-                  color: ColorConstants.heather
-                ),
+                  color: ColorConstants.heather),
+            ),
+          ),
+          Stack(
+            children: [
+              Container(
+                height: MediaQuery.of(context).size.height * 0.123,
+                width: MediaQuery.of(context).size.height * 0.123,
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                    color: _modelList(snapshot.data[index].types)
+                        .first
+                        .backgroundColor,
+                    borderRadius: BorderRadius.all(Radius.circular(
+                        MediaQuery.of(context).size.height * 0.0615))),
+              ),
+              Image(
+                image:
+                    NetworkImage(snapshot.data[index].sprites.frontDefault),
+                alignment: Alignment.center,
               ),
             ],
           ),
-          Spacer(flex: 4)
+          Spacer(),
+          Text(
+            '${snapshot.data[index].name}'.capitalizeFirst(),
+            maxLines: 1,
+            style: const TextStyle(
+                fontFamily: 'Paytone One',
+                fontWeight: FontWeight.w400,
+                fontSize: 22,
+                color: ColorConstants.abbey),
+          ),
+          Spacer(),
+          ChipView(
+            format: ChipViewFormat.imageOnly,
+            items: _modelList(snapshot.data[index].types),
+          ),
+          Spacer()
         ],
       ),
-    )
-  );
-
-  Widget twinColumnCell(snapshot, index) => Container(
-    padding: EdgeInsets.all(16),
-    color: Colors.white,
-    child: Column(
-      children:[
-        Align(
-          alignment: Alignment.topRight, 
-          child: Text(
-            '#'+'${snapshot.data[index].id}'.padLeft(3, '0'),
-            style: TextStyle(
-              fontFamily: 'Plus Jakarta Sans',
-              fontWeight: FontWeight.w600,
-              fontSize: 12,
-              color: ColorConstants.heather
-            ),
-          ),
-        ),
-        Stack(
-          children: [
-            Container(
-              height: MediaQuery.of(context).size.height * 0.123, 
-              width: MediaQuery.of(context).size.height * 0.123, 
-              alignment: Alignment.center, 
-              decoration: BoxDecoration(
-                color: ColorConstants.heather,
-                borderRadius: BorderRadius.all(Radius.circular(MediaQuery.of(context).size.height * 0.0615)),
-                 border: Border.all(
-                  color: ColorConstants.heather,
-                ),
-              ),
-            ),
-            Image(
-              image: NetworkImage(snapshot.data[index].sprites.frontDefault),
-              alignment: Alignment.center,
-            ),
-         ],
-        ),
-        Spacer(flex: 1),
-        Text(
-          '${snapshot.data[index].name}'.capitalizeFirst(),
-          style: TextStyle(
-            fontFamily: 'Paytone One',
-            fontWeight: FontWeight.w400,
-            fontSize: 22,
-            color: ColorConstants.abbey
-          ),
-        ),
-        Spacer(flex: 5)
-      ],
     ),
   );
+
+  List<ChipModel> _modelList(List<Type> types) {
+    List<ChipModel> modelList = [];
+    types.forEach((type) {
+      ChipModel model = ChipModel(title: '');
+      model.fillWithPokemonName(type.type.name);
+      modelList.add(model);
+    });
+
+    return modelList;
+  }
 }
