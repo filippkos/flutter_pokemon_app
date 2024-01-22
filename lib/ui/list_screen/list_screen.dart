@@ -1,4 +1,6 @@
+import 'dart:async';
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_pokemon_app/const/color_constants.dart';
@@ -7,6 +9,7 @@ import 'package:flutter_pokemon_app/models/chip_model.dart';
 import 'package:flutter_pokemon_app/models/pokemon_list_model.dart';
 import 'package:flutter_pokemon_app/models/full_pokemon_model.dart';
 import 'package:flutter_pokemon_app/services/network_service.dart';
+import 'package:flutter_pokemon_app/services/pagination_service.dart';
 import 'package:flutter_pokemon_app/ui/views/chip_view.dart';
 import 'package:http/http.dart' as http;
 
@@ -20,15 +23,22 @@ class ListScreen extends StatefulWidget {
 class _ListScreenState extends State<ListScreen> {
   NetworkService networkService = NetworkService();
   ScrollController scrollController = ScrollController();
-  Future<PokemonList>? takenPokemonList;
-  Future<List<FullPokemon>>? fullPokemonList;
-  List<FullPokemon> fullList = [];
+  Pagination paginationService = Pagination();
+  final TextEditingController _textEditingController = TextEditingController();
+  final _debouncer = Debouncer(milliseconds: 1000);
 
+  List<FullPokemon> _commonFullPokemonList = [];
+  var streamController = new StreamController<List<FullPokemon>>();
+
+  var _isSearchEnabled = false;
   var _isGridEnabled = false;
+  var _isLoading = false;
   var _axis = 1;
   dynamic icon = Icons.grid_view;
   List<Widget> cells = [];
-  // var aspect = 3.0;
+  String? filter;
+  int limit = 10;
+  int offset = 0;
 
   @override
   void initState() {
@@ -36,88 +46,132 @@ class _ListScreenState extends State<ListScreen> {
 
     scrollController.addListener(() {
       if (scrollController.position.pixels ==
-          scrollController.position.maxScrollExtent) {
-        fetchCommonlist();
+          scrollController.position.maxScrollExtent && !_isLoading) {
+        loadPokemons(filter);
       }
     });
-    fullPokemonList = fetchCommonlist();
-  }
 
-  Future<List<FullPokemon>> fetchCommonlist() async {
-    getPokemons().then((list) {
-      setState(() {
-        fullList.addAll(list);
+    _textEditingController.addListener(() {
+      _debouncer.run(() {
+        var text = _textEditingController.text;
+        _isSearchEnabled = text != '' ? true : false;
+        filter = text != '' ? text : null;
+        loadPokemons(filter);
       });
     });
 
-    return fullList;
+    loadingInit();
   }
 
-  Future<List<FullPokemon>> getPokemons() async {
-    final list =
-        await networkService.getPokemonList(20, fullList.length.toString());
-    final array = list.results.map((e) => networkService.getFullPokemon(e.url));
-
-    return Future.wait(array);
+  loadingInit() async {
+    await paginationService.prepareAllShortList();
+    loadPokemons(filter);
   }
+
+  loadPokemons(String? filter) async {
+    _isLoading = true;
+    _commonFullPokemonList = await paginationService.getPage(filter, limit, _commonFullPokemonList.length);
+    streamController.add(_commonFullPokemonList);
+    limit += limit;
+    _isLoading = false;
+  }
+
+  // if (list.length < commonOffset + commonLimit) {
+  //   commonOffset = commonOffset;
+  // } else if (list.length > commonOffset + commonLimit){
+  //   commonOffset = list.length;
+  // } else if (list.length >= commonOffset) {
+  //   commonLimit = 0;
+  // }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: ColorConstants.wildSand,
-        appBar: AppBar(
-          actions: <Widget>[
-            IconButton(
-              icon: Icon(
-                icon,
-                color: Colors.black,
-              ),
-              onPressed: () {
-                setState(() {
-                  _isGridEnabled = !_isGridEnabled;
-                  if (_isGridEnabled == true) {
-                    _axis = 2;
-                    icon = Icons.view_agenda_outlined;
-                    cells = [];
-                    // aspect = 0.8;
-                  } else {
-                    _axis = 1;
-                    icon = Icons.grid_view;
-                    cells = [];
-                    // aspect = 3;
-                  }
-                });
-              },
+      backgroundColor: ColorConstants.wildSand,
+      appBar: AppBar(
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(
+              icon,
+              color: Colors.black,
             ),
-          ],
-          surfaceTintColor: ColorConstants.wildSand,
-          title: const Text(
-            'All pokemon',
-            style: TextStyle(
-                fontFamily: 'Plus Jakarta Sans', fontWeight: FontWeight.bold),
+            onPressed: () {
+              setState(() {
+                _isGridEnabled = !_isGridEnabled;
+                if (_isGridEnabled == true) {
+                  _axis = 2;
+                  icon = Icons.view_agenda_outlined;
+                  cells = [];
+                } else {
+                  _axis = 1;
+                  icon = Icons.grid_view;
+                  cells = [];
+                }
+              });
+            },
           ),
-          backgroundColor: ColorConstants.wildSand,
+        ],
+        surfaceTintColor: ColorConstants.wildSand,
+        title: const Text(
+          'All pokemon',
+          style: TextStyle(
+            fontFamily: 'Plus Jakarta Sans', 
+            fontWeight: FontWeight.bold
+          ),
         ),
-        body: bodyView());
+        backgroundColor: ColorConstants.wildSand,
+      ),
+      body: Column(
+        children: [
+          Container(
+            padding: EdgeInsets.all(16),
+            child: SearchBar(
+              controller: _textEditingController,
+              constraints: const BoxConstraints(
+                minHeight: 40
+              ),
+              elevation: MaterialStateProperty.all(0.0),
+              hintText: 'Name or number...',
+              hintStyle: MaterialStateProperty.all(
+                const TextStyle(
+                  fontFamily: 'Plus Jakarta Sans', 
+                  fontWeight: FontWeight.w500,
+                  fontSize: 15,
+                  color: ColorConstants.heather
+                )
+              ),
+              leading: Icon(Icons.search),
+              backgroundColor: MaterialStateProperty.all(
+                const Color.fromRGBO(255,255,255,1)
+              ),
+              shadowColor: MaterialStateProperty.all(Colors.transparent),
+            ),
+          ),
+          Expanded(child: bodyView())
+        ],
+      )
+    );
   }
 
-  Widget bodyView() => FutureBuilder<List<FullPokemon>>(
-      future: fullPokemonList,
-      builder: (context, AsyncSnapshot snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        } else if (snapshot.hasData) {
-          var view = _isGridEnabled
-              ? twinColumnGrid(snapshot)
-              : singleColumnGrid(snapshot);
-          return view;
-        } else if (snapshot.hasError) {
-          return Text('Error');
-        }
-        return Container();
-      });
+  Widget bodyView() => StreamBuilder<List<FullPokemon>>(
+    stream: streamController.stream,
+    builder: (context, AsyncSnapshot snapshot) {
+      if (snapshot.connectionState == ConnectionState.waiting) {
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
+      } else if (snapshot.hasData) {
+        final view = _isGridEnabled
+            ? twinColumnGrid(snapshot)
+            : singleColumnGrid(snapshot);
+        return view;
+      } else if (snapshot.hasError) {
+        return Text('Error ${snapshot.hasData}');
+      } else {
+      return Container();
+      }
+    }
+  );
 
   Widget twinColumnGrid(snapshot) => GridView.builder(
       controller: scrollController,
@@ -302,5 +356,20 @@ class _ListScreenState extends State<ListScreen> {
     });
 
     return modelList;
+  }
+}
+
+class Debouncer {
+  final int milliseconds;
+  VoidCallback? action;
+  Timer? _timer;
+
+  Debouncer({required this.milliseconds});
+
+  run(VoidCallback action) {
+    if (null != _timer) {
+      _timer?.cancel();
+    }
+    _timer = Timer(Duration(milliseconds: milliseconds), action);
   }
 }
