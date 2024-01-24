@@ -30,13 +30,13 @@ class _ListScreenState extends State<ListScreen> {
   List<FullPokemon> _commonFullPokemonList = [];
   var streamController = new StreamController<List<FullPokemon>>();
 
-  var _isSearchEnabled = false;
   var _isGridEnabled = false;
   var _isLoading = false;
   var _axis = 1;
   dynamic icon = Icons.grid_view;
   List<Widget> cells = [];
   String? filter;
+  int page = 10;
   int limit = 10;
   int offset = 0;
 
@@ -47,21 +47,39 @@ class _ListScreenState extends State<ListScreen> {
     scrollController.addListener(() {
       if (scrollController.position.pixels ==
           scrollController.position.maxScrollExtent && !_isLoading) {
+
         loadPokemons(filter);
       }
     });
 
     _textEditingController.addListener(() {
+      // print('searchController triggered');
       _debouncer.run(() {
-        var text = _textEditingController.text;
-        _isSearchEnabled = text != '' ? true : false;
-        filter = text != '' ? text : null;
-        loadPokemons(filter);
+        // print('listener text ${_textEditingController.text}');
+        String? text = _textEditingController.text;
+        text = text.isEmpty ? null : text;
+        if (text != filter) {
+          filter = text;
+          limit = page;
+          offset = 0;
+          _commonFullPokemonList.clear();
+          // print('listener ${_commonFullPokemonList.length}');
+          streamController.add(_commonFullPokemonList);
+          loadPokemons(filter);
+        }
       });
     });
 
     loadingInit();
   }
+
+  Widget locker() => Container (
+    color: Colors.amber,
+    padding: EdgeInsets.all(0),
+    child: Center(
+      child: CircularProgressIndicator()
+    ),
+  );
 
   loadingInit() async {
     await paginationService.prepareAllShortList();
@@ -69,20 +87,20 @@ class _ListScreenState extends State<ListScreen> {
   }
 
   loadPokemons(String? filter) async {
+   
     _isLoading = true;
+ 
+      // print('loader  before load ${_commonFullPokemonList.length}');
+      // print('limit ${limit}');
+      // print('offset ${offset}');
     _commonFullPokemonList = await paginationService.getPage(filter, limit, _commonFullPokemonList.length);
+    // print('loader after load ${_commonFullPokemonList.length}');
     streamController.add(_commonFullPokemonList);
-    limit += limit;
+    limit += page;
+ 
     _isLoading = false;
-  }
 
-  // if (list.length < commonOffset + commonLimit) {
-  //   commonOffset = commonOffset;
-  // } else if (list.length > commonOffset + commonLimit){
-  //   commonOffset = list.length;
-  // } else if (list.length >= commonOffset) {
-  //   commonLimit = 0;
-  // }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -156,7 +174,13 @@ class _ListScreenState extends State<ListScreen> {
   Widget bodyView() => StreamBuilder<List<FullPokemon>>(
     stream: streamController.stream,
     builder: (context, AsyncSnapshot snapshot) {
+      print('builder was triggered');
       if (snapshot.connectionState == ConnectionState.waiting) {
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
+      } else if (snapshot.data?.length == 0) {
+        print('loading if');
         return const Center(
           child: CircularProgressIndicator(),
         );
@@ -168,7 +192,7 @@ class _ListScreenState extends State<ListScreen> {
       } else if (snapshot.hasError) {
         return Text('Error ${snapshot.hasData}');
       } else {
-      return Container();
+        return Container();
       }
     }
   );
@@ -182,9 +206,22 @@ class _ListScreenState extends State<ListScreen> {
         mainAxisSpacing: 9,
         crossAxisSpacing: 9,
       ),
-      itemCount: snapshot.data?.length,
+      itemCount: snapshot.data?.length + 2,
       itemBuilder: (context, index) {
-        return twinColumnCell(snapshot, index);
+        if (index < snapshot.data?.length) {
+          return twinColumnCell(snapshot, index);
+        } else {
+          if (snapshot.data?.length < paginationService.currentList.length && snapshot.data?.length != 0) {
+          return const Padding(
+            padding: EdgeInsets.all(10.0),
+            child: Center(
+              child: CircularProgressIndicator(),
+            ),
+          );
+          } else {
+            return null;
+          }
+        }
       });
 
   Widget singleColumnGrid(snapshot) => GridView.builder(
@@ -196,9 +233,22 @@ class _ListScreenState extends State<ListScreen> {
         mainAxisSpacing: 16,
         crossAxisSpacing: 16,
       ),
-      itemCount: snapshot.data?.length,
+      itemCount: snapshot.data?.length + 1,
       itemBuilder: (context, index) {
-        return singleColumnCell(snapshot, index);
+        if (index < snapshot.data?.length) {
+          return singleColumnCell(snapshot, index);
+        } else {
+          if (snapshot.data?.length < paginationService.currentList.length && snapshot.data?.length != 0) {
+          return const Padding(
+            padding: EdgeInsets.all(10.0),
+            child: Center(
+              child: CircularProgressIndicator(),
+            ),
+          );
+          } else {
+            return null;
+          }
+        }
       });
 
   Widget singleColumnCell(snapshot, index) => InkWell(
@@ -242,35 +292,39 @@ class _ListScreenState extends State<ListScreen> {
               ],
             ),
             Container(width: 8),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  '${snapshot.data[index].name}'.capitalizeFirst(),
-                  maxLines: 1,
-                  style: const TextStyle(
-                      fontFamily: 'Paytone One',
-                      fontWeight: FontWeight.w400,
-                      fontSize: 22,
-                      color: ColorConstants.abbey),
-                ),
-                Spacer(),
-                ChipView(
-                  format: ChipViewFormat.imageAndText,
-                  items: _modelList(snapshot.data[index].types),
-                ),
-                Spacer(),
-                Text(
-                  '#' + '${snapshot.data[index].id}'.padLeft(3, '0'),
-                  style: const TextStyle(
-                      fontFamily: 'Plus Jakarta Sans',
-                      fontWeight: FontWeight.w600,
-                      fontSize: 12,
-                      color: ColorConstants.heather),
-                ),
-              ],
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                    Text(
+                      '${snapshot.data[index].name}'.capitalizeFirst(),
+                      maxLines: 1,
+                      softWrap: false,
+                      overflow: TextOverflow.fade,
+                      style: const TextStyle(
+                          fontFamily: 'Paytone One',
+                          fontWeight: FontWeight.w400,
+                          fontSize: 22,
+                          color: ColorConstants.abbey)
+                    ),
+                 
+                  Spacer(),
+                  ChipView(
+                    format: ChipViewFormat.imageAndText,
+                    items: _modelList(snapshot.data[index].types),
+                  ),
+                  Spacer(),
+                  Text(
+                    '#' + '${snapshot.data[index].id}'.padLeft(3, '0'),
+                    style: const TextStyle(
+                        fontFamily: 'Plus Jakarta Sans',
+                        fontWeight: FontWeight.w600,
+                        fontSize: 12,
+                        color: ColorConstants.heather),
+                  ),
+                ],
+              ),
             ),
-            Spacer()
           ],
         ),
       ));
@@ -334,7 +388,7 @@ class _ListScreenState extends State<ListScreen> {
                 fontFamily: 'Paytone One',
                 fontWeight: FontWeight.w400,
                 fontSize: 22,
-                color: ColorConstants.abbey),
+                color: ColorConstants.abbey)
           ),
           Spacer(),
           ChipView(

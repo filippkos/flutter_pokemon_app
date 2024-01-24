@@ -14,30 +14,3 @@ class PageService {
     return list;
   }
 }
-
-  // Future<void> updateLimitAndOffset(List<ListPokemon> list, int limit, int offset) async {
-  //   if (list.length >= offset + limit) {
-  //     currentLimit = limit;
-  //     currentOffset = offset;
-  //   }
-
-  //   if (list.length > offset && list.length < offset + limit) {
-  //     currentLimit = list.length - offset;
-  //     currentOffset = offset;
-  //   }
-
-  //   if (list.length > offset + limit) {
-  //     currentLimit = limit;
-  //     currentOffset = offset;
-  //   }
-
-  //   if(list.length < offset + limit) {
-  //     currentLimit = list.length;
-  //     currentOffset = offset;
-  //   }
-
-  //   if (list.length == offset) {
-  //     currentLimit = 0;
-  //   }
-    
-  // }

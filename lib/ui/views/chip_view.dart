@@ -40,11 +40,12 @@ class ChipViewState extends State<ChipView> {
   Widget fullChip(title, image, color, textColor) => Chip(
     materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
     padding: const EdgeInsets.all(5),
+    labelPadding: EdgeInsets.only(left: 1),
     labelStyle: TextStyle(
         color: textColor,
         fontFamily: 'Plus Jakarta Sans',
         fontWeight: FontWeight.w600,
-        fontSize: 15),
+        fontSize: 13),
     label: Text(title),
     avatar: image,
     backgroundColor: color,
@@ -55,6 +56,11 @@ class ChipViewState extends State<ChipView> {
 
   Widget textChip(title, color) => Chip(
     padding: const EdgeInsets.all(5),
+    labelStyle: TextStyle(
+        color: Colors.black,
+        fontFamily: 'Plus Jakarta Sans',
+        fontWeight: FontWeight.w600,
+        fontSize: 13),
     label: Text(title),
     backgroundColor: color,
     side: const BorderSide(style: BorderStyle.none),

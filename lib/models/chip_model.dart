@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_pokemon_app/const/color_constants.dart';
+import 'package:flutter_pokemon_app/extensions/string_capitalize_first_letter.dart';
 
 enum PokemonType {
   bug,
@@ -191,14 +192,14 @@ class ChipModel {
   void fillWithPokemonName(String name) {
     final type = PokemonTypeExtension.pokemonType[name] ?? PokemonType.bug;
 
-    this.title = type.name;
+    this.title = type.name.capitalizeFirst();
     this.image = type.image();
     this.textColor = type.mainColor();
     this.backgroundColor = type.backgroundColor();
   }
 
   void fill(String title, Image? image, Color? textColor, Color? backgroundColor) {
-    this.title = title;
+    this.title = title.capitalizeFirst();
     this.image = image;
     this.textColor = textColor;
     this.backgroundColor = backgroundColor;
