@@ -11,6 +11,11 @@ class Pagination {
   List<ListPokemon> allShortPokemonList = [];
   List<ListPokemon> filteredShortPokemonList = [];
 
+  int currentLimit = 0;
+  int currentOffset = 0;
+  String? currentFilter;
+  List<ListPokemon> currentList = [];
+
   Future<PokemonList> loadBaseModel() async {
     PokemonList list;
     list = await networkService.getPokemonList(800, '0');
@@ -21,30 +26,67 @@ class Pagination {
   Future<void> prepareAllShortList() async {
     await loadBaseModel().then((value) {
       value.results.forEach((element) { 
-        
         allShortPokemonList.add(element);
       });
     });
   }
 
   Future<List<FullPokemon>> getPage(String? filter, int limit, int offset) async {
+
     List<String> urls = [];
     if (filter == null) {
-      urls = allShortPokemonList.sublist(offset, limit).map((e) => e.url).toList();
+      currentList = allShortPokemonList;
     } else {
-      await updateFilteredShortPokemonlist(filter);
-      urls = filteredShortPokemonList.sublist(offset, limit).map((e) => e.url).toList();
+      if (filter != currentFilter) {
+        print('filter changed ${currentList.length}');
+        await updateFilteredShortPokemonlist(filter);
+        currentFilter = filter;
+      }
+      currentList = filteredShortPokemonList;
     }
+    
+    updateLimitAndOffset(currentList, limit, offset);
+    
+    print('current list ${currentList.length}');
+    urls = currentList.sublist(currentOffset, currentLimit).map((e) => e.url).toList();
 
     return pageService.page(urls);
   }
 
   Future<void> updateFilteredShortPokemonlist(String filter) async {
+    filteredShortPokemonList.clear();
     await Future.forEach(allShortPokemonList, (pokemon) {
-        if (pokemon.name.contains(filter)) {
+        if (pokemon.name.startsWith(filter)) {
           filteredShortPokemonList.add(pokemon);
         }
     });
+  }
+
+  Future<void> updateLimitAndOffset(List<ListPokemon> list, int limit, int offset) async {
+    if (list.length >= offset + limit) {
+      currentLimit = limit;
+      currentOffset = offset;
+    }
+
+    if (list.length > offset && list.length < offset + limit) {
+      currentLimit = list.length - offset;
+      currentOffset = offset;
+    }
+
+    if (list.length > offset + limit) {
+      currentLimit = limit;
+      currentOffset = offset;
+    }
+
+    if(list.length < offset + limit) {
+      currentLimit = list.length;
+      currentOffset = offset;
+    }
+
+    if (list.length == offset) {
+      currentLimit = currentOffset;
+    }
+    
   }
 
 }

@@ -177,26 +177,26 @@ class Species {
 }
 
 class Sprites {
-    final String backDefault;
+    // final String backDefault;
     // dynamic backFemale;
-    final String backShiny;
+    // final String backShiny;
     // dynamic backShinyFemale;
-    final String frontDefault;
+    final String? frontDefault;
     // dynamic frontFemale;
-    final String frontShiny;
+    // final String frontShiny;
     // dynamic frontShinyFemale;
     // Other? other;
     // Versions? versions;
     // Sprites? animated;
 
     Sprites({
-        required this.backDefault,
+        // required this.backDefault,
         // required this.backFemale,
-        required this.backShiny,
+        // required this.backShiny,
         // required this.backShinyFemale,
         required this.frontDefault,
         // required this.frontFemale,
-        required this.frontShiny,
+        // required this.frontShiny,
         // required this.frontShinyFemale,
         // this.other,
         // this.versions,
@@ -205,10 +205,7 @@ class Sprites {
 
     factory Sprites.fromJson(Map<String, dynamic> json) {
       return Sprites(
-        backDefault: json['back_default'] as String, 
-        backShiny: json['back_shiny'] as String, 
-        frontDefault: json['front_default'] as String, 
-        frontShiny: json['front_shiny'] as String
+        frontDefault: json['front_default'] as String
       );
     }
 }

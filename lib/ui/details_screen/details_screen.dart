@@ -76,7 +76,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                   fit: BoxFit.fill,
                   width: 200,
                   height: 200,
-                  image: NetworkImage(pokemon.sprites.frontDefault),
+                  image: NetworkImage(pokemon.sprites.frontDefault ?? ''),
                 ),
               ),
               Container(
