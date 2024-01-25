@@ -64,6 +64,7 @@ flutter:
     - assets/images/dashboard/
     - assets/images/pokemon_type_icons/
     - assets/images/icon_buttons/
+    - assets/images/spinner/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

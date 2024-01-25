@@ -11,6 +11,7 @@ import 'package:flutter_pokemon_app/models/full_pokemon_model.dart';
 import 'package:flutter_pokemon_app/services/network_service.dart';
 import 'package:flutter_pokemon_app/services/pagination_service.dart';
 import 'package:flutter_pokemon_app/ui/views/chip_view.dart';
+import 'package:flutter_pokemon_app/ui/views/spinner.dart';
 import 'package:http/http.dart' as http;
 
 class ListScreen extends StatefulWidget {
@@ -53,9 +54,7 @@ class _ListScreenState extends State<ListScreen> {
     });
 
     _textEditingController.addListener(() {
-      // print('searchController triggered');
       _debouncer.run(() {
-        // print('listener text ${_textEditingController.text}');
         String? text = _textEditingController.text;
         text = text.isEmpty ? null : text;
         if (text != filter) {
@@ -63,7 +62,6 @@ class _ListScreenState extends State<ListScreen> {
           limit = page;
           offset = 0;
           _commonFullPokemonList.clear();
-          // print('listener ${_commonFullPokemonList.length}');
           streamController.add(_commonFullPokemonList);
           loadPokemons(filter);
         }
@@ -76,7 +74,7 @@ class _ListScreenState extends State<ListScreen> {
   Widget locker() => Container (
     color: Colors.amber,
     padding: EdgeInsets.all(0),
-    child: Center(
+    child: const Center(
       child: CircularProgressIndicator()
     ),
   );
@@ -87,19 +85,11 @@ class _ListScreenState extends State<ListScreen> {
   }
 
   loadPokemons(String? filter) async {
-   
     _isLoading = true;
- 
-      // print('loader  before load ${_commonFullPokemonList.length}');
-      // print('limit ${limit}');
-      // print('offset ${offset}');
     _commonFullPokemonList = await paginationService.getPage(filter, limit, _commonFullPokemonList.length);
-    // print('loader after load ${_commonFullPokemonList.length}');
     streamController.add(_commonFullPokemonList);
     limit += page;
- 
     _isLoading = false;
-
   }
 
   @override
@@ -174,16 +164,29 @@ class _ListScreenState extends State<ListScreen> {
   Widget bodyView() => StreamBuilder<List<FullPokemon>>(
     stream: streamController.stream,
     builder: (context, AsyncSnapshot snapshot) {
-      print('builder was triggered');
       if (snapshot.connectionState == ConnectionState.waiting) {
         return const Center(
-          child: CircularProgressIndicator(),
+          child: PokeballSpinner(),
         );
       } else if (snapshot.data?.length == 0) {
-        print('loading if');
-        return const Center(
-          child: CircularProgressIndicator(),
-        );
+        if (_isLoading) {
+          return const Center(
+            child: PokeballSpinner(),
+          );
+        } else {
+          return Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Text(
+              'Nothing was found for your query, try changing the search value.',
+              style: const TextStyle(
+                fontFamily: 'Plus Jakarta Sans', 
+                fontWeight: FontWeight.w500,
+                fontSize: 15,
+                color: ColorConstants.descriptionGrey
+              ),
+            ),
+          );
+        }
       } else if (snapshot.hasData) {
         final view = _isGridEnabled
             ? twinColumnGrid(snapshot)
@@ -215,7 +218,7 @@ class _ListScreenState extends State<ListScreen> {
           return const Padding(
             padding: EdgeInsets.all(10.0),
             child: Center(
-              child: CircularProgressIndicator(),
+              child: PokeballSpinner(),
             ),
           );
           } else {
@@ -242,7 +245,7 @@ class _ListScreenState extends State<ListScreen> {
           return const Padding(
             padding: EdgeInsets.all(10.0),
             child: Center(
-              child: CircularProgressIndicator(),
+              child: PokeballSpinner(),
             ),
           );
           } else {
