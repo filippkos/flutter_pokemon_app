@@ -53,9 +53,10 @@ class _DetailsScreenState extends State<DetailsScreen> {
               color: Colors.white),
         ),
         leading: IconButton(
-            padding: EdgeInsets.all(15),
-            onPressed: () => Navigator.pop(context),
-            icon: Image.asset('assets/images/icon_buttons/back_arrow.png')),
+          padding: EdgeInsets.all(15),
+          onPressed: () => Navigator.pop(context),
+          icon: Image.asset('assets/images/icon_buttons/back_arrow.png')
+        ),
         scrolledUnderElevation: 0,
       ),
       body: Container(

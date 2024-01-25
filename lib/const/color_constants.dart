@@ -5,6 +5,7 @@ abstract class ColorConstants {
   static const Color heather = Color(0xFFBAC4CE);
   static const Color abbey = Color(0xFF494F54);
   static const Color wildSand = Color(0xFFF5F5F5);
+  static const Color descriptionGrey = Color(0xFF9C9C9C);
 }
 
 abstract class PokemonTypeBGColors {
