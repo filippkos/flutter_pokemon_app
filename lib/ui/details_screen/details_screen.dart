@@ -4,6 +4,7 @@ import 'package:flutter_pokemon_app/extensions/string_capitalize_first_letter.da
 import 'package:flutter_pokemon_app/models/chip_model.dart';
 import 'package:flutter_pokemon_app/models/full_pokemon_model.dart';
 import 'package:flutter_pokemon_app/ui/views/chip_view.dart';
+import 'package:flutter_pokemon_app/ui/views/circular_slider.dart';
 
 class DetailsScreen extends StatefulWidget {
   
@@ -58,100 +59,137 @@ class _DetailsScreenState extends State<DetailsScreen> {
         scrolledUnderElevation: 0,
       ),
       body: Container(
-          decoration: BoxDecoration(
-              color: _typeModelList(pokemon.types).first.textColor,
-              gradient: LinearGradient(colors: [
-                _typeModelList(pokemon.types).first.textColor ?? Colors.black,
-                Colors.white
-              ], begin: Alignment.topCenter, end: Alignment.center)),
-          alignment: Alignment.center,
-          child: Column(
-            children: [
-              DecoratedBox(
-                decoration: BoxDecoration(
-                    color: _typeModelList(pokemon.types).first.backgroundColor,
-                    borderRadius: BorderRadius.circular(100)),
-                child: Image(
-                  fit: BoxFit.fill,
-                  width: 200,
-                  height: 200,
-                  image: NetworkImage(pokemon.sprites.frontDefault ?? ''),
+        decoration: BoxDecoration(
+          color: _typeModelList(pokemon.types).first.textColor,
+          gradient: LinearGradient(colors: [
+            _typeModelList(pokemon.types).first.textColor ?? Colors.black,
+            Colors.white
+          ], begin: Alignment.topCenter, end: Alignment.center)),
+        alignment: Alignment.center,
+        child: Column(
+          children: [
+            Container(
+              height: 8,
+            ),
+            Stack(
+              alignment: Alignment.topCenter,
+              children: [
+                Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(27.0),
+                      child: DecoratedBox(
+                        decoration: BoxDecoration(
+                            color: _typeModelList(pokemon.types).first.backgroundColor,
+                            borderRadius: BorderRadius.circular(120)),
+                        child: Image(
+                          fit: BoxFit.fill,
+                          width: 240,
+                          height: 240,
+                          image: NetworkImage(pokemon.sprites.frontDefault ?? ''),
+                        ),
+                      ),
+                    ),
+                    CircularSlider(radius: 132, progres: pokemon.baseExperience / 500)
+                  ],
                 ),
-              ),
-              Container(
-                height: 16,
-              ),
-              Expanded(
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(24),
+                Container(
+                  height: 30,
+                  width: 30,
+                  decoration: const BoxDecoration(
                     color: Colors.white,
+                    shape: BoxShape.circle
                   ),
-                  padding:
-                      EdgeInsets.only(top: 8, bottom: 16, left: 16, right: 16),
-                  child: SingleChildScrollView(
-                    scrollDirection: Axis.vertical,
-                    child: Expanded(
-                        child: Column(
-                      children: [
-                        Text(
-                          pokemon.name.capitalizeFirst(),
-                          style: const TextStyle(
-                              fontFamily: 'Paytone One',
-                              fontWeight: FontWeight.w800,
-                              fontSize: 40,
-                              color: ColorConstants.abbey),
-                        ),
-                        Container(height: 6),
-                        ChipView(
-                          format: ChipViewFormat.imageAndText,
-                          items: _typeModelList(pokemon.types),
-                        ),
-                        Container(height: 20),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const Spacer(),
-                            valueColumn('Height', pokemon.height.toString()),
-                            const Spacer(),
-                            valueColumn('Weight', pokemon.weight.toString()),
-                            const Spacer(),
-                            valueColumn('Order', pokemon.order.toString()),
-                            const Spacer()
-                          ],
-                        ),
-                        ListView.builder(
-                          physics: const NeverScrollableScrollPhysics(),
-                          shrinkWrap: true,
-                          padding: const EdgeInsets.only(top: 16, bottom: 16),
-                          itemCount: _modelMap(pokemon).length,
-                          itemBuilder: (context, index) {
-                            return Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  _modelMap(pokemon)[index]!.$1,
-                                  style: const TextStyle(
-                                      fontFamily: 'Plus Jakarta Sans',
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 15,
-                                      color: ColorConstants.heather),
-                                ),
-                                ChipView(
-                                    format: ChipViewFormat.textOnly,
-                                    items: _modelMap(pokemon)[index]?.$2 ?? []),
-                                Container(height: 15)
-                              ],
-                            );
-                          },
-                        ),
-                      ],
-                    )),
-                  ),
+                  child: Center(
+                    child: Text(
+                      pokemon.baseExperience.toString(),
+                      style: const TextStyle(
+                        fontFamily: 'Plus Jakarta Sans',
+                        fontWeight: FontWeight.w500,
+                        fontSize: 15,
+                        color: Colors.black
+                      ),
+                    )
+                  )
+                )
+              ],
+            ),
+            Container(
+              height: 16,
+            ),
+            Expanded(
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(24),
+                  color: Colors.white,
+                ),
+                padding:
+                    EdgeInsets.only(top: 8, bottom: 16, left: 16, right: 16),
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.vertical,
+                  child: Expanded(
+                      child: Column(
+                    children: [
+                      Text(
+                        pokemon.name.capitalizeFirst(),
+                        style: const TextStyle(
+                            fontFamily: 'Paytone One',
+                            fontWeight: FontWeight.w800,
+                            fontSize: 40,
+                            color: ColorConstants.abbey),
+                      ),
+                      Container(height: 6),
+                      ChipView(
+                        format: ChipViewFormat.imageAndText,
+                        items: _typeModelList(pokemon.types),
+                      ),
+                      Container(height: 20),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Spacer(),
+                          valueColumn('Height', pokemon.height.toString()),
+                          const Spacer(),
+                          valueColumn('Weight', pokemon.weight.toString()),
+                          const Spacer(),
+                          valueColumn('Order', pokemon.order.toString()),
+                          const Spacer()
+                        ],
+                      ),
+                      ListView.builder(
+                        physics: const NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        padding: const EdgeInsets.only(top: 16, bottom: 16),
+                        itemCount: _modelMap(pokemon).length,
+                        itemBuilder: (context, index) {
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                _modelMap(pokemon)[index]!.$1,
+                                style: const TextStyle(
+                                    fontFamily: 'Plus Jakarta Sans',
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 15,
+                                    color: ColorConstants.heather),
+                              ),
+                              ChipView(
+                                  format: ChipViewFormat.textOnly,
+                                  items: _modelMap(pokemon)[index]?.$2 ?? []),
+                              Container(height: 15)
+                            ],
+                          );
+                        },
+                      ),
+                    ],
+                  )),
                 ),
               ),
-            ],
-          )),
+            ),
+          ],
+        )
+      ),
     );
   }
 
