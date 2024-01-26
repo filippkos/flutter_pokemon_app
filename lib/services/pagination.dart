@@ -38,7 +38,6 @@ class Pagination {
       currentList = allShortPokemonList;
     } else {
       if (filter != currentFilter) {
-        print('filter changed ${currentList.length}');
         await updateFilteredShortPokemonlist(filter);
         currentFilter = filter;
       }
@@ -47,7 +46,6 @@ class Pagination {
     
     updateLimitAndOffset(currentList, limit, offset);
     
-    print('current list ${currentList.length}');
     urls = currentList.sublist(currentOffset, currentLimit).map((e) => e.url).toList();
 
     return pageService.page(urls);
@@ -86,7 +84,5 @@ class Pagination {
     if (list.length == offset) {
       currentLimit = currentOffset;
     }
-    
   }
-
 }

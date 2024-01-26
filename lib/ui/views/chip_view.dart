@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_pokemon_app/models/chip_model.dart';
+import 'package:flutter_pokemon_app/ui/views/full_chip.dart';
+import 'package:flutter_pokemon_app/ui/views/image_chip.dart';
+import 'package:flutter_pokemon_app/ui/views/text_chip.dart';
 
 enum ChipViewFormat { imageOnly, textOnly, imageAndText }
 
@@ -24,57 +27,15 @@ class ChipViewState extends State<ChipView> {
       spacing: 8,
       children: switch (widget.format) {
         ChipViewFormat.imageOnly => widget.items
-            .map((i) => imageChip(i.image, i.backgroundColor, i.textColor))
+            .map((i) => ImageChip(image: i.image, backgroundColor: i.backgroundColor, color: i.textColor))
             .toList(),
         ChipViewFormat.textOnly => widget.items
-            .map((i) => textChip(i.title, i.backgroundColor))
+            .map((i) => TextChip(title: i.title, color: i.backgroundColor))
             .toList(),
         ChipViewFormat.imageAndText => widget.items
-            .map((i) =>
-                fullChip(i.title, i.image, i.backgroundColor, i.textColor))
+            .map((i) => FullChip(title: i.title, image: i.image, color: i.backgroundColor, textColor: i.textColor))
             .toList()
       }
     );
   }
-
-  Widget fullChip(title, image, color, textColor) => Chip(
-    materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-    padding: const EdgeInsets.all(5),
-    labelPadding: EdgeInsets.only(left: 1),
-    labelStyle: TextStyle(
-        color: textColor,
-        fontFamily: 'Plus Jakarta Sans',
-        fontWeight: FontWeight.w600,
-        fontSize: 13),
-    label: Text(title),
-    avatar: image,
-    backgroundColor: color,
-    side: const BorderSide(style: BorderStyle.none),
-    shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.all(Radius.circular(20))),
-  );
-
-  Widget textChip(title, color) => Chip(
-    padding: const EdgeInsets.all(5),
-    labelStyle: TextStyle(
-        color: Colors.black,
-        fontFamily: 'Plus Jakarta Sans',
-        fontWeight: FontWeight.w600,
-        fontSize: 13),
-    label: Text(title),
-    backgroundColor: color,
-    side: const BorderSide(style: BorderStyle.none),
-    shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.all(Radius.circular(20))),
-  );
-
-  Widget imageChip(image, backgroundcolor, color) => CircleAvatar(
-    radius: 15,
-    backgroundColor: backgroundcolor,
-    // foregroundColor: color,
-    child: Container(
-      padding: EdgeInsets.all(3),
-      child: image,
-    )
-  );
 }
