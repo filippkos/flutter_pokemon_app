@@ -2,13 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_pokemon_app/const/color_constants.dart';
 import 'package:flutter_pokemon_app/extensions/string_capitalize_first_letter.dart';
 import 'package:flutter_pokemon_app/models/chip_model.dart';
-import 'package:flutter_pokemon_app/models/pokemon_list_model.dart';
 import 'package:flutter_pokemon_app/models/full_pokemon_model.dart';
-import 'package:flutter_pokemon_app/services/network_service.dart';
-import 'package:http/http.dart' as http;
 import 'package:flutter_pokemon_app/ui/views/chip_view.dart';
 
 class DetailsScreen extends StatefulWidget {
+  
   const DetailsScreen({super.key});
 
   @override
@@ -16,15 +14,15 @@ class DetailsScreen extends StatefulWidget {
 }
 
 class _DetailsScreenState extends State<DetailsScreen> {
+
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
+
     final pokemon = ModalRoute.of(context)?.settings.arguments as FullPokemon;
 
     return Scaffold(
@@ -33,8 +31,8 @@ class _DetailsScreenState extends State<DetailsScreen> {
           Padding(
             padding: const EdgeInsets.only(right: 16),
             child: Text(
-              '#' + pokemon.id.toString().padLeft(3, '0'),
-              style: TextStyle(
+              '#${pokemon.id.toString().padLeft(3, '0')}',
+              style: const TextStyle(
                 fontFamily: 'Plus Jakarta Sans',
                 fontWeight: FontWeight.w800,
                 fontSize: 24,

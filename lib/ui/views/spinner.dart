@@ -42,7 +42,6 @@ class _MyWidgetState extends State<PokeballSpinner>
       }
     );
   }
-
 }
 
 class Pokeball extends StatelessWidget {

@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_pokemon_app/const/color_constants.dart';
 
@@ -58,9 +56,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
               ),
             )
           ),
-          Spacer(),
+          const Spacer(),
           pagerWidget(),
-          Spacer(),
+          const Spacer(),
           _currentPage == 2 ? emptySpace() : nextButton()
         ],
       )
@@ -103,36 +101,34 @@ class _DashboardScreenState extends State<DashboardScreen> {
               _images[index]
             ],
           ),
-          Spacer(),
-          Container(
-            child: SizedBox(
-              height: 65,
-              width: 200,
-              child: Visibility(
-                visible: index == 2 ? true : false,
-                child: TextButton(
-                  style: ButtonStyle(
-                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                      RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(32.0)
-                      )
-                    ),
-                    backgroundColor: MaterialStateProperty.all(ColorConstants.gold)
+          const Spacer(),
+          SizedBox(
+            height: 65,
+            width: 200,
+            child: Visibility(
+              visible: index == 2 ? true : false,
+              child: TextButton(
+                style: ButtonStyle(
+                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(32.0)
+                    )
                   ),
-                  onPressed: () {
-                    Navigator.of(context).pushNamed('/list');
-                  },
-                  child: const Text(
-                    'GO!',
-                    style: TextStyle(
-                      fontSize: 20,
-                      color: Colors.black,
-                      fontWeight: FontWeight.w800,
-                      backgroundColor: ColorConstants.gold
-                    ),
+                  backgroundColor: MaterialStateProperty.all(ColorConstants.gold)
+                ),
+                onPressed: () {
+                  Navigator.of(context).pushNamed('/list');
+                },
+                child: const Text(
+                  'GO!',
+                  style: TextStyle(
+                    fontSize: 20,
+                    color: Colors.black,
+                    fontWeight: FontWeight.w800,
+                    backgroundColor: ColorConstants.gold
                   ),
                 ),
-              )
+              ),
             )
           )
           ]

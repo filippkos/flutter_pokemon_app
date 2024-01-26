@@ -1,18 +1,14 @@
 import 'dart:async';
-import 'dart:convert';
-import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_pokemon_app/const/color_constants.dart';
-import 'package:flutter_pokemon_app/extensions/string_capitalize_first_letter.dart';
-import 'package:flutter_pokemon_app/models/chip_model.dart';
-import 'package:flutter_pokemon_app/models/pokemon_list_model.dart';
 import 'package:flutter_pokemon_app/models/full_pokemon_model.dart';
+import 'package:flutter_pokemon_app/services/debouncer.dart';
 import 'package:flutter_pokemon_app/services/network_service.dart';
-import 'package:flutter_pokemon_app/services/pagination_service.dart';
-import 'package:flutter_pokemon_app/ui/views/chip_view.dart';
+import 'package:flutter_pokemon_app/services/pagination.dart';
+import 'package:flutter_pokemon_app/ui/list_screen/single_column_cell.dart';
+import 'package:flutter_pokemon_app/ui/list_screen/twin_column_cell.dart';
 import 'package:flutter_pokemon_app/ui/views/spinner.dart';
-import 'package:http/http.dart' as http;
 
 class ListScreen extends StatefulWidget {
   const ListScreen({super.key});
@@ -70,14 +66,6 @@ class _ListScreenState extends State<ListScreen> {
 
     loadingInit();
   }
-
-  Widget locker() => Container (
-    color: Colors.amber,
-    padding: EdgeInsets.all(0),
-    child: const Center(
-      child: CircularProgressIndicator()
-    ),
-  );
 
   loadingInit() async {
     await paginationService.prepareAllShortList();
@@ -174,11 +162,11 @@ class _ListScreenState extends State<ListScreen> {
             child: PokeballSpinner(),
           );
         } else {
-          return Padding(
-            padding: const EdgeInsets.all(16.0),
+          return const Padding(
+            padding: EdgeInsets.all(16.0),
             child: Text(
               'Nothing was found for your query, try changing the search value.',
-              style: const TextStyle(
+              style: TextStyle(
                 fontFamily: 'Plus Jakarta Sans', 
                 fontWeight: FontWeight.w500,
                 fontSize: 15,
@@ -201,232 +189,58 @@ class _ListScreenState extends State<ListScreen> {
   );
 
   Widget twinColumnGrid(snapshot) => GridView.builder(
-      controller: scrollController,
-      padding: const EdgeInsets.all(16),
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-        childAspectRatio: 0.7,
-        mainAxisSpacing: 9,
-        crossAxisSpacing: 9,
-      ),
-      itemCount: snapshot.data?.length + 2,
-      itemBuilder: (context, index) {
-        if (index < snapshot.data?.length) {
-          return twinColumnCell(snapshot, index);
-        } else {
-          if (snapshot.data?.length < paginationService.currentList.length && snapshot.data?.length != 0) {
-          return const Padding(
-            padding: EdgeInsets.all(10.0),
-            child: Center(
-              child: PokeballSpinner(),
-            ),
-          );
-          } else {
-            return null;
-          }
-        }
-      });
-
-  Widget singleColumnGrid(snapshot) => GridView.builder(
-      controller: scrollController,
-      padding: EdgeInsets.all(16),
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 1,
-        childAspectRatio: 2.7,
-        mainAxisSpacing: 16,
-        crossAxisSpacing: 16,
-      ),
-      itemCount: snapshot.data?.length + 1,
-      itemBuilder: (context, index) {
-        if (index < snapshot.data?.length) {
-          return singleColumnCell(snapshot, index);
-        } else {
-          if (snapshot.data?.length < paginationService.currentList.length && snapshot.data?.length != 0) {
-          return const Padding(
-            padding: EdgeInsets.all(10.0),
-            child: Center(
-              child: PokeballSpinner(),
-            ),
-          );
-          } else {
-            return null;
-          }
-        }
-      });
-
-  Widget singleColumnCell(snapshot, index) => InkWell(
-      onTap: () {
-        Navigator.pushNamed(context, '/details',
-            arguments: snapshot.data[index]);
-      },
-      child: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(16),
-          color: Colors.white,
-          boxShadow: [
-            BoxShadow(
-              color: ColorConstants.heather.withAlpha(60),
-              spreadRadius: 0,
-              blurRadius: 10
-            ),
-          ],
-        ),
-        padding: const EdgeInsets.all(16),
-        child: Row(
-          children: [
-            Stack(
-              children: [
-                Container(
-                  height: MediaQuery.of(context).size.height * 0.12,
-                  width: MediaQuery.of(context).size.height * 0.12,
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                      color: _modelList(snapshot.data[index].types)
-                          .first
-                          .backgroundColor,
-                      borderRadius: BorderRadius.all(Radius.circular(
-                          MediaQuery.of(context).size.height * 0.6))),
-                ),
-                Image(
-                  image:
-                      NetworkImage(snapshot.data[index].sprites.frontDefault),
-                  alignment: Alignment.center,
-                ),
-              ],
-            ),
-            Container(width: 8),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                    Text(
-                      '${snapshot.data[index].name}'.capitalizeFirst(),
-                      maxLines: 1,
-                      softWrap: false,
-                      overflow: TextOverflow.fade,
-                      style: const TextStyle(
-                          fontFamily: 'Paytone One',
-                          fontWeight: FontWeight.w400,
-                          fontSize: 22,
-                          color: ColorConstants.abbey)
-                    ),
-                 
-                  Spacer(),
-                  ChipView(
-                    format: ChipViewFormat.imageAndText,
-                    items: _modelList(snapshot.data[index].types),
-                  ),
-                  Spacer(),
-                  Text(
-                    '#' + '${snapshot.data[index].id}'.padLeft(3, '0'),
-                    style: const TextStyle(
-                        fontFamily: 'Plus Jakarta Sans',
-                        fontWeight: FontWeight.w600,
-                        fontSize: 12,
-                        color: ColorConstants.heather),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ));
-
-  Widget twinColumnCell(snapshot, index) => InkWell(
-    onTap: () {
-      Navigator.pushNamed(context, '/details',
-          arguments: snapshot.data[index]);
-    },
-    child: Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(16),
-        color: Colors.white,
-        boxShadow: [
-          BoxShadow(
-            color: ColorConstants.heather.withAlpha(60),
-            spreadRadius: 0,
-            blurRadius: 10
-          ),
-        ],
-      ),
-      padding: EdgeInsets.all(16),
-      child: Column(
-        children: [
-          Align(
-            alignment: Alignment.topRight,
-            child: Text(
-              '#' + '${snapshot.data[index].id}'.padLeft(3, '0'),
-              style: const TextStyle(
-                  fontFamily: 'Plus Jakarta Sans',
-                  fontWeight: FontWeight.w600,
-                  fontSize: 12,
-                  color: ColorConstants.heather),
-            ),
-          ),
-          Stack(
-            children: [
-              Container(
-                height: MediaQuery.of(context).size.height * 0.123,
-                width: MediaQuery.of(context).size.height * 0.123,
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                    color: _modelList(snapshot.data[index].types)
-                        .first
-                        .backgroundColor,
-                    borderRadius: BorderRadius.all(Radius.circular(
-                        MediaQuery.of(context).size.height * 0.0615))),
-              ),
-              Image(
-                image:
-                    NetworkImage(snapshot.data[index].sprites.frontDefault),
-                alignment: Alignment.center,
-              ),
-            ],
-          ),
-          Spacer(),
-          Text(
-            '${snapshot.data[index].name}'.capitalizeFirst(),
-            maxLines: 1,
-            style: const TextStyle(
-                fontFamily: 'Paytone One',
-                fontWeight: FontWeight.w400,
-                fontSize: 22,
-                color: ColorConstants.abbey)
-          ),
-          Spacer(),
-          ChipView(
-            format: ChipViewFormat.imageOnly,
-            items: _modelList(snapshot.data[index].types),
-          ),
-          Spacer()
-        ],
-      ),
+    controller: scrollController,
+    padding: const EdgeInsets.all(16),
+    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+      crossAxisCount: 2,
+      childAspectRatio: 0.7,
+      mainAxisSpacing: 9,
+      crossAxisSpacing: 9,
     ),
+    itemCount: snapshot.data?.length + 2,
+    itemBuilder: (context, index) {
+      if (index < snapshot.data?.length) {
+        return TwinColumnCell(snapshot: snapshot, index: index);
+      } else {
+        if (snapshot.data?.length < paginationService.currentList.length && snapshot.data?.length != 0) {
+        return const Padding(
+          padding: EdgeInsets.all(10.0),
+          child: Center(
+            child: PokeballSpinner(),
+          ),
+        );
+        } else {
+          return null;
+        }
+      }
+    }
   );
 
-  List<ChipModel> _modelList(List<Type> types) {
-    List<ChipModel> modelList = [];
-    types.forEach((type) {
-      ChipModel model = ChipModel(title: '');
-      model.fillWithPokemonName(type.type.name);
-      modelList.add(model);
-    });
-
-    return modelList;
-  }
-}
-
-class Debouncer {
-  final int milliseconds;
-  VoidCallback? action;
-  Timer? _timer;
-
-  Debouncer({required this.milliseconds});
-
-  run(VoidCallback action) {
-    if (null != _timer) {
-      _timer?.cancel();
+  Widget singleColumnGrid(snapshot) => GridView.builder(
+    controller: scrollController,
+    padding: EdgeInsets.all(16),
+    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+      crossAxisCount: 1,
+      childAspectRatio: 2.7,
+      mainAxisSpacing: 16,
+      crossAxisSpacing: 16,
+    ),
+    itemCount: snapshot.data?.length + 1,
+    itemBuilder: (context, index) {
+      if (index < snapshot.data?.length) {
+        return SingleColumnCell(snapshot: snapshot, index: index);
+      } else {
+        if (snapshot.data?.length < paginationService.currentList.length && snapshot.data?.length != 0) {
+        return const Padding(
+          padding: EdgeInsets.all(10.0),
+          child: Center(
+            child: PokeballSpinner(),
+          ),
+        );
+        } else {
+          return null;
+        }
+      }
     }
-    _timer = Timer(Duration(milliseconds: milliseconds), action);
-  }
+  );
 }
