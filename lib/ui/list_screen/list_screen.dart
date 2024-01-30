@@ -8,7 +8,7 @@ import 'package:flutter_pokemon_app/services/network_service.dart';
 import 'package:flutter_pokemon_app/services/pagination.dart';
 import 'package:flutter_pokemon_app/ui/list_screen/single_column_cell.dart';
 import 'package:flutter_pokemon_app/ui/list_screen/twin_column_cell.dart';
-import 'package:flutter_pokemon_app/ui/views/spinner.dart';
+import 'package:flutter_pokemon_app/ui/views/pokeball_spinner.dart';
 
 class ListScreen extends StatefulWidget {
   const ListScreen({super.key});
@@ -18,11 +18,12 @@ class ListScreen extends StatefulWidget {
 }
 
 class _ListScreenState extends State<ListScreen> {
-  NetworkService networkService = NetworkService();
-  ScrollController scrollController = ScrollController();
-  Pagination paginationService = Pagination();
+
+  final NetworkService networkService = NetworkService();
+  final ScrollController scrollController = ScrollController();
   final TextEditingController _textEditingController = TextEditingController();
-  final _debouncer = Debouncer(milliseconds: 1000);
+  final Pagination paginationService = Pagination();
+  final _searchDebouncer = Debouncer(milliseconds: 1000);
 
   List<FullPokemon> _commonFullPokemonList = [];
   var streamController = new StreamController<List<FullPokemon>>();
@@ -30,8 +31,7 @@ class _ListScreenState extends State<ListScreen> {
   var _isGridEnabled = false;
   var _isLoading = false;
   var _axis = 1;
-  dynamic icon = Icons.grid_view;
-  List<Widget> cells = [];
+  dynamic appBarRightIcon = Icons.grid_view;
   String? filter;
   int page = 10;
   int limit = 10;
@@ -50,7 +50,7 @@ class _ListScreenState extends State<ListScreen> {
     });
 
     _textEditingController.addListener(() {
-      _debouncer.run(() {
+      _searchDebouncer.run(() {
         String? text = _textEditingController.text;
         text = text.isEmpty ? null : text;
         if (text != filter) {
@@ -88,7 +88,7 @@ class _ListScreenState extends State<ListScreen> {
         actions: <Widget>[
           IconButton(
             icon: Icon(
-              icon,
+              appBarRightIcon,
               color: Colors.black,
             ),
             onPressed: () {
@@ -96,12 +96,10 @@ class _ListScreenState extends State<ListScreen> {
                 _isGridEnabled = !_isGridEnabled;
                 if (_isGridEnabled == true) {
                   _axis = 2;
-                  icon = Icons.view_agenda_outlined;
-                  cells = [];
+                  appBarRightIcon = Icons.view_agenda_outlined;
                 } else {
                   _axis = 1;
-                  icon = Icons.grid_view;
-                  cells = [];
+                  appBarRightIcon = Icons.grid_view;
                 }
               });
             },
