@@ -57,11 +57,14 @@ class _DetailsScreenState extends State<DetailsScreen> {
       ),
       body: Container(
           decoration: BoxDecoration(
-              color: _typeModelList(pokemon.types).first.textColor,
-              gradient: LinearGradient(colors: [
-                _typeModelList(pokemon.types).first.textColor ?? Colors.black,
-                _typeModelList(pokemon.types).first.textColor?.withAlpha(190) ??  Colors.white
-              ], begin: Alignment.center, end: Alignment.topCenter)),
+            color: _typeModelList(pokemon.types).first.textColor,
+            gradient: LinearGradient(colors: [
+              _typeModelList(pokemon.types).first.textColor ?? Colors.black,
+              _typeModelList(pokemon.types).first.textColor?.withAlpha(190) ??  Colors.white
+            ], 
+            begin: Alignment.center, 
+            end: Alignment.topCenter)
+          ),
           alignment: Alignment.center,
           child: Column(
             children: [
@@ -92,14 +95,23 @@ class _DetailsScreenState extends State<DetailsScreen> {
                         ),
                       ),
                       CircularSlider(
-                          radius: 132, progres: pokemon.baseExperience / 500)
+                          radius: 132, progress: pokemon.baseExperience / 500)
                     ],
                   ),
                   Container(
                       height: 32,
                       width: 32,
-                      decoration: const BoxDecoration(
-                          color: Colors.white, shape: BoxShape.circle),
+                      decoration: BoxDecoration(
+                          color: Colors.white, shape: BoxShape.circle,
+                          gradient: LinearGradient(
+                            colors: [
+                              ColorConstants.gradientBlue,
+                              ColorConstants.gradientGreen
+                            ], 
+                          begin: Alignment.centerRight, 
+                          end: Alignment.centerLeft
+                        )
+                      ),
                       child: Center(
                           child: Text(
                         pokemon.baseExperience.toString(),
@@ -108,7 +120,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                             fontFamily: 'Plus Jakarta Sans',
                             fontWeight: FontWeight.w700,
                             fontSize: 13,
-                            color: Colors.black),
+                            color: Colors.white),
                       )
                     )
                   )
