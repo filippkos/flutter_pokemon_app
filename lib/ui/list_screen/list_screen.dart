@@ -20,17 +20,16 @@ class ListScreen extends StatefulWidget {
 class _ListScreenState extends State<ListScreen> {
 
   final NetworkService networkService = NetworkService();
-  final ScrollController scrollController = ScrollController();
+  final ScrollController _scrollController = ScrollController();
   final TextEditingController _textEditingController = TextEditingController();
   final Pagination paginationService = Pagination();
   final _searchDebouncer = Debouncer(milliseconds: 1000);
 
   List<FullPokemon> _commonFullPokemonList = [];
-  var streamController = new StreamController<List<FullPokemon>>();
+  var _streamController = new StreamController<List<FullPokemon>>();
 
   var _isGridEnabled = false;
   var _isLoading = false;
-  var _axis = 1;
   dynamic appBarRightIcon = Icons.grid_view;
   String? filter;
   int page = 10;
@@ -38,12 +37,21 @@ class _ListScreenState extends State<ListScreen> {
   int offset = 0;
 
   @override
+  void dispose() {
+    _streamController.close();
+    _scrollController.dispose();
+    _textEditingController.dispose();
+
+    super.dispose();
+  }
+
+  @override
   void initState() {
     super.initState();
 
-    scrollController.addListener(() {
-      if (scrollController.position.pixels ==
-          scrollController.position.maxScrollExtent && !_isLoading) {
+    _scrollController.addListener(() {
+      if (_scrollController.position.pixels ==
+          _scrollController.position.maxScrollExtent && !_isLoading) {
 
         loadPokemons(filter);
       }
@@ -58,7 +66,7 @@ class _ListScreenState extends State<ListScreen> {
           limit = page;
           offset = 0;
           _commonFullPokemonList.clear();
-          streamController.add(_commonFullPokemonList);
+          _streamController.add(_commonFullPokemonList);
           loadPokemons(filter);
         }
       });
@@ -75,7 +83,7 @@ class _ListScreenState extends State<ListScreen> {
   loadPokemons(String? filter) async {
     _isLoading = true;
     _commonFullPokemonList = await paginationService.getPage(filter, limit, _commonFullPokemonList.length);
-    streamController.add(_commonFullPokemonList);
+    _streamController.add(_commonFullPokemonList);
     limit += page;
     _isLoading = false;
   }
@@ -95,10 +103,8 @@ class _ListScreenState extends State<ListScreen> {
               setState(() {
                 _isGridEnabled = !_isGridEnabled;
                 if (_isGridEnabled == true) {
-                  _axis = 2;
                   appBarRightIcon = Icons.view_agenda_outlined;
                 } else {
-                  _axis = 1;
                   appBarRightIcon = Icons.grid_view;
                 }
               });
@@ -114,6 +120,12 @@ class _ListScreenState extends State<ListScreen> {
           ),
         ),
         backgroundColor: ColorConstants.wildSand,
+        leading: IconButton(
+          padding: EdgeInsets.all(15),
+          onPressed: () => Navigator.pop(context),
+          icon: Image.asset('assets/images/app_icon/android.png')
+        ),
+        scrolledUnderElevation: 0,
       ),
       body: Column(
         children: [
@@ -125,7 +137,7 @@ class _ListScreenState extends State<ListScreen> {
                 minHeight: 40
               ),
               elevation: MaterialStateProperty.all(0.0),
-              hintText: 'Name or number...',
+              hintText: 'Pokemon name...',
               hintStyle: MaterialStateProperty.all(
                 const TextStyle(
                   fontFamily: 'Plus Jakarta Sans', 
@@ -134,7 +146,19 @@ class _ListScreenState extends State<ListScreen> {
                   color: ColorConstants.heather
                 )
               ),
-              leading: Icon(Icons.search),
+              side: MaterialStateBorderSide.resolveWith((Set<MaterialState> states) {
+                if (states.contains(MaterialState.focused)) {
+                  return const BorderSide(
+                    color: ColorConstants.borderGold,
+                    width: 2
+                  );
+                }
+                return null; // Defer to default value on the theme or widget.
+              }),
+              leading: Icon(
+                Icons.search,
+                color: ColorConstants.abbey,
+              ),
               backgroundColor: MaterialStateProperty.all(
                 const Color.fromRGBO(255,255,255,1)
               ),
@@ -148,7 +172,7 @@ class _ListScreenState extends State<ListScreen> {
   }
 
   Widget bodyView() => StreamBuilder<List<FullPokemon>>(
-    stream: streamController.stream,
+    stream: _streamController.stream,
     builder: (context, AsyncSnapshot snapshot) {
       if (snapshot.connectionState == ConnectionState.waiting) {
         return const Center(
@@ -187,7 +211,7 @@ class _ListScreenState extends State<ListScreen> {
   );
 
   Widget twinColumnGrid(snapshot) => GridView.builder(
-    controller: scrollController,
+    controller: _scrollController,
     padding: const EdgeInsets.all(16),
     gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
       crossAxisCount: 2,
@@ -215,7 +239,7 @@ class _ListScreenState extends State<ListScreen> {
   );
 
   Widget singleColumnGrid(snapshot) => GridView.builder(
-    controller: scrollController,
+    controller: _scrollController,
     padding: EdgeInsets.all(16),
     gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
       crossAxisCount: 1,

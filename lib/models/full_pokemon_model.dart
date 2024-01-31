@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 class FullPokemon {
     List<Ability> abilities;
     int baseExperience;
