@@ -8,7 +8,7 @@ abstract class ColorConstants {
   static const Color descriptionGrey = Color(0xFF9C9C9C);
   static const Color gradientGreen = Color(0xFF41C136);
   static const Color gradientBlue = Color(0xFF0066FF);
-
+  static const Color borderGold = Color(0xFFDCB900);
 }
 
 abstract class PokemonTypeBGColors {

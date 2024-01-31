@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 class PokemonList {
     int count;
     String next;
