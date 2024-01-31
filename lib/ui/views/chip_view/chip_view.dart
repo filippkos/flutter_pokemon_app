@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_pokemon_app/models/chip_model.dart';
-import 'package:flutter_pokemon_app/ui/views/full_chip.dart';
-import 'package:flutter_pokemon_app/ui/views/image_chip.dart';
-import 'package:flutter_pokemon_app/ui/views/text_chip.dart';
+import 'package:flutter_pokemon_app/ui/views/chip_view/full_chip.dart';
+import 'package:flutter_pokemon_app/ui/views/chip_view/image_chip.dart';
+import 'package:flutter_pokemon_app/ui/views/chip_view/text_chip.dart';
 
 enum ChipViewFormat { imageOnly, textOnly, imageAndText }
 
