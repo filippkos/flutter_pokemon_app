@@ -9,7 +9,6 @@ class SearchField extends StatefulWidget {
   bool isCancelButtonVisible = false;
   final VoidCallback pullToRefreshCallback;
   final Stream<bool> stream;
-  StreamController<bool> _searchBarController = StreamController<bool>();
   
   SearchField({super.key, required this.pullToRefreshCallback, required this.textEditingController, required this.stream});
 
@@ -18,6 +17,17 @@ class SearchField extends StatefulWidget {
 }
 
 class _SearchFieldState extends State<SearchField> {
+
+  @override
+  void initState() {
+    super.initState();
+    widget.stream.listen((isVisible) {
+      setState(() {
+        widget.isCancelButtonVisible = isVisible;
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -89,18 +99,5 @@ class _SearchFieldState extends State<SearchField> {
         ],
       ),
     );
-  }
-
-   @override
-  void initState() {
-    super.initState();
-    
-      
-  
-    widget.stream.listen((isVisible) {
-      setState(() {
-      widget.isCancelButtonVisible = isVisible;
-        });
-    });
   }
 }
