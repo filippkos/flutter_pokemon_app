@@ -63,16 +63,20 @@ class _ListScreenState extends State<ListScreen> {
         text = text.isEmpty ? null : text;
         if (text != filter) {
           filter = text;
-          limit = page;
-          offset = 0;
-          _commonFullPokemonList.clear();
-          _streamController.add(_commonFullPokemonList);
+          resetData();
           loadPokemons(filter);
         }
       });
     });
 
     loadingInit();
+  }
+
+  resetData() {
+    limit = page;
+    offset = 0;
+    _commonFullPokemonList.clear();
+    _streamController.add(_commonFullPokemonList);
   }
 
   loadingInit() async {
@@ -210,59 +214,70 @@ class _ListScreenState extends State<ListScreen> {
     }
   );
 
-  Widget twinColumnGrid(snapshot) => GridView.builder(
-    controller: _scrollController,
-    padding: const EdgeInsets.all(16),
-    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-      crossAxisCount: 2,
-      childAspectRatio: 0.7,
-      mainAxisSpacing: 9,
-      crossAxisSpacing: 9,
-    ),
-    itemCount: snapshot.data?.length + 2,
-    itemBuilder: (context, index) {
-      if (index < snapshot.data?.length) {
-        return TwinColumnCell(snapshot: snapshot, index: index);
-      } else {
-        if (snapshot.data?.length < paginationService.currentList.length && snapshot.data?.length != 0) {
-        return const Padding(
-          padding: EdgeInsets.all(10.0),
-          child: Center(
-            child: PokeballSpinner(),
-          ),
-        );
+  Widget twinColumnGrid(snapshot) => RefreshIndicator(
+    onRefresh: () { return pullToRefresh(); },
+    child: GridView.builder(
+      controller: _scrollController,
+      padding: const EdgeInsets.all(16),
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        childAspectRatio: 0.7,
+        mainAxisSpacing: 9,
+        crossAxisSpacing: 9,
+      ),
+      itemCount: snapshot.data?.length + 2,
+      itemBuilder: (context, index) {
+        if (index < snapshot.data?.length) {
+          return TwinColumnCell(snapshot: snapshot, index: index);
         } else {
-          return null;
+          if (snapshot.data?.length < paginationService.currentList.length && snapshot.data?.length != 0) {
+          return const Padding(
+            padding: EdgeInsets.all(10.0),
+            child: Center(
+              child: PokeballSpinner(),
+            ),
+          );
+          } else {
+            return null;
+          }
         }
       }
-    }
+    ),
   );
 
-  Widget singleColumnGrid(snapshot) => GridView.builder(
-    controller: _scrollController,
-    padding: EdgeInsets.all(16),
-    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-      crossAxisCount: 1,
-      childAspectRatio: 2.7,
-      mainAxisSpacing: 16,
-      crossAxisSpacing: 16,
-    ),
-    itemCount: snapshot.data?.length + 1,
-    itemBuilder: (context, index) {
-      if (index < snapshot.data?.length) {
-        return SingleColumnCell(snapshot: snapshot, index: index);
-      } else {
-        if (snapshot.data?.length < paginationService.currentList.length && snapshot.data?.length != 0) {
-        return const Padding(
-          padding: EdgeInsets.all(10.0),
-          child: Center(
-            child: PokeballSpinner(),
-          ),
-        );
+  Widget singleColumnGrid(snapshot) => RefreshIndicator(
+    onRefresh: () { return pullToRefresh(); },
+    child: GridView.builder(
+      controller: _scrollController,
+      padding: EdgeInsets.all(16),
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 1,
+        childAspectRatio: 2.7,
+        mainAxisSpacing: 16,
+        crossAxisSpacing: 16,
+      ),
+      itemCount: snapshot.data?.length + 1,
+      itemBuilder: (context, index) {
+        if (index < snapshot.data?.length) {
+          return SingleColumnCell(snapshot: snapshot, index: index);
         } else {
-          return null;
+          if (snapshot.data?.length < paginationService.currentList.length && snapshot.data?.length != 0) {
+          return const Padding(
+            padding: EdgeInsets.all(10.0),
+            child: Center(
+              child: PokeballSpinner(),
+            ),
+          );
+          } else {
+            return null;
+          }
         }
       }
-    }
+    ),
   );
+
+  Future<void> pullToRefresh() async {
+    resetData();
+    loadPokemons(filter);
+  }
 }
