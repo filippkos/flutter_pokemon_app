@@ -24,7 +24,7 @@ class _ListScreenState extends State<ListScreen> {
   final TextEditingController _textEditingController = TextEditingController();
   final Pagination paginationService = Pagination();
   StreamController<bool> _searchBarController = StreamController<bool>();
-  final _searchDebouncer = Debouncer(milliseconds: 1000);
+  final _searchDebouncer = Debouncer(milliseconds: 1500);
   SearchField? _searchField;
 
   List<FullPokemon> _commonFullPokemonList = [];
@@ -64,12 +64,9 @@ class _ListScreenState extends State<ListScreen> {
       _searchDebouncer.run(() {
         String? text = _textEditingController.text;
         text = text.isEmpty ? null : text;
-        if (text != null) {
-          _searchBarController.add(true);
-        }
+        text != null ? _searchBarController.add(true) : _searchBarController.add(false);
         if (text != filter) {
-          filter = text;
-          resetData();
+          resetData(text);
           loadPokemons(filter);
         }
       });
@@ -78,7 +75,8 @@ class _ListScreenState extends State<ListScreen> {
     loadingInit();
   }
 
-  resetData() {
+  resetData(String? text) {
+    filter = text;
     limit = page;
     offset = 0;
     _commonFullPokemonList.clear();
@@ -248,7 +246,7 @@ class _ListScreenState extends State<ListScreen> {
       );
 
   Future<void> pullToRefresh() async {
-    resetData();
+    await resetData(null);
     loadPokemons(filter);
   }
 }

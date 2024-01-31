@@ -7,6 +7,7 @@ import 'package:flutter_pokemon_app/ui/views/chip_view/text_chip.dart';
 enum ChipViewFormat { imageOnly, textOnly, imageAndText }
 
 class ChipView extends StatefulWidget {
+  
   final ChipViewFormat format;
   final List<ChipModel> items;
 
