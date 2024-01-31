@@ -9,6 +9,7 @@ import 'package:flutter_pokemon_app/services/pagination.dart';
 import 'package:flutter_pokemon_app/ui/list_screen/single_column_cell.dart';
 import 'package:flutter_pokemon_app/ui/list_screen/twin_column_cell.dart';
 import 'package:flutter_pokemon_app/ui/views/pokeball_spinner.dart';
+import 'package:flutter_pokemon_app/ui/views/search_field.dart';
 
 class ListScreen extends StatefulWidget {
   const ListScreen({super.key});
@@ -22,7 +23,9 @@ class _ListScreenState extends State<ListScreen> {
   final ScrollController _scrollController = ScrollController();
   final TextEditingController _textEditingController = TextEditingController();
   final Pagination paginationService = Pagination();
+  StreamController<bool> _searchBarController = StreamController<bool>();
   final _searchDebouncer = Debouncer(milliseconds: 1000);
+  SearchField? _searchField;
 
   List<FullPokemon> _commonFullPokemonList = [];
   var _streamController = new StreamController<List<FullPokemon>>();
@@ -34,7 +37,6 @@ class _ListScreenState extends State<ListScreen> {
   int page = 10;
   int limit = 10;
   int offset = 0;
-  bool _isCancelButtonVisible = false;
 
   @override
   void dispose() {
@@ -49,6 +51,7 @@ class _ListScreenState extends State<ListScreen> {
   void initState() {
     super.initState();
 
+    _searchField = SearchField(pullToRefreshCallback: pullToRefresh, textEditingController: _textEditingController, stream: _searchBarController.stream);
     _scrollController.addListener(() {
       if (_scrollController.position.pixels ==
               _scrollController.position.maxScrollExtent &&
@@ -62,9 +65,7 @@ class _ListScreenState extends State<ListScreen> {
         String? text = _textEditingController.text;
         text = text.isEmpty ? null : text;
         if (text != null) {
-          setState(() {
-            _isCancelButtonVisible = true;
-          });
+          _searchBarController.add(true);
         }
         if (text != filter) {
           filter = text;
@@ -92,7 +93,10 @@ class _ListScreenState extends State<ListScreen> {
   loadPokemons(String? filter) async {
     _isLoading = true;
     _commonFullPokemonList = await paginationService.getPage(
-        filter, limit, _commonFullPokemonList.length);
+      filter, 
+      limit, 
+      _commonFullPokemonList.length
+    );
     _streamController.add(_commonFullPokemonList);
     limit += page;
     _isLoading = false;
@@ -136,78 +140,7 @@ class _ListScreenState extends State<ListScreen> {
         ),
         body: Column(
           children: [
-            Container(
-              padding: EdgeInsets.all(16),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: SearchBar(
-                      controller: _textEditingController,
-                      constraints: const BoxConstraints(minHeight: 40),
-                      elevation: MaterialStateProperty.all(0.0),
-                      hintText: 'Pokemon name...',
-                      hintStyle: MaterialStateProperty.all(const TextStyle(
-                          fontFamily: 'Plus Jakarta Sans',
-                          fontWeight: FontWeight.w500,
-                          fontSize: 15,
-                          color: ColorConstants.heather)),
-                      side: MaterialStateBorderSide.resolveWith(
-                          (Set<MaterialState> states) {
-                        if (states.contains(MaterialState.focused)) {
-                          return const BorderSide(
-                              color: ColorConstants.borderGold, width: 2);
-                        }
-                        return null; // Defer to default value on the theme or widget.
-                      }),
-                      leading: Icon(
-                        Icons.search,
-                        color: ColorConstants.abbey,
-                      ),
-                      backgroundColor: MaterialStateProperty.all(
-                          const Color.fromRGBO(255, 255, 255, 1)),
-                      shadowColor:
-                          MaterialStateProperty.all(Colors.transparent),
-                    ),
-                  ),
-                  Visibility(
-                    child: Row(
-                      children: [
-                        // Container(
-                        //   width: 20,
-                        // ),
-                        TextButton(
-                          onPressed: () {
-                            setState(() {
-                              _textEditingController.text = '';
-                              _isCancelButtonVisible = false;
-                              pullToRefresh();
-                            });
-                          },
-                          style: TextButton.styleFrom(
-                            padding: EdgeInsets.all(0),
-                            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                            alignment: Alignment.centerRight
-                          ),
-                          child: const Text(
-                            'Cancel',
-                            style: TextStyle(
-                              color: ColorConstants.cancelButtonGrey,
-                              fontFamily: 'Plus Jakarta Sans',
-                              fontWeight: FontWeight.w600,
-                              fontSize: 15
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
-                    maintainSize: false, 
-                    maintainAnimation: true,
-                    maintainState: true,
-                    visible: _isCancelButtonVisible, 
-                  )
-                ],
-              ),
-            ),
+            _searchField!,
             Expanded(child: bodyView())
           ],
         ));
