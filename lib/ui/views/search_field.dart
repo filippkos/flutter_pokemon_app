@@ -1,16 +1,13 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_pokemon_app/const/color_constants.dart';
 
 class SearchField extends StatefulWidget {
 
-  final TextEditingController textEditingController;
-  bool isCancelButtonVisible = false;
+  bool _isCancelButtonVisible = false;
   final VoidCallback pullToRefreshCallback;
-  final Stream<bool> stream;
+  final TextEditingController textEditingController = TextEditingController();
   
-  SearchField({super.key, required this.pullToRefreshCallback, required this.textEditingController, required this.stream});
+  SearchField({super.key, required this.pullToRefreshCallback});
 
   @override
   State<SearchField> createState() => _SearchFieldState();
@@ -21,10 +18,13 @@ class _SearchFieldState extends State<SearchField> {
   @override
   void initState() {
     super.initState();
-    widget.stream.listen((isVisible) {
-      setState(() {
-        widget.isCancelButtonVisible = isVisible;
-      });
+
+    widget.textEditingController.addListener(() {
+      String? text = widget.textEditingController.text;
+        text = text.isEmpty ? null : text;
+        setState(() {
+          widget._isCancelButtonVisible = text != null ? true : false;
+        });
     });
   }
 
@@ -70,7 +70,7 @@ class _SearchFieldState extends State<SearchField> {
                   onPressed: () {
                     setState(() {
                       widget.textEditingController.text = '';
-                      widget.isCancelButtonVisible = false;
+                      widget._isCancelButtonVisible = false;
                       widget.pullToRefreshCallback();
                     });
                   },
@@ -94,7 +94,7 @@ class _SearchFieldState extends State<SearchField> {
             maintainSize: false, 
             maintainAnimation: true,
             maintainState: true,
-            visible: widget.isCancelButtonVisible, 
+            visible: widget._isCancelButtonVisible, 
           )
         ],
       ),
