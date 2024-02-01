@@ -3,7 +3,7 @@ import 'package:flutter_pokemon_app/const/color_constants.dart';
 import 'package:flutter_pokemon_app/extensions/string_capitalize_first_letter.dart';
 import 'package:flutter_pokemon_app/models/chip_model.dart';
 import 'package:flutter_pokemon_app/models/full_pokemon_model.dart';
-import 'package:flutter_pokemon_app/ui/views/chip_view/chip_view.dart';
+import 'package:flutter_pokemon_app/ui/views/chip_view/views/chip_view.dart';
 import 'package:flutter_pokemon_app/ui/views/circular_slider.dart';
 
 class DetailsScreen extends StatefulWidget {
@@ -216,25 +216,25 @@ class _DetailsScreenState extends State<DetailsScreen> {
   }
 
   Widget valueColumn(title, value) => Column(
-        children: [
-          Text(
-            value,
-            style: const TextStyle(
-                fontFamily: 'Plus Jakarta Sans',
-                fontWeight: FontWeight.w500,
-                color: ColorConstants.abbey,
-                fontSize: 24),
-          ),
-          Text(
-            title,
-            style: const TextStyle(
-                fontFamily: 'Plus Jakarta Sans',
-                fontWeight: FontWeight.w600,
-                color: ColorConstants.heather,
-                fontSize: 12),
-          )
-        ],
-      );
+    children: [
+      Text(
+        value,
+        style: const TextStyle(
+            fontFamily: 'Plus Jakarta Sans',
+            fontWeight: FontWeight.w500,
+            color: ColorConstants.abbey,
+            fontSize: 24),
+      ),
+      Text(
+        title,
+        style: const TextStyle(
+            fontFamily: 'Plus Jakarta Sans',
+            fontWeight: FontWeight.w600,
+            color: ColorConstants.heather,
+            fontSize: 12),
+      )
+    ],
+  );
 
   List<ChipModel> _typeModelList(List<Type> types) {
     List<ChipModel> modelList = [];
