@@ -135,12 +135,10 @@ class _DetailsScreenState extends State<DetailsScreen> {
                     borderRadius: BorderRadius.circular(24),
                     color: Colors.white,
                   ),
-                  padding:
-                      EdgeInsets.only(top: 8, bottom: 16, left: 16, right: 16),
+                  padding: EdgeInsets.only(top: 8, bottom: 16, left: 16, right: 16),
                   child: SingleChildScrollView(
                     scrollDirection: Axis.vertical,
-                    child: Expanded(
-                        child: Column(
+                    child: Column(
                       children: [
                         Text(
                           pokemon.name.capitalizeFirst(),
@@ -206,7 +204,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                           },
                         ),
                       ],
-                    )),
+                    ),
                   ),
                 ),
               ),
