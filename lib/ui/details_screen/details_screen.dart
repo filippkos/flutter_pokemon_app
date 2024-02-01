@@ -3,7 +3,7 @@ import 'package:flutter_pokemon_app/const/color_constants.dart';
 import 'package:flutter_pokemon_app/extensions/string_capitalize_first_letter.dart';
 import 'package:flutter_pokemon_app/models/chip_model.dart';
 import 'package:flutter_pokemon_app/models/full_pokemon_model.dart';
-import 'package:flutter_pokemon_app/ui/views/chip_view/views/chip_view.dart';
+import 'package:flutter_pokemon_app/ui/views/chip_view/chip_view.dart';
 import 'package:flutter_pokemon_app/ui/views/circular_slider.dart';
 
 class DetailsScreen extends StatefulWidget {
@@ -14,11 +14,6 @@ class DetailsScreen extends StatefulWidget {
 }
 
 class _DetailsScreenState extends State<DetailsScreen> {
-
-  @override
-  void initState() {
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {

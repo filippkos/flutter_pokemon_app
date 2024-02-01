@@ -1,5 +1,5 @@
 import 'dart:math';
-import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_pokemon_app/const/color_constants.dart';
 
@@ -15,10 +15,6 @@ class CircularSlider extends StatefulWidget {
 }
 
 class _CircularSliderState extends State<CircularSlider> {
-  @override
-  void initState() {
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
