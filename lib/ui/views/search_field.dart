@@ -3,7 +3,6 @@ import 'package:flutter_pokemon_app/const/color_constants.dart';
 
 class SearchField extends StatefulWidget {
 
-  bool _isCancelButtonVisible = false;
   final VoidCallback pullToRefreshCallback;
   final TextEditingController textEditingController = TextEditingController();
   
@@ -14,6 +13,7 @@ class SearchField extends StatefulWidget {
 }
 
 class _SearchFieldState extends State<SearchField> {
+  bool _isCancelButtonVisible = false;
 
   @override
   void initState() {
@@ -23,7 +23,7 @@ class _SearchFieldState extends State<SearchField> {
       String? text = widget.textEditingController.text;
         text = text.isEmpty ? null : text;
         setState(() {
-          widget._isCancelButtonVisible = text != null ? true : false;
+          _isCancelButtonVisible = text != null ? true : false;
         });
     });
   }
@@ -70,7 +70,7 @@ class _SearchFieldState extends State<SearchField> {
                   onPressed: () {
                     setState(() {
                       widget.textEditingController.text = '';
-                      widget._isCancelButtonVisible = false;
+                      _isCancelButtonVisible = false;
                       widget.pullToRefreshCallback();
                     });
                   },
@@ -94,7 +94,7 @@ class _SearchFieldState extends State<SearchField> {
             maintainSize: false, 
             maintainAnimation: true,
             maintainState: true,
-            visible: widget._isCancelButtonVisible, 
+            visible: _isCancelButtonVisible, 
           )
         ],
       ),

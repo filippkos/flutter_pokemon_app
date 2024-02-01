@@ -15,7 +15,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   );
   final _pagesCount = 3;
   var _currentPage = 0;
-  final bgImage = const Image(image: AssetImage('assets/images/dashboard/dashboard_bg.png'));
+  final _bgImage = const Image(image: AssetImage('assets/images/dashboard/dashboard_bg.png'));
   final List<Widget> _images = [
     const Image(image: AssetImage('assets/images/dashboard/dashboard_shadow.png')),
     const Image(image: AssetImage('assets/images/dashboard/dashboard_purple.png')),
@@ -104,7 +104,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           children: [
           Stack(
             children: [
-              bgImage,
+              _bgImage,
               _images[index]
             ],
           ),
