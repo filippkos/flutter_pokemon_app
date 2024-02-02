@@ -15,6 +15,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   );
   final _pagesCount = 3;
   var _currentPage = 0;
+  bool _isNextButtonVisible = true;
   final _bgImage = const Image(image: AssetImage('assets/images/dashboard/dashboard_bg.png'));
   final List<Widget> _images = [
     const Image(image: AssetImage('assets/images/dashboard/dashboard_shadow.png')),
@@ -40,6 +41,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
         onPageChanged: (index) { 
           setState(() {
             _currentPage = index;
+            _isNextButtonVisible = _currentPage == (_pagesCount - 1) ? false : true;
           }); 
         },
         itemBuilder: (context, index) {
@@ -66,7 +68,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
           const Spacer(),
           pagerWidget(),
           const Spacer(),
-          _currentPage == 2 ? emptySpace() : nextButton()
+          Visibility(
+            maintainSize: true, 
+            maintainAnimation: true,
+            maintainState: true,
+            visible: _isNextButtonVisible,
+            child: nextButton(),
+          )
         ],
       )
     );
@@ -84,11 +92,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
         fontWeight: FontWeight.bold
       ),
     ),
-  );
-
-  Widget emptySpace() => const TextButton(
-    onPressed: null, 
-    child: Text(' ')
   );
 
   Widget dashboardPage(int index) => Container(
@@ -172,7 +175,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 height: 16.0,
                 width: 16.0,
                 child: const Center(
-                    // Your Widget
+
                 ),
               ),
             ),

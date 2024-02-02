@@ -51,160 +51,161 @@ class _DetailsScreenState extends State<DetailsScreen> {
         scrolledUnderElevation: 0,
       ),
       body: Container(
-          decoration: BoxDecoration(
-            color: _typeModelList(pokemon.types).first.textColor,
-            gradient: LinearGradient(colors: [
-              _typeModelList(pokemon.types).first.textColor ?? Colors.black,
-              _typeModelList(pokemon.types).first.textColor?.withAlpha(190) ??  Colors.white
-            ], 
-            begin: Alignment.center, 
-            end: Alignment.topCenter)
-          ),
-          alignment: Alignment.center,
-          child: Column(
-            children: [
-              Container(
-                height: 8,
-              ),
-              Stack(
-                alignment: Alignment.topCenter,
-                children: [
-                  Stack(
-                    alignment: Alignment.center,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(27.0),
-                        child: DecoratedBox(
-                          decoration: BoxDecoration(
-                              color: _typeModelList(pokemon.types)
-                                  .first
-                                  .backgroundColor,
-                              borderRadius: BorderRadius.circular(120)),
-                          child: Image(
-                            fit: BoxFit.fill,
-                            width: 240,
-                            height: 240,
-                            image: NetworkImage(
-                                pokemon.sprites.frontDefault ?? ''),
-                          ),
+        decoration: BoxDecoration(
+          color: _typeModelList(pokemon.types).first.textColor,
+          gradient: LinearGradient(colors: [
+            _typeModelList(pokemon.types).first.textColor ?? Colors.black,
+            _typeModelList(pokemon.types).first.textColor?.withAlpha(190) ??  Colors.white
+          ], 
+          begin: Alignment.center, 
+          end: Alignment.topCenter)
+        ),
+        alignment: Alignment.center,
+        child: Column(
+          children: [
+            Container(
+              height: 8,
+            ),
+            Stack(
+              alignment: Alignment.topCenter,
+              children: [
+                Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(27.0),
+                      child: DecoratedBox(
+                        decoration: BoxDecoration(
+                            color: _typeModelList(pokemon.types)
+                                .first
+                                .backgroundColor,
+                            borderRadius: BorderRadius.circular(120)),
+                        child: Image(
+                          fit: BoxFit.fill,
+                          width: 240,
+                          height: 240,
+                          image: NetworkImage(
+                              pokemon.sprites.frontDefault ?? ''),
                         ),
                       ),
-                      CircularSlider(
-                          radius: 132, progress: pokemon.baseExperience / 500)
-                    ],
-                  ),
-                  Container(
-                      height: 32,
-                      width: 32,
-                      decoration: BoxDecoration(
-                          color: Colors.white, shape: BoxShape.circle,
-                          gradient: LinearGradient(
-                            colors: [
-                              ColorConstants.gradientBlue,
-                              ColorConstants.gradientGreen
-                            ], 
-                          begin: Alignment.centerRight, 
-                          end: Alignment.centerLeft
-                        )
-                      ),
-                      child: Center(
-                          child: Text(
-                        pokemon.baseExperience.toString(),
-                        maxLines: 1,
-                        style: const TextStyle(
-                            fontFamily: 'Plus Jakarta Sans',
-                            fontWeight: FontWeight.w700,
-                            fontSize: 13,
-                            color: Colors.white),
+                    ),
+                    CircularSlider(
+                        radius: 132, progress: pokemon.baseExperience / 500)
+                  ],
+                ),
+                Container(
+                    height: 32,
+                    width: 32,
+                    decoration: BoxDecoration(
+                        color: Colors.white, shape: BoxShape.circle,
+                        gradient: LinearGradient(
+                          colors: [
+                            ColorConstants.gradientBlue,
+                            ColorConstants.gradientGreen
+                          ], 
+                        begin: Alignment.centerRight, 
+                        end: Alignment.centerLeft
                       )
+                    ),
+                    child: Center(
+                        child: Text(
+                      pokemon.baseExperience.toString(),
+                      maxLines: 1,
+                      style: const TextStyle(
+                          fontFamily: 'Plus Jakarta Sans',
+                          fontWeight: FontWeight.w700,
+                          fontSize: 13,
+                          color: Colors.white),
                     )
                   )
-                ],
-              ),
-              Container(
-                height: 16,
-              ),
-              Expanded(
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(24),
-                    color: Colors.white,
-                  ),
-                  padding: EdgeInsets.only(top: 8, bottom: 16, left: 16, right: 16),
-                  child: SingleChildScrollView(
-                    scrollDirection: Axis.vertical,
-                    child: Column(
-                      children: [
-                        Text(
-                          pokemon.name.capitalizeFirst(),
-                          style: const TextStyle(
-                              fontFamily: 'Paytone One',
-                              fontWeight: FontWeight.w800,
-                              fontSize: 40,
-                              color: ColorConstants.abbey),
+                )
+              ],
+            ),
+            Container(
+              height: 16,
+            ),
+            Expanded(
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(24),
+                  color: Colors.white,
+                ),
+                padding: EdgeInsets.only(top: 8, bottom: 16, left: 16, right: 16),
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.vertical,
+                  child: Column(
+                    children: [
+                      Text(
+                        pokemon.name.capitalizeFirst(),
+                        style: const TextStyle(
+                            fontFamily: 'Paytone One',
+                            fontWeight: FontWeight.w800,
+                            fontSize: 40,
+                            color: ColorConstants.abbey),
+                      ),
+                      Container(height: 6),
+                      ChipView(
+                        format: ChipViewFormat.imageAndText,
+                        items: _typeModelList(pokemon.types),
+                      ),
+                      Container(height: 20),
+                      IntrinsicHeight(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Spacer(),
+                            valueColumn('Height', pokemon.height.toString() + 'cm'),
+                            const Spacer(),
+                            VerticalDivider(
+                              thickness: 1,
+                              color: ColorConstants.heather,
+                            ),
+                            const Spacer(),
+                            valueColumn('Weight', pokemon.weight.toString() + 'kg'),
+                            const Spacer(),
+                            VerticalDivider(
+                              thickness: 1,
+                              color: ColorConstants.heather,
+                            ),
+                            const Spacer(),
+                            valueColumn('Order', pokemon.order.toString()),
+                            const Spacer()
+                          ],
                         ),
-                        Container(height: 6),
-                        ChipView(
-                          format: ChipViewFormat.imageAndText,
-                          items: _typeModelList(pokemon.types),
-                        ),
-                        Container(height: 20),
-                        IntrinsicHeight(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
+                      ),
+                      ListView.builder(
+                        physics: const NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        padding: const EdgeInsets.only(top: 16, bottom: 16),
+                        itemCount: _modelMap(pokemon).length,
+                        itemBuilder: (context, index) {
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              const Spacer(),
-                              valueColumn('Height', pokemon.height.toString() + 'cm'),
-                              const Spacer(),
-                              VerticalDivider(
-                                thickness: 1,
-                                color: ColorConstants.heather,
+                              Text(
+                                _modelMap(pokemon)[index]!.$1,
+                                style: const TextStyle(
+                                    fontFamily: 'Plus Jakarta Sans',
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 15,
+                                    color: ColorConstants.heather),
                               ),
-                              const Spacer(),
-                              valueColumn('Weight', pokemon.weight.toString() + 'kg'),
-                              const Spacer(),
-                              VerticalDivider(
-                                thickness: 1,
-                                color: ColorConstants.heather,
-                              ),
-                              const Spacer(),
-                              valueColumn('Order', pokemon.order.toString()),
-                              const Spacer()
+                              ChipView(
+                                  format: ChipViewFormat.textOnly,
+                                  items: _modelMap(pokemon)[index]?.$2 ?? []),
+                              Container(height: 15)
                             ],
-                          ),
-                        ),
-                        ListView.builder(
-                          physics: const NeverScrollableScrollPhysics(),
-                          shrinkWrap: true,
-                          padding: const EdgeInsets.only(top: 16, bottom: 16),
-                          itemCount: _modelMap(pokemon).length,
-                          itemBuilder: (context, index) {
-                            return Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  _modelMap(pokemon)[index]!.$1,
-                                  style: const TextStyle(
-                                      fontFamily: 'Plus Jakarta Sans',
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 15,
-                                      color: ColorConstants.heather),
-                                ),
-                                ChipView(
-                                    format: ChipViewFormat.textOnly,
-                                    items: _modelMap(pokemon)[index]?.$2 ?? []),
-                                Container(height: 15)
-                              ],
-                            );
-                          },
-                        ),
-                      ],
-                    ),
+                          );
+                        },
+                      ),
+                    ],
                   ),
                 ),
               ),
-            ],
-          )),
+            ),
+          ],
+        )
+      ),
     );
   }
 
