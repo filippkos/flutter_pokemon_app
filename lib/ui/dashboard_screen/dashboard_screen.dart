@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_pokemon_app/const/color_constants.dart';
+import 'package:flutter_pokemon_app/ui/views/pager_view.dart';
 
 class DashboardScreen extends StatefulWidget {
+
   const DashboardScreen({super.key});
   
   @override
@@ -9,33 +11,23 @@ class DashboardScreen extends StatefulWidget {
 }
 
 class _DashboardScreenState extends State<DashboardScreen> {
-  final _pageController = PageController(
-    initialPage: 0,
-    viewportFraction: 1.1
-  );
   final _pagesCount = 3;
   var _currentPage = 0;
+  PagerView pager = PagerView(pagesCount: 3);
   bool _isNextButtonVisible = true;
   final _bgImage = const Image(image: AssetImage('assets/images/dashboard/dashboard_bg.png'));
   final List<Widget> _images = [
     const Image(image: AssetImage('assets/images/dashboard/dashboard_shadow.png')),
     const Image(image: AssetImage('assets/images/dashboard/dashboard_purple.png')),
     const Image(image: AssetImage('assets/images/dashboard/dashboard_all.png'))
-  ]; 
-
-  @override
-  void dispose() {
-    _pageController.dispose();
-    
-    super.dispose();
-  }
+  ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: ColorConstants.wildSand,
       body: PageView.builder(
-        controller: _pageController,
+        controller: pager.pageController,
         scrollDirection: Axis.horizontal,
         itemCount: _pagesCount,
         onPageChanged: (index) { 
@@ -66,7 +58,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
             )
           ),
           const Spacer(),
-          pagerWidget(),
+          pager,
           const Spacer(),
           Visibility(
             maintainSize: true, 
@@ -82,8 +74,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   Widget nextButton() => TextButton(
     onPressed: () {
-      _pageController.nextPage(duration: Duration(milliseconds: 300), curve: Curves.linear);
+      pager.pageController.nextPage(duration: Duration(milliseconds: 300), curve: Curves.linear);
     }, 
+    style: ButtonStyle(enableFeedback: false),
     child: const Text(
       'Next',
       style: TextStyle(
@@ -98,7 +91,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     alignment: Alignment.bottomCenter,
     padding: const EdgeInsets.only(left: 16,right: 16, top: 150, bottom: 10),
     child: FractionallySizedBox(
-      widthFactor: 1 / _pageController.viewportFraction,
+      widthFactor: 1 / pager.pageController.viewportFraction,
       child: DecoratedBox(
         decoration: const BoxDecoration(
           color: ColorConstants.wildSand
@@ -145,42 +138,5 @@ class _DashboardScreenState extends State<DashboardScreen> {
         )
       )
     )
-  );
-
-  Widget pagerWidget() => Container(
-    height: 100,
-    child: Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children:
-        List<Widget>.generate(
-          _pagesCount, (index) => Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8),
-            child: InkWell(
-              onTap: () {
-                _pageController.animateToPage(index, duration: const Duration(milliseconds: 300), curve: Curves.easeIn);
-              },
-              child: Container(
-                decoration: BoxDecoration(
-                  color: _currentPage == index
-                            ? ColorConstants.abbey
-                            : ColorConstants.wildSand,
-                  border: Border.all(
-                    color: _currentPage == index
-                            ? ColorConstants.abbey
-                            : ColorConstants.heather,
-                    width: 2
-                  ),
-                  shape: BoxShape.circle,
-                ),
-                height: 16.0,
-                width: 16.0,
-                child: const Center(
-
-                ),
-              ),
-            ),
-          ),
-        ),
-    ),
   );
 }
