@@ -33,7 +33,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
         onPageChanged: (index) { 
           setState(() {
             _currentPage = index;
-            _isNextButtonVisible = _currentPage == (_pagesCount - 1) ? false : true;
+            _isNextButtonVisible = _currentPage != (_pagesCount - 1);
           }); 
         },
         itemBuilder: (context, index) {
