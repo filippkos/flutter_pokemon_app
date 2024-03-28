@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_pokemon_app/const/color_constants.dart';
 import 'package:flutter_pokemon_app/extensions/string_capitalize_first_letter.dart';
+import 'package:flutter_pokemon_app/gen/assets.gen.dart';
+import 'package:flutter_pokemon_app/gen/fonts.gen.dart';
 import 'package:flutter_pokemon_app/models/chip_model.dart';
 import 'package:flutter_pokemon_app/models/full_pokemon_model.dart';
 import 'package:flutter_pokemon_app/ui/views/chip_view/chip_view.dart';
@@ -26,28 +28,21 @@ class _DetailsScreenState extends State<DetailsScreen> {
             padding: const EdgeInsets.only(right: 16),
             child: Text(
               '#${pokemon.id.toString().padLeft(3, '0')}',
-              style: const TextStyle(
-                  fontFamily: 'Plus Jakarta Sans',
-                  fontWeight: FontWeight.w800,
-                  fontSize: 24,
-                  color: Colors.white),
+              style: Theme.of(context).textTheme.headlineLarge?.copyWith(color: Colors.white)
             ),
           )
         ],
         backgroundColor: _typeModelList(pokemon.types).first.textColor?.withAlpha(190),
-        title: const Text(
+        title: Text(
           'Base experience',
           textAlign: TextAlign.center,
-          style: TextStyle(
-              fontFamily: 'Plus Jakarta Sans',
-              fontWeight: FontWeight.w500,
-              fontSize: 15,
-              color: Colors.white),
+          style: Theme.of(context).textTheme.headlineSmall
         ),
         leading: IconButton(
-            padding: EdgeInsets.all(15),
-            onPressed: () => Navigator.pop(context),
-            icon: Image.asset('assets/images/icon_buttons/back_arrow.png')),
+          padding: EdgeInsets.all(15),
+          onPressed: () => Navigator.pop(context),
+          icon: Assets.images.iconButtons.backArrow.image(),
+        ),
         scrolledUnderElevation: 0,
       ),
       body: Container(
@@ -77,8 +72,8 @@ class _DetailsScreenState extends State<DetailsScreen> {
                       child: DecoratedBox(
                         decoration: BoxDecoration(
                             color: _typeModelList(pokemon.types)
-                                .first
-                                .backgroundColor,
+                              .first
+                              .backgroundColor,
                             borderRadius: BorderRadius.circular(120)),
                         child: Image(
                           fit: BoxFit.fill,
@@ -90,7 +85,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                       ),
                     ),
                     CircularSlider(
-                        radius: 132, progress: pokemon.baseExperience / 500)
+                      radius: 132, progress: pokemon.baseExperience / 500)
                   ],
                 ),
                 Container(
@@ -108,14 +103,10 @@ class _DetailsScreenState extends State<DetailsScreen> {
                       )
                     ),
                     child: Center(
-                        child: Text(
+                      child: Text(
                       pokemon.baseExperience.toString(),
                       maxLines: 1,
-                      style: const TextStyle(
-                          fontFamily: 'Plus Jakarta Sans',
-                          fontWeight: FontWeight.w700,
-                          fontSize: 13,
-                          color: Colors.white),
+                      style: Theme.of(context).textTheme.labelSmall?.copyWith(color: Colors.white)
                     )
                   )
                 )
@@ -128,7 +119,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
               child: Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(24),
-                  color: Colors.white,
+                  color: Theme.of(context).colorScheme.secondary,
                 ),
                 padding: EdgeInsets.only(top: 8, bottom: 16, left: 16, right: 16),
                 child: SingleChildScrollView(
@@ -137,11 +128,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                     children: [
                       Text(
                         pokemon.name.capitalizeFirst(),
-                        style: const TextStyle(
-                            fontFamily: 'Paytone One',
-                            fontWeight: FontWeight.w800,
-                            fontSize: 40,
-                            color: ColorConstants.abbey),
+                        style: Theme.of(context).textTheme.displayMedium
                       ),
                       Container(height: 6),
                       ChipView(
@@ -184,11 +171,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                             children: [
                               Text(
                                 _modelMap(pokemon)[index]!.$1,
-                                style: const TextStyle(
-                                    fontFamily: 'Plus Jakarta Sans',
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 15,
-                                    color: ColorConstants.heather),
+                                style: Theme.of(context).textTheme.titleSmall
                               ),
                               ChipView(
                                   format: ChipViewFormat.textOnly,
@@ -213,19 +196,11 @@ class _DetailsScreenState extends State<DetailsScreen> {
     children: [
       Text(
         value,
-        style: const TextStyle(
-            fontFamily: 'Plus Jakarta Sans',
-            fontWeight: FontWeight.w500,
-            color: ColorConstants.abbey,
-            fontSize: 24),
+        style: Theme.of(context).textTheme.headlineLarge?.copyWith(fontWeight: FontWeight.w500)
       ),
       Text(
         title,
-        style: const TextStyle(
-            fontFamily: 'Plus Jakarta Sans',
-            fontWeight: FontWeight.w600,
-            color: ColorConstants.heather,
-            fontSize: 12),
+        style: Theme.of(context).textTheme.labelSmall?.copyWith(color: ColorConstants.heather)
       )
     ],
   );
@@ -246,19 +221,28 @@ class _DetailsScreenState extends State<DetailsScreen> {
       0: (
         'Abilities',
         pokemon.abilities
-            .map((e) => ChipModel(title: e.ability.name.capitalizeFirst()))
+            .map((e) => ChipModel(
+              title: e.ability.name.capitalizeFirst(),
+              textColor: Theme.of(context).colorScheme.onSurfaceVariant,
+              backgroundColor: Theme.of(context).colorScheme.surfaceVariant))
             .toList()
       ),
       1: (
         'Forms',
         pokemon.forms
-            .map((e) => ChipModel(title: e.name.capitalizeFirst()))
+            .map((e) => ChipModel(
+              title: e.name.capitalizeFirst(),
+              textColor: Theme.of(context).colorScheme.onSurfaceVariant,
+              backgroundColor: Theme.of(context).colorScheme.surfaceVariant))
             .toList()
       ),
       2: (
         'Moves',
         pokemon.moves
-            .map((e) => ChipModel(title: e.move.name.capitalizeFirst()))
+            .map((e) => ChipModel(
+              title: e.move.name.capitalizeFirst(),
+              textColor: Theme.of(context).colorScheme.onSurface,
+              backgroundColor: Theme.of(context).colorScheme.surfaceVariant))
             .toList()
       )
     };

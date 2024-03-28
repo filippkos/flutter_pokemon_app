@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_pokemon_app/const/color_constants.dart';
+import 'package:flutter_pokemon_app/gen/fonts.gen.dart';
 
 class TextChip extends StatelessWidget {
 
@@ -11,11 +13,7 @@ class TextChip extends StatelessWidget {
   Widget build(BuildContext context) {
     return Chip(
       padding: const EdgeInsets.all(5),
-      labelStyle: TextStyle(
-          color: Colors.black,
-          fontFamily: 'Plus Jakarta Sans',
-          fontWeight: FontWeight.w600,
-          fontSize: 13),
+      labelStyle: Theme.of(context).textTheme.labelSmall?.copyWith(color: ColorConstants.abbey),
       label: Text(title),
       backgroundColor: color,
       side: const BorderSide(style: BorderStyle.none),

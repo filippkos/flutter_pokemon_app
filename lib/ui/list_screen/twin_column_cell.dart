@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_pokemon_app/const/color_constants.dart';
 import 'package:flutter_pokemon_app/extensions/string_capitalize_first_letter.dart';
+import 'package:flutter_pokemon_app/gen/fonts.gen.dart';
 import 'package:flutter_pokemon_app/models/chip_model.dart';
 import 'package:flutter_pokemon_app/models/full_pokemon_model.dart';
 import 'package:flutter_pokemon_app/ui/views/chip_view/chip_view.dart';
@@ -22,7 +23,7 @@ class TwinColumnCell extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(16),
-          color: Colors.white,
+          color: Theme.of(context).colorScheme.surface,
           boxShadow: [
             BoxShadow(
               color: ColorConstants.heather.withAlpha(60),
@@ -38,11 +39,7 @@ class TwinColumnCell extends StatelessWidget {
               alignment: Alignment.topRight,
               child: Text(
                 '#' + '${snapshot.data[index].id}'.padLeft(3, '0'),
-                style: const TextStyle(
-                    fontFamily: 'Plus Jakarta Sans',
-                    fontWeight: FontWeight.w600,
-                    fontSize: 12,
-                    color: ColorConstants.heather),
+                style: Theme.of(context).textTheme.labelSmall?.copyWith(color: ColorConstants.heather)
               ),
             ),
             Stack(
@@ -69,11 +66,7 @@ class TwinColumnCell extends StatelessWidget {
             Text(
               '${snapshot.data[index].name}'.capitalizeFirst(),
               maxLines: 1,
-              style: const TextStyle(
-                  fontFamily: 'Paytone One',
-                  fontWeight: FontWeight.w400,
-                  fontSize: 22,
-                  color: ColorConstants.abbey)
+              style: Theme.of(context).textTheme.titleLarge
             ),
             Spacer(),
             ChipView(

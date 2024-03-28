@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_pokemon_app/gen/assets.gen.dart';
 
 class PokeballSpinner extends StatefulWidget {
   const PokeballSpinner({super.key});
@@ -52,7 +53,7 @@ class Pokeball extends StatelessWidget {
     return Container(
       height: 60,
       width: 60,
-      child: Image.asset('assets/images/spinner/spinner.png'),
+      child: Assets.images.spinner.spinner.image(),
     );
   }
 }

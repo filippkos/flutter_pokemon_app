@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_pokemon_app/const/color_constants.dart';
+import 'package:flutter_pokemon_app/gen/fonts.gen.dart';
 
 class SearchField extends StatefulWidget {
 
@@ -41,7 +42,7 @@ class _SearchFieldState extends State<SearchField> {
               elevation: MaterialStateProperty.all(0.0),
               hintText: 'Pokemon name...',
               hintStyle: MaterialStateProperty.all(const TextStyle(
-                  fontFamily: 'Plus Jakarta Sans',
+                  fontFamily: FontFamily.plusJakartaSans,
                   fontWeight: FontWeight.w500,
                   fontSize: 15,
                   color: ColorConstants.heather)),
@@ -55,10 +56,10 @@ class _SearchFieldState extends State<SearchField> {
               }),
               leading: Icon(
                 Icons.search,
-                color: ColorConstants.abbey,
+                color: Theme.of(context).colorScheme.onSurface,
               ),
               backgroundColor: MaterialStateProperty.all(
-                  const Color.fromRGBO(255, 255, 255, 1)),
+                  Theme.of(context).colorScheme.surface),
               shadowColor:
                   MaterialStateProperty.all(Colors.transparent),
             ),
@@ -83,7 +84,7 @@ class _SearchFieldState extends State<SearchField> {
                     'Cancel',
                     style: TextStyle(
                       color: ColorConstants.cancelButtonGrey,
-                      fontFamily: 'Plus Jakarta Sans',
+                      fontFamily: FontFamily.plusJakartaSans,
                       fontWeight: FontWeight.w600,
                       fontSize: 15
                     ),

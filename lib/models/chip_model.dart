@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_pokemon_app/const/color_constants.dart';
 import 'package:flutter_pokemon_app/extensions/string_capitalize_first_letter.dart';
+import 'package:flutter_pokemon_app/gen/assets.gen.dart';
+import 'package:flutter_pokemon_app/gen/colors.gen.dart';
 
 enum PokemonType {
   bug,
@@ -53,123 +54,123 @@ extension PokemonTypeExtension on PokemonType {
   Image image() {
     switch (this) {
       case PokemonType.bug:
-        return Image(image: AssetImage('assets/images/pokemon_type_icons/bug.png'));
+        return Assets.images.pokemonTypeIcons.bug.image();
       case PokemonType.dark:
-        return Image(image: AssetImage('assets/images/pokemon_type_icons/dark.png'));
+        return Assets.images.pokemonTypeIcons.dark.image();
       case PokemonType.dragon:
-        return Image(image: AssetImage('assets/images/pokemon_type_icons/dragon.png'));
+        return Assets.images.pokemonTypeIcons.dragon.image();
       case PokemonType.electric:
-        return Image(image: AssetImage('assets/images/pokemon_type_icons/electric.png'));
+        return Assets.images.pokemonTypeIcons.electric.image();
       case PokemonType.fairy:
-        return Image(image: AssetImage('assets/images/pokemon_type_icons/fairy.png'));
+        return Assets.images.pokemonTypeIcons.fairy.image();
       case PokemonType.fighting:
-        return Image(image: AssetImage('assets/images/pokemon_type_icons/fighting.png'));
+        return Assets.images.pokemonTypeIcons.fighting.image();
       case PokemonType.fire:
-        return Image(image: AssetImage('assets/images/pokemon_type_icons/fire.png'));
+        return Assets.images.pokemonTypeIcons.fire.image();
       case PokemonType.flying:
-        return Image(image: AssetImage('assets/images/pokemon_type_icons/flying.png'));
+        return Assets.images.pokemonTypeIcons.flying.image();
       case PokemonType.ghost:
-        return Image(image: AssetImage('assets/images/pokemon_type_icons/ghost.png'));
+        return Assets.images.pokemonTypeIcons.ghost.image();
       case PokemonType.grass:
-        return Image(image: AssetImage('assets/images/pokemon_type_icons/grass.png'));
+        return Assets.images.pokemonTypeIcons.grass.image();
       case PokemonType.ground:
-        return Image(image: AssetImage('assets/images/pokemon_type_icons/ground.png'));
+        return Assets.images.pokemonTypeIcons.ground.image();
       case PokemonType.icy:
-        return Image(image: AssetImage('assets/images/pokemon_type_icons/icy.png'));
+        return Assets.images.pokemonTypeIcons.icy.image();
       case PokemonType.normal:
-        return Image(image: AssetImage('assets/images/pokemon_type_icons/normal.png'));
+        return Assets.images.pokemonTypeIcons.normal.image();
       case PokemonType.poison:
-        return Image(image: AssetImage('assets/images/pokemon_type_icons/poison.png'));
+        return Assets.images.pokemonTypeIcons.poison.image();
       case PokemonType.psychic:
-        return Image(image: AssetImage('assets/images/pokemon_type_icons/psychic.png'));
+        return Assets.images.pokemonTypeIcons.psychic.image();
       case PokemonType.rock:
-        return Image(image: AssetImage('assets/images/pokemon_type_icons/rock.png'));
+        return Assets.images.pokemonTypeIcons.rock.image();
       case PokemonType.steel:
-        return Image(image: AssetImage('assets/images/pokemon_type_icons/steel.png'));
+        return Assets.images.pokemonTypeIcons.steel.image();
       case PokemonType.water:
-        return Image(image: AssetImage('assets/images/pokemon_type_icons/water.png'));
+        return Assets.images.pokemonTypeIcons.water.image();
     }
   }
 
 Color mainColor() {
     switch (this) {
       case PokemonType.bug:
-        return PokemonTypeMainColors.bug;
+        return PokemonTypeColors.mainBug;
       case PokemonType.dark:
-        return PokemonTypeMainColors.dark;
+        return PokemonTypeColors.mainDark;
       case PokemonType.dragon:
-        return PokemonTypeMainColors.dragon;
+        return PokemonTypeColors.mainDragon;
       case PokemonType.electric:
-        return PokemonTypeMainColors.electric;
+        return PokemonTypeColors.mainElectric;
       case PokemonType.fairy:
-        return PokemonTypeMainColors.fairy;
+        return PokemonTypeColors.mainFairy;
       case PokemonType.fighting:
-        return PokemonTypeMainColors.fighting;
+        return PokemonTypeColors.mainFighting;
       case PokemonType.fire:
-        return PokemonTypeMainColors.fire;
+        return PokemonTypeColors.mainFire;
       case PokemonType.flying:
-        return PokemonTypeMainColors.flying;
+        return PokemonTypeColors.mainFlying;
       case PokemonType.ghost:
-        return PokemonTypeMainColors.ghost;
+        return PokemonTypeColors.mainGhost;
       case PokemonType.grass:
-        return PokemonTypeMainColors.grass;
+        return PokemonTypeColors.mainGrass;
       case PokemonType.ground:
-        return PokemonTypeMainColors.ground;
+        return PokemonTypeColors.mainGround;
       case PokemonType.icy:
-        return PokemonTypeMainColors.icy;
+        return PokemonTypeColors.mainIcy;
       case PokemonType.normal:
-        return PokemonTypeMainColors.normal;
+        return PokemonTypeColors.mainNormal;
       case PokemonType.poison:
-        return PokemonTypeMainColors.poison;
+        return PokemonTypeColors.mainPoison;
       case PokemonType.psychic:
-        return PokemonTypeMainColors.psychic;
+        return PokemonTypeColors.mainPsychic;
       case PokemonType.rock:
-        return PokemonTypeMainColors.rock;
+        return PokemonTypeColors.mainRock;
       case PokemonType.steel:
-        return PokemonTypeMainColors.steel;
+        return PokemonTypeColors.mainSteel;
       case PokemonType.water:
-        return PokemonTypeMainColors.water;
+        return PokemonTypeColors.mainWater;
     }
   }
 
  Color backgroundColor() {
     switch (this) {
       case PokemonType.bug:
-        return PokemonTypeBGColors.bug;
+        return PokemonTypeColors.bgBug;
       case PokemonType.dark:
-        return PokemonTypeBGColors.dark;
+        return PokemonTypeColors.bgDark;
       case PokemonType.dragon:
-        return PokemonTypeBGColors.dragon;
+        return PokemonTypeColors.bgDragon;
       case PokemonType.electric:
-        return PokemonTypeBGColors.electric;
+        return PokemonTypeColors.bgElectric;
       case PokemonType.fairy:
-        return PokemonTypeBGColors.fairy;
+        return PokemonTypeColors.bgFairy;
       case PokemonType.fighting:
-        return PokemonTypeBGColors.fighting;
+        return PokemonTypeColors.bgFighting;
       case PokemonType.fire:
-        return PokemonTypeBGColors.fire;
+        return PokemonTypeColors.bgFire;
       case PokemonType.flying:
-        return PokemonTypeBGColors.flying;
+        return PokemonTypeColors.bgFlying;
       case PokemonType.ghost:
-        return PokemonTypeBGColors.ghost;
+        return PokemonTypeColors.bgGhost;
       case PokemonType.grass:
-        return PokemonTypeBGColors.grass;
+        return PokemonTypeColors.bgGrass;
       case PokemonType.ground:
-        return PokemonTypeBGColors.ground;
+        return PokemonTypeColors.bgGround;
       case PokemonType.icy:
-        return PokemonTypeBGColors.icy;
+        return PokemonTypeColors.bgIcy;
       case PokemonType.normal:
-        return PokemonTypeBGColors.normal;
+        return PokemonTypeColors.bgNormal;
       case PokemonType.poison:
-        return PokemonTypeBGColors.poison;
+        return PokemonTypeColors.bgPoison;
       case PokemonType.psychic:
-        return PokemonTypeBGColors.psychic;
+        return PokemonTypeColors.bgPsychic;
       case PokemonType.rock:
-        return PokemonTypeBGColors.rock;
+        return PokemonTypeColors.bgRock;
       case PokemonType.steel:
-        return PokemonTypeBGColors.steel;
+        return PokemonTypeColors.bgSteel;
       case PokemonType.water:
-        return PokemonTypeBGColors.water;
+        return PokemonTypeColors.bgWater;
     }
   }
 }
@@ -177,10 +178,10 @@ Color mainColor() {
 class ChipModel {
   String title = '';
   Image? image;
-  Color? textColor = Colors.black;
-  Color? backgroundColor = ColorConstants.wildSand;
+  Color? textColor;
+  Color? backgroundColor;
 
-  ChipModel({required this.title});
+  ChipModel({required this.title, this.textColor, this.backgroundColor});
 
   void fillWith(PokemonType type) {
     this.title = type.name;

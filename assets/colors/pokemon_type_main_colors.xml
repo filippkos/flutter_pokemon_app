@@ -1,0 +1,20 @@
+<resources>
+  <color name="main_bug" type="material">#90C12C</color>
+  <color name="main_dark" type="material">#5A5366</color>
+  <color name="main_dragon" type="material">#096DC4</color>
+  <color name="main_electric" type="material">#ECB800</color>
+  <color name="main_fairy" type="material">#EC8FE6</color>
+  <color name="main_fighting" type="material">#CE4069</color>
+  <color name="main_fire" type="material">#FF4F37</color>
+  <color name="main_flying" type="material">#92AADE</color>
+  <color name="main_ghost" type="material">#5269AC</color>
+  <color name="main_grass" type="material">#63BB5B</color>
+  <color name="main_ground" type="material">#BA5827</color>
+  <color name="main_icy" type="material">#00C2FF</color>
+  <color name="main_normal" type="material">#9099A1</color>
+  <color name="main_poison" type="material">#339F8C</color>
+  <color name="main_psychic" type="material">#F97176</color>
+  <color name="main_rock" type="material">#96865A</color>
+  <color name="main_steel" type="material">#5A8EA1</color>
+  <color name="main_water" type="material">#698AFF</color>
+</resources>
