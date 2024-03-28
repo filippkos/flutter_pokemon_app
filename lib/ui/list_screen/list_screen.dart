@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_pokemon_app/const/color_constants.dart';
+import 'package:flutter_pokemon_app/gen/assets.gen.dart';
+import 'package:flutter_pokemon_app/gen/fonts.gen.dart';
 import 'package:flutter_pokemon_app/models/full_pokemon_model.dart';
 import 'package:flutter_pokemon_app/services/debouncer.dart';
 import 'package:flutter_pokemon_app/services/pagination.dart';
@@ -18,7 +20,6 @@ class ListScreen extends StatefulWidget {
 }
 
 class _ListScreenState extends State<ListScreen> {
-
   final ScrollController _scrollController = ScrollController();
   final Pagination _paginationService = Pagination();
   final _updateDataStreamController = StreamController<List<FullPokemon>>();
@@ -90,10 +91,7 @@ class _ListScreenState extends State<ListScreen> {
   loadPokemons(String? filter) async {
     _isLoading = true;
     _commonFullPokemonList = await _paginationService.getPage(
-      filter, 
-      limit, 
-      _commonFullPokemonList.length
-    );
+        filter, limit, _commonFullPokemonList.length);
     _updateDataStreamController.add(_commonFullPokemonList);
     limit += page;
     _isLoading = false;
@@ -102,154 +100,147 @@ class _ListScreenState extends State<ListScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: ColorConstants.wildSand,
-      appBar: AppBar(
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(
-              _appBarRightIcon,
-              color: Colors.black,
+        backgroundColor: Theme.of(context).colorScheme.background,
+        appBar: AppBar(
+          actions: <Widget>[
+            IconButton(
+              icon: Icon(
+                _appBarRightIcon,
+                color: Theme.of(context).colorScheme.onBackground,
+              ),
+              onPressed: () {
+                setState(() {
+                  _isGridEnabled = !_isGridEnabled;
+                  if (_isGridEnabled == true) {
+                    _appBarRightIcon = Icons.view_agenda_outlined;
+                  } else {
+                    _appBarRightIcon = Icons.grid_view;
+                  }
+                });
+              },
             ),
-            onPressed: () {
-              setState(() {
-                _isGridEnabled = !_isGridEnabled;
-                if (_isGridEnabled == true) {
-                  _appBarRightIcon = Icons.view_agenda_outlined;
-                } else {
-                  _appBarRightIcon = Icons.grid_view;
-                }
-              });
-            },
+          ],
+          surfaceTintColor: ColorConstants.wildSand,
+          title: Text(
+            'All pokemon',
+            style: Theme.of(context).textTheme.headlineLarge
           ),
-        ],
-        surfaceTintColor: ColorConstants.wildSand,
-        title: const Text(
-          'All pokemon',
-          style: TextStyle(
-              fontFamily: 'Plus Jakarta Sans', fontWeight: FontWeight.bold),
-        ),
-        backgroundColor: ColorConstants.wildSand,
-        leading: IconButton(
+          backgroundColor: Theme.of(context).colorScheme.background,
+          leading: IconButton(
             padding: EdgeInsets.all(15),
             onPressed: () => Navigator.pop(context),
-            icon: Image.asset('assets/images/app_icon/android.png')),
-        scrolledUnderElevation: 0,
-      ),
-      body: Column(
-        children: [
-          _searchField!,
-          Expanded(child: bodyView())
-        ],
-      )
-    );
+            icon: Assets.images.appIcon.android.image(),
+          ),
+          scrolledUnderElevation: 0,
+        ),
+        body: Column(
+          children: [_searchField!, Expanded(child: bodyView())],
+        ));
   }
 
   Widget bodyView() => StreamBuilder<List<FullPokemon>>(
-    stream: _updateDataStreamController.stream,
-    builder: (context, AsyncSnapshot snapshot) {
-      if (snapshot.connectionState == ConnectionState.waiting) {
-        return const Center(
-          child: PokeballSpinner(),
-        );
-      } else if (snapshot.data?.length == 0) {
-        if (_isLoading) {
+      stream: _updateDataStreamController.stream,
+      builder: (context, AsyncSnapshot snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(
             child: PokeballSpinner(),
           );
+        } else if (snapshot.data?.length == 0) {
+          if (_isLoading) {
+            return const Center(
+              child: PokeballSpinner(),
+            );
+          } else {
+            return const Padding(
+              padding: EdgeInsets.all(16.0),
+              child: Text(
+                'Nothing was found for your query, try changing the search value.',
+                style: TextStyle(
+                    fontFamily: FontFamily.plusJakartaSans,
+                    fontWeight: FontWeight.w500,
+                    fontSize: 15,
+                    color: ColorConstants.descriptionGrey),
+              ),
+            );
+          }
+        } else if (snapshot.hasData) {
+          final view = _isGridEnabled
+              ? twinColumnGrid(snapshot)
+              : singleColumnGrid(snapshot);
+          return view;
+        } else if (snapshot.hasError) {
+          return Text('Error ${snapshot.hasData}');
         } else {
-          return const Padding(
-            padding: EdgeInsets.all(16.0),
-            child: Text(
-              'Nothing was found for your query, try changing the search value.',
-              style: TextStyle(
-                  fontFamily: 'Plus Jakarta Sans',
-                  fontWeight: FontWeight.w500,
-                  fontSize: 15,
-                  color: ColorConstants.descriptionGrey),
-            ),
-          );
+          return Container();
         }
-      } else if (snapshot.hasData) {
-        final view = _isGridEnabled
-            ? twinColumnGrid(snapshot)
-            : singleColumnGrid(snapshot);
-        return view;
-      } else if (snapshot.hasError) {
-        return Text('Error ${snapshot.hasData}');
-      } else {
-        return Container();
-      }
-    }
-  );
+      });
 
   Widget twinColumnGrid(snapshot) => RefreshIndicator(
-    onRefresh: pullToRefresh,
-    child: GridView.builder(
-      controller: _scrollController,
-      padding: const EdgeInsets.all(16),
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-        childAspectRatio: 0.7,
-        mainAxisSpacing: 9,
-        crossAxisSpacing: 9,
-      ),
-      itemCount: snapshot.data?.length + 2,
-      itemBuilder: (context, index) {
-        if (index < snapshot.data?.length) {
-          return TwinColumnCell(snapshot: snapshot, index: index);
-        } else {
-          if (snapshot.data?.length <
-                  _paginationService.currentList.length &&
-              snapshot.data?.length != 0) {
-            return const Padding(
-              padding: EdgeInsets.all(10.0),
-              child: Center(
-                child: PokeballSpinner(),
-              ),
-            );
-          } else {
-            return null;
-          }
-        }
-      }
-    ),
-  );
+        onRefresh: pullToRefresh,
+        child: GridView.builder(
+            controller: _scrollController,
+            padding: const EdgeInsets.all(16),
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              childAspectRatio: 0.7,
+              mainAxisSpacing: 9,
+              crossAxisSpacing: 9,
+            ),
+            itemCount: snapshot.data?.length + 2,
+            itemBuilder: (context, index) {
+              if (index < snapshot.data?.length) {
+                return TwinColumnCell(snapshot: snapshot, index: index);
+              } else {
+                if (snapshot.data?.length <
+                        _paginationService.currentList.length &&
+                    snapshot.data?.length != 0) {
+                  return const Padding(
+                    padding: EdgeInsets.all(10.0),
+                    child: Center(
+                      child: PokeballSpinner(),
+                    ),
+                  );
+                } else {
+                  return null;
+                }
+              }
+            }),
+      );
 
   Widget singleColumnGrid(snapshot) => RefreshIndicator(
-    onRefresh: pullToRefresh,
-    child: GridView.builder(
-      controller: _scrollController,
-      padding: EdgeInsets.all(16),
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 1,
-        childAspectRatio: 2.7,
-        mainAxisSpacing: 16,
-        crossAxisSpacing: 16,
-      ),
-      itemCount: snapshot.data?.length + 1,
-      itemBuilder: (context, index) {
-        if (index < snapshot.data?.length) {
-          return SingleColumnCell(snapshot: snapshot, index: index);
-        } else {
-          if (snapshot.data?.length <
-                  _paginationService.currentList.length &&
-              snapshot.data?.length != 0) {
-            return const Padding(
-              padding: EdgeInsets.all(10.0),
-              child: Center(
-                child: PokeballSpinner(),
-              ),
-            );
-          } else {
-            return null;
-          }
-        }
-      }
-    ),
-  );
+        onRefresh: pullToRefresh,
+        child: GridView.builder(
+            controller: _scrollController,
+            padding: EdgeInsets.all(16),
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 1,
+              childAspectRatio: 2.7,
+              mainAxisSpacing: 16,
+              crossAxisSpacing: 16,
+            ),
+            itemCount: snapshot.data?.length + 1,
+            itemBuilder: (context, index) {
+              if (index < snapshot.data?.length) {
+                return SingleColumnCell(snapshot: snapshot, index: index);
+              } else {
+                if (snapshot.data?.length <
+                        _paginationService.currentList.length &&
+                    snapshot.data?.length != 0) {
+                  return const Padding(
+                    padding: EdgeInsets.all(10.0),
+                    child: Center(
+                      child: PokeballSpinner(),
+                    ),
+                  );
+                } else {
+                  return null;
+                }
+              }
+            }),
+      );
 
   Future<void> pullToRefresh() async {
-    await resetData(null);
+    await resetData(filter);
     loadPokemons(filter);
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_pokemon_app/gen/fonts.gen.dart';
 
 class FullChip extends StatelessWidget {
 
@@ -15,11 +16,7 @@ class FullChip extends StatelessWidget {
       materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
       padding: const EdgeInsets.all(5),
       labelPadding: EdgeInsets.only(left: 1),
-      labelStyle: TextStyle(
-          color: textColor,
-          fontFamily: 'Plus Jakarta Sans',
-          fontWeight: FontWeight.w600,
-          fontSize: 13),
+      labelStyle: Theme.of(context).textTheme.labelSmall?.copyWith(color: textColor),
       label: Text(title),
       avatar: image,
       backgroundColor: color,

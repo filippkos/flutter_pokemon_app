@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_pokemon_app/const/text_themes.dart';
+import 'package:flutter_pokemon_app/const/themes.dart';
 import 'package:flutter_pokemon_app/services/app_route_keys.dart';
 import 'package:flutter_pokemon_app/ui/details_screen/details_screen.dart';
 import 'package:flutter_pokemon_app/ui/list_screen/list_screen.dart';
@@ -14,13 +16,8 @@ class PokemonApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'PokemonApp',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: Colors.green, 
-          background: Colors.white
-          ),
-        useMaterial3: true,
-      ),
+      theme: lightTheme,
+      darkTheme: darkTheme,
       routes: {
         AppRouteKeys.dashboard : (context) => DashboardScreen(),
         AppRouteKeys.list : (context) => ListScreen(),

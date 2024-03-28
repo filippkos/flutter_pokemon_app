@@ -57,16 +57,13 @@ class _PagerViewState extends State<PagerView> {
             padding: const EdgeInsets.symmetric(horizontal: 8),
             child: InkWell(
               onTap: () {
-                // setState(() {
-                //   currentPage = index;
-                // });
                 widget.pageController.animateToPage(index, duration: const Duration(milliseconds: 300), curve: Curves.easeIn);
               },
               child: Container(
                 decoration: BoxDecoration(
                   color: currentPage == index
                     ? ColorConstants.abbey
-                    : ColorConstants.wildSand,
+                    : Theme.of(context).colorScheme.background,
                   border: Border.all(
                     color: currentPage == index
                       ? ColorConstants.abbey

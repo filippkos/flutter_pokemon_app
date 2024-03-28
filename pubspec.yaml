@@ -41,6 +41,8 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_launcher_icons: ^0.13.1
+  build_runner: ^2.4.8
+  flutter_gen_runner: ^5.4.0
 
 flutter_launcher_icons:
   image_path_ios: "assets/images/app_icon/ios.png"
@@ -131,3 +133,19 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+
+# here goes all the config for flutter_gen
+# watch out for the indentations
+flutter_gen:
+    # by default, the generate files are in `lib/gen/`
+    # you can set other directories like `lib/src/gen` using [output]
+  output: lib/gen/
+
+  colors:
+    enabled: true
+    outputs:
+      class_name: PokemonTypeColors
+    inputs:
+      - assets/colors/pokemon_type_main_colors.xml
+      - assets/colors/pokemon_type_bg_colors.xml
+ 

@@ -1,0 +1,20 @@
+<resources>
+  <color name="bg_bug" type="material">#E6FFB2</color>
+  <color name="bg_dark" type="material">#D7CDEA</color>
+  <color name="bg_dragon" type="material">#B0DAFF</color>
+  <color name="bg_electric" type="material">#FEF9CC</color>
+  <color name="bg_fairy" type="material">#FFD6FC</color>
+  <color name="bg_fighting" type="material">#FFC1D3</color>
+  <color name="bg_fire" type="material">#FFE9E9</color>
+  <color name="bg_flying" type="material">#DFE9FF</color>
+  <color name="bg_ghost" type="material">#CEDBFF</color>
+  <color name="bg_grass" type="material">#D9FFD6</color>
+  <color name="bg_ground" type="material">#FFD6C1</color>
+  <color name="bg_icy" type="material">#D3F5FF</color>
+  <color name="bg_normal" type="material">#D8E1EA</color>
+  <color name="bg_poison" type="material">#BDFFEB</color>
+  <color name="bg_psychic" type="material">#FED2D5</color>
+  <color name="bg_rock" type="material">#DFD8C5</color>
+  <color name="bg_steel" type="material">#ACD8E9</color>
+  <color name="bg_water" type="material">#DBE3FF</color>
+</resources>
