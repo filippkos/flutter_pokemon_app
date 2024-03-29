@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_pokemon_app/const/color_constants.dart';
 import 'package:flutter_pokemon_app/gen/fonts.gen.dart';
+import 'package:flutter_pokemon_app/generated/l10n.dart';
 
 class SearchField extends StatefulWidget {
 
@@ -40,7 +41,7 @@ class _SearchFieldState extends State<SearchField> {
               controller: widget.textEditingController,
               constraints: const BoxConstraints(minHeight: 40),
               elevation: MaterialStateProperty.all(0.0),
-              hintText: 'Pokemon name...',
+              hintText: S.of(context).searchFieldPlaceholder,
               hintStyle: MaterialStateProperty.all(const TextStyle(
                   fontFamily: FontFamily.plusJakartaSans,
                   fontWeight: FontWeight.w500,
@@ -80,14 +81,9 @@ class _SearchFieldState extends State<SearchField> {
                     tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                     alignment: Alignment.centerRight
                   ),
-                  child: const Text(
-                    'Cancel',
-                    style: TextStyle(
-                      color: ColorConstants.cancelButtonGrey,
-                      fontFamily: FontFamily.plusJakartaSans,
-                      fontWeight: FontWeight.w600,
-                      fontSize: 15
-                    ),
+                  child: Text(
+                    S.of(context).searchFieldCancelButtonTitle,
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: ColorConstants.cancelButtonGrey)
                   ),
                 )
               ],

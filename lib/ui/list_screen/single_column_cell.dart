@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_pokemon_app/const/color_constants.dart';
 import 'package:flutter_pokemon_app/extensions/string_capitalize_first_letter.dart';
-import 'package:flutter_pokemon_app/gen/fonts.gen.dart';
 import 'package:flutter_pokemon_app/models/chip_model.dart';
 import 'package:flutter_pokemon_app/models/full_pokemon_model.dart';
 import 'package:flutter_pokemon_app/ui/views/chip_view/chip_view.dart';

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_pokemon_app/const/color_constants.dart';
-import 'package:flutter_pokemon_app/gen/fonts.gen.dart';
 
 class TextChip extends StatelessWidget {
 

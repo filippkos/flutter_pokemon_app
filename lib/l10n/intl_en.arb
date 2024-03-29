@@ -1,0 +1,21 @@
+{
+  "pokemonapp": "PokemonApp",
+  "dashboardSkipButtonTitle": "Skip",
+  "dashboardNextButtonTitle": "Next",
+  "dashboardGoButtonTitle": "GO!",
+  "dashboardFirstPageTitle": "Find out who",
+  "dashboardSecondPageTitle": "Find out about the abilities",
+  "dashboardThirdPageTitle": "Collect them all",
+  "dashBoardPageDescription": "IFunny is fun of your life. Images, GIFs and videos featured seven times a day. Your anaconda definitely wants some.",
+  "listAppBarTitle": "All pokemon",
+  "listNothingFoundMessage": "Nothing was found for your query, try changing the search value.",
+  "searchFieldPlaceholder": "Pokemon name...",
+  "searchFieldCancelButtonTitle": "Cancel",
+  "detailsAppBarTitle": "Base experience",
+  "detailshHeightColumnTitle": "Height",
+  "detailshWeightColumnTitle": "Weight",
+  "detailshOrderColumnTitle": "Order",
+  "DetailsAbilitiesSectionTitle": "Abilities",
+  "DetailsFormsSectionTitle": "Forms",
+  "DetailsMovesSectionTitle": "Moves"
+}
