@@ -56,6 +56,9 @@ class _PagerViewState extends State<PagerView> {
           widget.pagesCount, (index) => Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8),
             child: InkWell(
+              overlayColor: MaterialStatePropertyAll(Colors.transparent),
+              splashFactory: NoSplash.splashFactory,
+              enableFeedback: false,
               onTap: () {
                 widget.pageController.animateToPage(index, duration: const Duration(milliseconds: 300), curve: Curves.easeIn);
               },

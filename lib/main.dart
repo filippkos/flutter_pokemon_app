@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_pokemon_app/const/text_themes.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_pokemon_app/const/themes.dart';
+import 'package:flutter_pokemon_app/generated/l10n.dart';
 import 'package:flutter_pokemon_app/services/app_route_keys.dart';
 import 'package:flutter_pokemon_app/ui/details_screen/details_screen.dart';
 import 'package:flutter_pokemon_app/ui/list_screen/list_screen.dart';
@@ -23,7 +24,14 @@ class PokemonApp extends StatelessWidget {
         AppRouteKeys.list : (context) => ListScreen(),
         AppRouteKeys.details : (context) => DetailsScreen(),
       },
-      initialRoute: AppRouteKeys.dashboard
+      initialRoute: AppRouteKeys.dashboard,
+      localizationsDelegates: [
+        S.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: S.delegate.supportedLocales,
     );
   }
 }

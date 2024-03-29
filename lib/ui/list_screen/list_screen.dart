@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_pokemon_app/const/color_constants.dart';
 import 'package:flutter_pokemon_app/gen/assets.gen.dart';
-import 'package:flutter_pokemon_app/gen/fonts.gen.dart';
+import 'package:flutter_pokemon_app/generated/l10n.dart';
 import 'package:flutter_pokemon_app/models/full_pokemon_model.dart';
 import 'package:flutter_pokemon_app/services/debouncer.dart';
 import 'package:flutter_pokemon_app/services/pagination.dart';
@@ -122,7 +122,7 @@ class _ListScreenState extends State<ListScreen> {
           ],
           surfaceTintColor: ColorConstants.wildSand,
           title: Text(
-            'All pokemon',
+            S.of(context).listAppBarTitle,
             style: Theme.of(context).textTheme.headlineLarge
           ),
           backgroundColor: Theme.of(context).colorScheme.background,
@@ -151,15 +151,11 @@ class _ListScreenState extends State<ListScreen> {
               child: PokeballSpinner(),
             );
           } else {
-            return const Padding(
+            return Padding(
               padding: EdgeInsets.all(16.0),
               child: Text(
-                'Nothing was found for your query, try changing the search value.',
-                style: TextStyle(
-                    fontFamily: FontFamily.plusJakartaSans,
-                    fontWeight: FontWeight.w500,
-                    fontSize: 15,
-                    color: ColorConstants.descriptionGrey),
+                S.of(context).listNothingFoundMessage,
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: ColorConstants.descriptionGrey)
               ),
             );
           }

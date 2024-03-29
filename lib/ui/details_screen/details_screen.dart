@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_pokemon_app/const/color_constants.dart';
 import 'package:flutter_pokemon_app/extensions/string_capitalize_first_letter.dart';
 import 'package:flutter_pokemon_app/gen/assets.gen.dart';
-import 'package:flutter_pokemon_app/gen/fonts.gen.dart';
+import 'package:flutter_pokemon_app/generated/l10n.dart';
 import 'package:flutter_pokemon_app/models/chip_model.dart';
 import 'package:flutter_pokemon_app/models/full_pokemon_model.dart';
 import 'package:flutter_pokemon_app/ui/views/chip_view/chip_view.dart';
@@ -34,7 +34,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
         ],
         backgroundColor: _typeModelList(pokemon.types).first.textColor?.withAlpha(190),
         title: Text(
-          'Base experience',
+          S.of(context).detailsAppBarTitle,
           textAlign: TextAlign.center,
           style: Theme.of(context).textTheme.headlineSmall
         ),
@@ -141,21 +141,21 @@ class _DetailsScreenState extends State<DetailsScreen> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             const Spacer(),
-                            valueColumn('Height', pokemon.height.toString() + 'cm'),
+                            valueColumn(S.of(context).detailshHeightColumnTitle, pokemon.height.toString() + 'cm'),
                             const Spacer(),
                             VerticalDivider(
                               thickness: 1,
                               color: ColorConstants.heather,
                             ),
                             const Spacer(),
-                            valueColumn('Weight', pokemon.weight.toString() + 'kg'),
+                            valueColumn(S.of(context).detailshWeightColumnTitle, pokemon.weight.toString() + 'kg'),
                             const Spacer(),
                             VerticalDivider(
                               thickness: 1,
                               color: ColorConstants.heather,
                             ),
                             const Spacer(),
-                            valueColumn('Order', pokemon.order.toString()),
+                            valueColumn(S.of(context).detailshOrderColumnTitle, pokemon.order.toString()),
                             const Spacer()
                           ],
                         ),
@@ -219,7 +219,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
   Map<int, (String, List<ChipModel>)> _modelMap(FullPokemon pokemon) {
     var map = {
       0: (
-        'Abilities',
+        S.of(context).DetailsAbilitiesSectionTitle,
         pokemon.abilities
             .map((e) => ChipModel(
               title: e.ability.name.capitalizeFirst(),
@@ -228,7 +228,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
             .toList()
       ),
       1: (
-        'Forms',
+        S.of(context).DetailsFormsSectionTitle,
         pokemon.forms
             .map((e) => ChipModel(
               title: e.name.capitalizeFirst(),
@@ -237,7 +237,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
             .toList()
       ),
       2: (
-        'Moves',
+        S.of(context).DetailsMovesSectionTitle,
         pokemon.moves
             .map((e) => ChipModel(
               title: e.move.name.capitalizeFirst(),

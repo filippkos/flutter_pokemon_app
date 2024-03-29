@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_pokemon_app/gen/fonts.gen.dart';
 
 class FullChip extends StatelessWidget {
 

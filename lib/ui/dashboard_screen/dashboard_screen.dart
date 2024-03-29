@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_pokemon_app/const/color_constants.dart';
-import 'package:flutter_pokemon_app/gen/fonts.gen.dart';
+import 'package:flutter_pokemon_app/generated/l10n.dart';
+import 'package:flutter_pokemon_app/models/dashboard_page_model.dart';
 import 'package:flutter_pokemon_app/ui/views/pager_view.dart';
 import 'package:flutter_pokemon_app/gen/assets.gen.dart';
 
@@ -17,14 +18,27 @@ class _DashboardScreenState extends State<DashboardScreen> {
   PagerView pager = PagerView(pagesCount: 3);
   bool _isNextButtonVisible = true;
   final _bgImage = Assets.images.dashboard.dashboardBg.image();
-  final List<Widget> _images = [
-    Assets.images.dashboard.dashboardShadow.image(),
-    Assets.images.dashboard.dashboardPurple.image(),
-    Assets.images.dashboard.dashboardAll.image()
-  ];
 
   @override
   Widget build(BuildContext context) {
+    List<DashboardPageModel> model = [
+      DashboardPageModel(
+        title: S.of(context).dashboardFirstPageTitle,
+        description: S.of(context).dashBoardPageDescription,
+        image: Assets.images.dashboard.dashboardShadow.image(),
+      ),
+      DashboardPageModel(
+        title: S.of(context).dashboardSecondPageTitle,
+        description: S.of(context).dashBoardPageDescription,
+        image: Assets.images.dashboard.dashboardPurple.image(),
+      ),
+      DashboardPageModel(
+        title: S.of(context).dashboardThirdPageTitle,
+        description: S.of(context).dashBoardPageDescription,
+        image: Assets.images.dashboard.dashboardAll.image(),
+      )
+    ];
+
     return Scaffold(
         backgroundColor: Theme.of(context).colorScheme.background,
         body: PageView.builder(
@@ -38,13 +52,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
               });
             },
             itemBuilder: (context, index) {
-              return dashboardPage(index);
+              return dashboardPage(index, model);
             }),
         bottomNavigationBar: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            barButton('Skip', () {
+            barButton(S.of(context).dashboardSkipButtonTitle, () {
               Navigator.of(context).pushNamed('/list');
             }),
             const Spacer(),
@@ -55,7 +69,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
               maintainAnimation: true,
               maintainState: true,
               visible: _isNextButtonVisible,
-              child: barButton('Next', () {
+              child: barButton(S.of(context).dashboardNextButtonTitle, () {
                 pager.pageController.nextPage(
                     duration: Duration(milliseconds: 300),
                     curve: Curves.linear);
@@ -68,29 +82,30 @@ class _DashboardScreenState extends State<DashboardScreen> {
   Widget barButton(String title, void Function()? onPressed) => TextButton(
         onPressed: onPressed,
         style: ButtonStyle(
-            overlayColor: MaterialStatePropertyAll(Colors.transparent),
-            splashFactory: NoSplash.splashFactory,
-            enableFeedback: false),
+          overlayColor: MaterialStatePropertyAll(Colors.transparent),
+          splashFactory: NoSplash.splashFactory,
+          enableFeedback: false
+        ),
         child: Text(title, style: Theme.of(context).textTheme.titleMedium),
       );
 
-  Widget dashboardPage(int index) => Container(
+  Widget dashboardPage(int index, List<DashboardPageModel> model) => Container(
       alignment: Alignment.bottomCenter,
       padding: const EdgeInsets.only(left: 16, right: 16, top: 100, bottom: 0),
       child: FractionallySizedBox(
           widthFactor: 1 / pager.pageController.viewportFraction,
           child: DecoratedBox(
-              decoration: BoxDecoration(color: Theme.of(context).colorScheme.background),
-              child: Column(
-                children: [
+              decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.background),
+              child: Column(children: [
                 Container(
                   padding: EdgeInsets.only(left: 29, right: 29),
                   child: Stack(
-                    children: [_bgImage, _images[index]],
+                    children: [_bgImage, model[index].image],
                   ),
                 ),
                 const Spacer(),
-                textSection(),
+                textSection(index, model),
                 const Spacer(),
                 SizedBox(
                     height: 65,
@@ -108,25 +123,31 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         onPressed: () {
                           Navigator.of(context).pushNamed('/list');
                         },
-                        child: Text('GO!',
+                        child: Text(S.of(context).dashboardGoButtonTitle,
                             style: Theme.of(context).textTheme.labelLarge),
                       ),
                     ))
               ]))));
 
-  Widget textSection() => Container(
-    padding: EdgeInsets.only(left: 16, right: 16),
+  Widget textSection(int index, List<DashboardPageModel> model) => Container(
+        padding: EdgeInsets.only(left: 16, right: 16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
+            Text(model[index].title,
+              style: Theme.of(context)
+                  .textTheme
+                  .displayMedium
+                  ?.copyWith(fontSize: 34),
+                  textAlign: TextAlign.center
+            ),
+            SizedBox(
+              height: 10,
+            ),
             Text(
-              'Find out who',
-              style: Theme.of(context).textTheme.displayMedium?.copyWith(fontSize: 34)
-              ),
-            SizedBox(height: 10,),
-            Text(
-              'IFunny is fun of your life. Images, GIFs and videos featured seven times a day. Your anaconda definitely wants some.',
+              model[index].description,
               style: Theme.of(context).textTheme.bodyMedium,
+              textAlign: TextAlign.center
             )
           ],
         ),
