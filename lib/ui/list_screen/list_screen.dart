@@ -6,7 +6,7 @@ import 'package:flutter_pokemon_app/gen/assets.gen.dart';
 import 'package:flutter_pokemon_app/generated/l10n.dart';
 import 'package:flutter_pokemon_app/models/full_pokemon_model.dart';
 import 'package:flutter_pokemon_app/services/debouncer.dart';
-import 'package:flutter_pokemon_app/services/pagination.dart';
+import 'package:flutter_pokemon_app/services/pagination/pagination.dart';
 import 'package:flutter_pokemon_app/ui/list_screen/single_column_cell.dart';
 import 'package:flutter_pokemon_app/ui/list_screen/twin_column_cell.dart';
 import 'package:flutter_pokemon_app/ui/views/pokeball_spinner.dart';
