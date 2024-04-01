@@ -4,9 +4,9 @@ import 'package:flutter_pokemon_app/models/full_pokemon_model.dart';
 import 'package:flutter_pokemon_app/models/pokemon_list_model.dart';
 import 'package:flutter_pokemon_app/services/networking/network_service.dart';
 
-abstract interface class PokemonProvidable {
+abstract interface class PokemonProviderInterface {
 
-  NetworkService get networkService;
+  NetworkServiceInterface get networkService;
   
   String get authority;
   String get path;
@@ -15,16 +15,18 @@ abstract interface class PokemonProvidable {
   Future<FullPokemon> getFullPokemon(String stringUrl);
 }
 
-class PokemonProvider implements PokemonProvidable {
+class PokemonProvider implements PokemonProviderInterface {
 
   @override
-  final NetworkService networkService = NetworkService();
+  final NetworkServiceInterface networkService;
 
   @override
-  final authority = 'pokeapi.co';
+  final String authority;
 
   @override
-  final path = '/api/v2/pokemon/';
+  final String path;
+
+  PokemonProvider({required this.networkService,  required this.authority, required this.path });
 
   @override
   Future<PokemonList> getPokemonList(int limit, String offset) async {

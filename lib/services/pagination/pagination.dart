@@ -1,12 +1,13 @@
 import 'package:flutter_pokemon_app/models/full_pokemon_model.dart';
 import 'package:flutter_pokemon_app/models/pokemon_list_model.dart';
+import 'package:flutter_pokemon_app/services/networking/network_service.dart';
 import 'package:flutter_pokemon_app/services/networking/pokemon_provider.dart';
 import 'package:flutter_pokemon_app/services/pagination/page_service.dart';
 
 class Pagination {
 
   PageService pageService = PageService();
-  PokemonProvider pokemonProvider = PokemonProvider();
+  PokemonProviderInterface pokemonProvider = PokemonProvider(networkService: NetworkService(), authority: 'pokeapi.co', path: '/api/v2/pokemon/');
 
   List<ListPokemon> allShortPokemonList = [];
   List<ListPokemon> filteredShortPokemonList = [];

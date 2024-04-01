@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_pokemon_app/const/color_constants.dart';
 import 'package:flutter_pokemon_app/generated/l10n.dart';
 import 'package:flutter_pokemon_app/models/dashboard_page_model.dart';
+import 'package:flutter_pokemon_app/services/routes/app_route_keys.dart';
 import 'package:flutter_pokemon_app/ui/views/pager_view.dart';
 import 'package:flutter_pokemon_app/gen/assets.gen.dart';
 
@@ -59,7 +60,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             barButton(S.of(context).dashboardSkipButtonTitle, () {
-              Navigator.of(context).pushNamed('/list');
+              Navigator.of(context).pushNamed(AppRouteKeys.list);
             }),
             const Spacer(),
             pager,
@@ -121,7 +122,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                             backgroundColor:
                                 MaterialStateProperty.all(ColorConstants.gold)),
                         onPressed: () {
-                          Navigator.of(context).pushNamed('/list');
+                          Navigator.of(context).pushNamed(AppRouteKeys.list);
                         },
                         child: Text(S.of(context).dashboardGoButtonTitle,
                             style: Theme.of(context).textTheme.labelLarge),
