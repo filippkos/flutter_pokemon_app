@@ -3,6 +3,7 @@ import 'package:flutter_pokemon_app/const/color_constants.dart';
 import 'package:flutter_pokemon_app/extensions/string_capitalize_first_letter.dart';
 import 'package:flutter_pokemon_app/models/chip_model.dart';
 import 'package:flutter_pokemon_app/models/full_pokemon_model.dart';
+import 'package:flutter_pokemon_app/services/routes/app_route_keys.dart';
 import 'package:flutter_pokemon_app/ui/views/chip_view/chip_view.dart';
 
 class SingleColumnCell extends StatelessWidget {
@@ -16,7 +17,7 @@ class SingleColumnCell extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        Navigator.pushNamed(context, '/details',
+        Navigator.pushNamed(context, AppRouteKeys.details,
             arguments: snapshot.data[index]);
       },
       child: Container(

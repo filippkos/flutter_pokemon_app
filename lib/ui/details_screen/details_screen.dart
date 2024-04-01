@@ -118,7 +118,10 @@ class _DetailsScreenState extends State<DetailsScreen> {
             Expanded(
               child: Container(
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(24),
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(24), 
+                    topRight: Radius.circular(24)
+                  ),
                   color: Theme.of(context).colorScheme.secondary,
                 ),
                 padding: EdgeInsets.only(top: 8, bottom: 16, left: 16, right: 16),
