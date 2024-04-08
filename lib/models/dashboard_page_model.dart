@@ -5,5 +5,9 @@ class DashboardPageModel {
   String title;
   String description;
 
-  DashboardPageModel({required this.title, required this.description, required this.image});
+  DashboardPageModel({
+    required this.title,
+    required this.description,
+    required this.image,
+  });
 }

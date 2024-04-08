@@ -3,45 +3,63 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_pokemon_app/const/color_constants.dart';
 
-class CircularSlider extends StatefulWidget {
-  final double radius;
-  final double progress;
+class CircularSlider<T extends num> extends StatefulWidget {
+  final T radius;
+  final T value;
+  final T maxValue;
 
   const CircularSlider(
-      {super.key, required this.radius, required this.progress});
+      {super.key,
+      required this.radius,
+      required this.value,
+      required this.maxValue});
 
   @override
-  State<CircularSlider> createState() => _CircularSliderState();
+  State<CircularSlider> createState() => _CircularSliderState<T>();
 }
 
-class _CircularSliderState extends State<CircularSlider> {
+class _CircularSliderState<T> extends State<CircularSlider> {
+  double castedRadius = 0;
+  double castedValue = 0;
+  double castedMaxValue = 0;
+  double progress = 0;
+
+  @override
+  void initState() {
+    super.initState();
+
+    castedRadius = widget.radius.toDouble();
+    castedValue = widget.value.toDouble();
+    castedMaxValue = widget.maxValue.toDouble();
+    progress = castedValue / castedMaxValue;
+  }
 
   @override
   Widget build(BuildContext context) {
     return Stack(
       children: [
         CustomPaint(
-          size: Size(widget.radius, widget.radius),
+          size: Size(castedRadius, castedRadius),
           painter: LinePainter(
-            progress: widget.progress,
-            path: circlePath(widget.radius),
+            progress: progress,
+            path: circlePath(castedRadius),
             lineWidth: 11,
-            lineColor: Colors.white24
-          )
+            lineColor: Colors.white24,
+          ),
         ),
         CustomPaint(
-          size: Size(widget.radius, widget.radius),
+          size: Size(castedRadius, castedRadius),
           painter: LinePainter(
-            progress: widget.progress,
+            progress: progress,
             path: arcPath(
-              widget.radius,
-              widget.progress,
+              castedRadius,
+              progress,
             ),
             lineWidth: 6,
-            isGradientEnabled: true
-          )
+            isGradientEnabled: true,
+          ),
         ),
-      ]
+      ],
     );
   }
 
@@ -56,10 +74,7 @@ class _CircularSliderState extends State<CircularSlider> {
   Path arcPath(double radius, double progress) {
     return Path()
       ..addArc(
-        Rect.fromCircle(
-          center: Offset(radius / 2, radius / 2), 
-          radius: radius
-        ),
+        Rect.fromCircle(center: Offset(radius / 2, radius / 2), radius: radius),
         -pi / 2,
         -(2 * pi) * progress,
       );
@@ -73,15 +88,13 @@ class LinePainter extends CustomPainter {
   final Color? lineColor;
   final bool isGradientEnabled;
 
-  LinePainter(
-    {
-      required this.progress,
-      required this.path,
-      required this.lineWidth,
-      this.lineColor,
-      this.isGradientEnabled = false
-    }
-  );
+  LinePainter({
+    required this.progress,
+    required this.path,
+    required this.lineWidth,
+    this.lineColor,
+    this.isGradientEnabled = false,
+  });
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -101,10 +114,7 @@ class LinePainter extends CustomPainter {
     return LinearGradient(
       begin: Alignment.topLeft,
       end: Alignment.bottomRight,
-      colors: [
-        ColorConstants.gradientBlue,
-        ColorConstants.gradientGreen
-      ],
+      colors: [ColorConstants.gradientBlue, ColorConstants.gradientGreen],
     ).createShader(rect);
   }
 

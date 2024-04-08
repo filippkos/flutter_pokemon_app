@@ -181,30 +181,30 @@ class S {
   }
 
   /// `Height`
-  String get detailshHeightColumnTitle {
+  String get detailsHeightColumnTitle {
     return Intl.message(
       'Height',
-      name: 'detailshHeightColumnTitle',
+      name: 'detailsHeightColumnTitle',
       desc: '',
       args: [],
     );
   }
 
   /// `Weight`
-  String get detailshWeightColumnTitle {
+  String get detailsWeightColumnTitle {
     return Intl.message(
       'Weight',
-      name: 'detailshWeightColumnTitle',
+      name: 'detailsWeightColumnTitle',
       desc: '',
       args: [],
     );
   }
 
   /// `Order`
-  String get detailshOrderColumnTitle {
+  String get detailsOrderColumnTitle {
     return Intl.message(
       'Order',
-      name: 'detailshOrderColumnTitle',
+      name: 'detailsOrderColumnTitle',
       desc: '',
       args: [],
     );
@@ -235,6 +235,26 @@ class S {
     return Intl.message(
       'Moves',
       name: 'DetailsMovesSectionTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `kg`
+  String get DetailsWeightColumnUnit {
+    return Intl.message(
+      'kg',
+      name: 'DetailsWeightColumnUnit',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `cm`
+  String get DetailsHeightColumnUnit {
+    return Intl.message(
+      'cm',
+      name: 'DetailsHeightColumnUnit',
       desc: '',
       args: [],
     );

@@ -12,10 +12,12 @@
   "searchFieldPlaceholder": "Pokemon name...",
   "searchFieldCancelButtonTitle": "Cancel",
   "detailsAppBarTitle": "Base experience",
-  "detailshHeightColumnTitle": "Height",
-  "detailshWeightColumnTitle": "Weight",
-  "detailshOrderColumnTitle": "Order",
+  "detailsHeightColumnTitle": "Height",
+  "detailsWeightColumnTitle": "Weight",
+  "detailsOrderColumnTitle": "Order",
   "DetailsAbilitiesSectionTitle": "Abilities",
   "DetailsFormsSectionTitle": "Forms",
-  "DetailsMovesSectionTitle": "Moves"
+  "DetailsMovesSectionTitle": "Moves",
+  "DetailsWeightColumnUnit": "kg",
+  "DetailsHeightColumnUnit": "cm"
 }
