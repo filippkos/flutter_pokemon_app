@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 
 class ImageChip extends StatelessWidget {
-
   final Image? image;
   final Color? backgroundColor;
   final Color? color;
 
-  const ImageChip({super.key, required this.image, required this.backgroundColor, required this.color});
+  const ImageChip(
+      {super.key,
+      required this.image,
+      required this.backgroundColor,
+      required this.color});
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +20,7 @@ class ImageChip extends StatelessWidget {
       child: Container(
         padding: EdgeInsets.all(3),
         child: image,
-      )
+      ),
     );
   }
 }

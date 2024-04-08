@@ -26,8 +26,10 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Abilities"),
         "DetailsFormsSectionTitle":
             MessageLookupByLibrary.simpleMessage("Forms"),
+        "DetailsHeightColumnUnit": MessageLookupByLibrary.simpleMessage("cm"),
         "DetailsMovesSectionTitle":
             MessageLookupByLibrary.simpleMessage("Moves"),
+        "DetailsWeightColumnUnit": MessageLookupByLibrary.simpleMessage("kg"),
         "dashBoardPageDescription": MessageLookupByLibrary.simpleMessage(
             "IFunny is fun of your life. Images, GIFs and videos featured seven times a day. Your anaconda definitely wants some."),
         "dashboardFirstPageTitle":
@@ -43,11 +45,11 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Collect them all"),
         "detailsAppBarTitle":
             MessageLookupByLibrary.simpleMessage("Base experience"),
-        "detailshHeightColumnTitle":
+        "detailsHeightColumnTitle":
             MessageLookupByLibrary.simpleMessage("Height"),
-        "detailshOrderColumnTitle":
+        "detailsOrderColumnTitle":
             MessageLookupByLibrary.simpleMessage("Order"),
-        "detailshWeightColumnTitle":
+        "detailsWeightColumnTitle":
             MessageLookupByLibrary.simpleMessage("Weight"),
         "listAppBarTitle": MessageLookupByLibrary.simpleMessage("All pokemon"),
         "listNothingFoundMessage": MessageLookupByLibrary.simpleMessage(

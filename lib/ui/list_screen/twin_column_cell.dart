@@ -7,18 +7,24 @@ import 'package:flutter_pokemon_app/services/routes/app_route_keys.dart';
 import 'package:flutter_pokemon_app/ui/views/chip_view/chip_view.dart';
 
 class TwinColumnCell extends StatelessWidget {
-
   final AsyncSnapshot snapshot;
   final int index;
 
-  const TwinColumnCell({super.key, required this.snapshot, required this.index});
+  const TwinColumnCell({
+    super.key,
+    required this.snapshot,
+    required this.index,
+  });
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        Navigator.pushNamed(context, AppRouteKeys.details,
-            arguments: snapshot.data[index]);
+        Navigator.pushNamed(
+          context,
+          AppRouteKeys.details,
+          arguments: snapshot.data[index],
+        );
       },
       child: Container(
         decoration: BoxDecoration(
@@ -28,7 +34,7 @@ class TwinColumnCell extends StatelessWidget {
             BoxShadow(
               color: ColorConstants.heather.withAlpha(60),
               spreadRadius: 0,
-              blurRadius: 10
+              blurRadius: 10,
             ),
           ],
         ),
@@ -39,7 +45,10 @@ class TwinColumnCell extends StatelessWidget {
               alignment: Alignment.topRight,
               child: Text(
                 '#' + '${snapshot.data[index].id}'.padLeft(3, '0'),
-                style: Theme.of(context).textTheme.labelSmall?.copyWith(color: ColorConstants.heather)
+                style: Theme.of(context)
+                    .textTheme
+                    .labelSmall
+                    ?.copyWith(color: ColorConstants.heather),
               ),
             ),
             Stack(
@@ -49,11 +58,14 @@ class TwinColumnCell extends StatelessWidget {
                   width: MediaQuery.of(context).size.height * 0.123,
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
-                      color: _modelList(snapshot.data[index].types)
-                          .first
-                          .backgroundColor,
-                      borderRadius: BorderRadius.all(Radius.circular(
-                          MediaQuery.of(context).size.height * 0.0615))),
+                    color: _modelList(snapshot.data[index].types)
+                        .first
+                        .backgroundColor,
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(
+                          MediaQuery.of(context).size.height * 0.0615),
+                    ),
+                  ),
                 ),
                 Image(
                   image:
@@ -63,11 +75,8 @@ class TwinColumnCell extends StatelessWidget {
               ],
             ),
             Spacer(),
-            Text(
-              '${snapshot.data[index].name}'.capitalizeFirst(),
-              maxLines: 1,
-              style: Theme.of(context).textTheme.titleLarge
-            ),
+            Text('${snapshot.data[index].name}'.capitalizeFirst(),
+                maxLines: 1, style: Theme.of(context).textTheme.titleLarge),
             Spacer(),
             ChipView(
               format: ChipViewFormat.imageOnly,

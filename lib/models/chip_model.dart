@@ -21,11 +21,10 @@ enum PokemonType {
   psychic,
   rock,
   steel,
-  water
+  water,
 }
 
 extension PokemonTypeExtension on PokemonType {
-
   PokemonType getTypeBy(String name) {
     return PokemonTypeExtension.pokemonType[name] ?? PokemonType.bug;
   }
@@ -92,7 +91,7 @@ extension PokemonTypeExtension on PokemonType {
     }
   }
 
-Color mainColor() {
+  Color mainColor() {
     switch (this) {
       case PokemonType.bug:
         return PokemonTypeColors.mainBug;
@@ -133,7 +132,7 @@ Color mainColor() {
     }
   }
 
- Color backgroundColor() {
+  Color backgroundColor() {
     switch (this) {
       case PokemonType.bug:
         return PokemonTypeColors.bgBug;
@@ -199,7 +198,8 @@ class ChipModel {
     this.backgroundColor = type.backgroundColor();
   }
 
-  void fill(String title, Image? image, Color? textColor, Color? backgroundColor) {
+  void fill(
+      String title, Image? image, Color? textColor, Color? backgroundColor) {
     this.title = title.capitalizeFirst();
     this.image = image;
     this.textColor = textColor;

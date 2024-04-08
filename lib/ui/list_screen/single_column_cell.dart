@@ -7,18 +7,24 @@ import 'package:flutter_pokemon_app/services/routes/app_route_keys.dart';
 import 'package:flutter_pokemon_app/ui/views/chip_view/chip_view.dart';
 
 class SingleColumnCell extends StatelessWidget {
-
   final AsyncSnapshot snapshot;
   final int index;
 
-  const SingleColumnCell({super.key, required this.snapshot, required this.index});
+  const SingleColumnCell({
+    super.key,
+    required this.snapshot,
+    required this.index,
+  });
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        Navigator.pushNamed(context, AppRouteKeys.details,
-            arguments: snapshot.data[index]);
+        Navigator.pushNamed(
+          context,
+          AppRouteKeys.details,
+          arguments: snapshot.data[index],
+        );
       },
       child: Container(
         decoration: BoxDecoration(
@@ -28,7 +34,7 @@ class SingleColumnCell extends StatelessWidget {
             BoxShadow(
               color: ColorConstants.heather.withAlpha(60),
               spreadRadius: 0,
-              blurRadius: 10
+              blurRadius: 10,
             ),
           ],
         ),
@@ -42,11 +48,13 @@ class SingleColumnCell extends StatelessWidget {
                   width: MediaQuery.of(context).size.height * 0.12,
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
-                      color: _modelList(snapshot.data[index].types)
-                          .first
-                          .backgroundColor,
-                      borderRadius: BorderRadius.all(Radius.circular(
-                          MediaQuery.of(context).size.height * 0.6))),
+                    color: _modelList(snapshot.data[index].types)
+                        .first
+                        .backgroundColor,
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(MediaQuery.of(context).size.height * 0.6),
+                    ),
+                  ),
                 ),
                 Image(
                   image:
@@ -60,14 +68,13 @@ class SingleColumnCell extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                    Text(
-                      '${snapshot.data[index].name}'.capitalizeFirst(),
-                      maxLines: 1,
-                      softWrap: false,
-                      overflow: TextOverflow.fade,
-                      style: Theme.of(context).textTheme.titleLarge
-                    ),
-                  
+                  Text(
+                    '${snapshot.data[index].name}'.capitalizeFirst(),
+                    maxLines: 1,
+                    softWrap: false,
+                    overflow: TextOverflow.fade,
+                    style: Theme.of(context).textTheme.titleLarge,
+                  ),
                   Spacer(),
                   ChipView(
                     format: ChipViewFormat.imageAndText,
@@ -76,14 +83,17 @@ class SingleColumnCell extends StatelessWidget {
                   Spacer(),
                   Text(
                     '#' + '${snapshot.data[index].id}'.padLeft(3, '0'),
-                    style: Theme.of(context).textTheme.labelSmall?.copyWith(color: ColorConstants.heather)
+                    style: Theme.of(context)
+                        .textTheme
+                        .labelSmall
+                        ?.copyWith(color: ColorConstants.heather),
                   ),
                 ],
               ),
             ),
           ],
         ),
-      )
+      ),
     );
   }
 
