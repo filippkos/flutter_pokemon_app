@@ -60,11 +60,11 @@ class Pagination {
 
   Future<void> updateFilteredShortPokemonlist(String filter) async {
     _filteredShortPokemonList.clear();
-    await Future.forEach(_allShortPokemonList, (pokemon) {
+    await Future.wait((_allShortPokemonList).map((pokemon) async {
       if (pokemon.name.startsWith(filter)) {
         _filteredShortPokemonList.add(pokemon);
       }
-    });
+    }));
   }
 
   Future<void> updateLimitAndOffset(

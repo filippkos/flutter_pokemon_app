@@ -7,8 +7,8 @@ import 'package:flutter_pokemon_app/generated/l10n.dart';
 import 'package:flutter_pokemon_app/models/full_pokemon_model.dart';
 import 'package:flutter_pokemon_app/services/debouncer.dart';
 import 'package:flutter_pokemon_app/services/pagination/pagination.dart';
-import 'package:flutter_pokemon_app/ui/list_screen/single_column_cell.dart';
-import 'package:flutter_pokemon_app/ui/list_screen/twin_column_cell.dart';
+import 'package:flutter_pokemon_app/ui/list_screen/views/single_column_cell.dart';
+import 'package:flutter_pokemon_app/ui/list_screen/views/twin_column_cell.dart';
 import 'package:flutter_pokemon_app/ui/views/pokeball_spinner.dart';
 import 'package:flutter_pokemon_app/ui/views/search_field.dart';
 
@@ -114,12 +114,14 @@ class _ListScreenState extends State<ListScreen> {
   }
 
   PreferredSizeWidget _appBar() {
+    final theme = Theme.of(context);
+
     return AppBar(
       actions: <Widget>[
         IconButton(
           icon: Icon(
             _appBarRightIcon,
-            color: Theme.of(context).colorScheme.onBackground,
+            color: theme.colorScheme.onBackground,
           ),
           onPressed: () {
             setState(
@@ -137,8 +139,8 @@ class _ListScreenState extends State<ListScreen> {
       ],
       surfaceTintColor: ColorConstants.wildSand,
       title: Text(S.of(context).listAppBarTitle,
-          style: Theme.of(context).textTheme.headlineLarge),
-      backgroundColor: Theme.of(context).colorScheme.background,
+          style: theme.textTheme.headlineLarge),
+      backgroundColor: theme.colorScheme.background,
       leading: IconButton(
         padding: EdgeInsets.all(15),
         onPressed: () => Navigator.pop(context),
@@ -164,11 +166,13 @@ class _ListScreenState extends State<ListScreen> {
           } else {
             return Padding(
               padding: EdgeInsets.all(16.0),
-              child: Text(S.of(context).listNothingFoundMessage,
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyMedium
-                      ?.copyWith(color: ColorConstants.descriptionGrey)),
+              child: Text(
+                S.of(context).listNothingFoundMessage,
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyMedium
+                    ?.copyWith(color: ColorConstants.descriptionGrey),
+              ),
             );
           }
         } else if (snapshot.hasData) {

@@ -8,11 +8,12 @@ class CircularSlider<T extends num> extends StatefulWidget {
   final T value;
   final T maxValue;
 
-  const CircularSlider(
-      {super.key,
-      required this.radius,
-      required this.value,
-      required this.maxValue});
+  const CircularSlider({
+    super.key,
+    required this.radius,
+    required this.value,
+    required this.maxValue,
+  });
 
   @override
   State<CircularSlider> createState() => _CircularSliderState<T>();

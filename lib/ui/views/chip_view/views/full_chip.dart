@@ -6,12 +6,13 @@ class FullChip extends StatelessWidget {
   final Color? color;
   final Color? textColor;
 
-  const FullChip(
-      {super.key,
-      required this.title,
-      required this.image,
-      required this.color,
-      required this.textColor});
+  const FullChip({
+    super.key,
+    required this.title,
+    required this.image,
+    required this.color,
+    required this.textColor,
+  });
 
   @override
   Widget build(BuildContext context) {
