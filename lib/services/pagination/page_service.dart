@@ -11,10 +11,11 @@ class PageService {
   List<FullPokemon> _list = [];
 
   Future<List<FullPokemon>> page(List<String> urls) async {
-    await Future.forEach(urls, (url) async {
+    await Future.wait(urls.map((url) async {
       final pokemon = await pokemonProvider.getFullPokemon(url);
       _list.add(pokemon);
-    });
+    }));
+    _list.sort((a,b) => a.id.compareTo(b.id));;
 
     return _list;
   }

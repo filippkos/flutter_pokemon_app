@@ -22,20 +22,21 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   @override
   Widget build(BuildContext context) {
+		final s = S.of(context);
     List<DashboardPageModel> model = [
       DashboardPageModel(
-        title: S.of(context).dashboardFirstPageTitle,
-        description: S.of(context).dashBoardPageDescription,
+        title: s.dashboardFirstPageTitle,
+        description: s.dashBoardPageDescription,
         image: Assets.images.dashboard.dashboardShadow.image(),
       ),
       DashboardPageModel(
-        title: S.of(context).dashboardSecondPageTitle,
-        description: S.of(context).dashBoardPageDescription,
+        title: s.dashboardSecondPageTitle,
+        description: s.dashBoardPageDescription,
         image: Assets.images.dashboard.dashboardPurple.image(),
       ),
       DashboardPageModel(
-        title: S.of(context).dashboardThirdPageTitle,
-        description: S.of(context).dashBoardPageDescription,
+        title: s.dashboardThirdPageTitle,
+        description: s.dashBoardPageDescription,
         image: Assets.images.dashboard.dashboardAll.image(),
       )
     ];
@@ -65,11 +66,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
   }
 
   Widget _bottomBar() {
+		final s = S.of(context);
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        barButton(S.of(context).dashboardSkipButtonTitle, () {
+        barButton(s.dashboardSkipButtonTitle, () {
           Navigator.of(context).pushNamed(AppRouteKeys.list);
         }),
         const Spacer(),
@@ -80,7 +82,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           maintainAnimation: true,
           maintainState: true,
           visible: _isNextButtonVisible,
-          child: barButton(S.of(context).dashboardNextButtonTitle, () {
+          child: barButton(s.dashboardNextButtonTitle, () {
             _pager.pageController.nextPage(
               duration: Duration(milliseconds: 300),
               curve: Curves.linear,
@@ -107,6 +109,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
   }
 
   Widget dashboardPage(int index, List<DashboardPageModel> model) {
+		final theme = Theme.of(context);
+
     return Container(
       alignment: Alignment.bottomCenter,
       padding: const EdgeInsets.only(left: 16, right: 16, top: 100, bottom: 0),
@@ -114,7 +118,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
         widthFactor: 1 / _pager.pageController.viewportFraction,
         child: DecoratedBox(
           decoration:
-              BoxDecoration(color: Theme.of(context).colorScheme.background),
+              BoxDecoration(color: theme.colorScheme.background),
           child: Column(
             children: [
               Container(
@@ -147,7 +151,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     },
                     child: Text(
                       S.of(context).dashboardGoButtonTitle,
-                      style: Theme.of(context).textTheme.labelLarge,
+                      style: theme.textTheme.labelLarge,
                     ),
                   ),
                 ),
@@ -160,6 +164,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
   }
 
   Widget textSection(int index, List<DashboardPageModel> model) {
+		final textTheme = Theme.of(context).textTheme;
+
     return Container(
       padding: EdgeInsets.only(left: 16, right: 16),
       child: Column(
@@ -167,9 +173,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
         children: [
           Text(
             model[index].title,
-            style: Theme.of(context)
-                .textTheme
-                .displayMedium
+            style: textTheme.displayMedium
                 ?.copyWith(fontSize: 34),
             textAlign: TextAlign.center,
           ),
@@ -178,7 +182,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           ),
           Text(
             model[index].description,
-            style: Theme.of(context).textTheme.bodyMedium,
+            style: textTheme.bodyMedium,
             textAlign: TextAlign.center,
           ),
         ],

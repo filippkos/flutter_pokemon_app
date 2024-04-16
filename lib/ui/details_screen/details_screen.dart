@@ -24,22 +24,23 @@ class _DetailsScreenState extends State<DetailsScreen> {
   }
 
   PreferredSizeWidget _appBar(FullPokemon pokemon) {
+    final textTheme = Theme.of(context).textTheme;
+
     return AppBar(
       actions: <Widget>[
         Padding(
           padding: const EdgeInsets.only(right: 16),
           child: Text('#${pokemon.id.toString().padLeft(3, '0')}',
-              style: Theme.of(context)
-                  .textTheme
-                  .headlineLarge
-                  ?.copyWith(color: Colors.white)),
+              style: textTheme.headlineLarge?.copyWith(color: Colors.white)),
         )
       ],
       backgroundColor:
           _typeModelList(pokemon.types).first.textColor?.withAlpha(190),
-      title: Text(S.of(context).detailsAppBarTitle,
-          textAlign: TextAlign.center,
-          style: Theme.of(context).textTheme.headlineSmall),
+      title: Text(
+        S.of(context).detailsAppBarTitle,
+        textAlign: TextAlign.center,
+        style: textTheme.headlineSmall,
+      ),
       leading: IconButton(
         padding: EdgeInsets.all(15),
         onPressed: () => Navigator.pop(context),
@@ -78,9 +79,9 @@ class _DetailsScreenState extends State<DetailsScreen> {
                 padding: const EdgeInsets.all(27.0),
                 child: DecoratedBox(
                   decoration: BoxDecoration(
-                      color:
-                          _typeModelList(pokemon.types).first.backgroundColor,
-                      borderRadius: BorderRadius.circular(120)),
+                    color: _typeModelList(pokemon.types).first.backgroundColor,
+                    borderRadius: BorderRadius.circular(120),
+                  ),
                   child: Image(
                     fit: BoxFit.fill,
                     width: 240,
@@ -90,19 +91,27 @@ class _DetailsScreenState extends State<DetailsScreen> {
                 ),
               ),
               CircularSlider<int>(
-                  radius: 132, value: pokemon.baseExperience, maxValue: 500)
+                radius: 132,
+                value: pokemon.baseExperience,
+                maxValue: 500,
+              )
             ],
           ),
           Container(
             height: 32,
             width: 32,
             decoration: BoxDecoration(
-                color: Colors.white,
-                shape: BoxShape.circle,
-                gradient: LinearGradient(colors: [
+              color: Colors.white,
+              shape: BoxShape.circle,
+              gradient: LinearGradient(
+                colors: [
                   ColorConstants.gradientBlue,
                   ColorConstants.gradientGreen
-                ], begin: Alignment.centerRight, end: Alignment.centerLeft)),
+                ],
+                begin: Alignment.centerRight,
+                end: Alignment.centerLeft,
+              ),
+            ),
             child: Center(
               child: Text(
                 pokemon.baseExperience.toString(),

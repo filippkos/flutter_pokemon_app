@@ -5,11 +5,12 @@ class ImageChip extends StatelessWidget {
   final Color? backgroundColor;
   final Color? color;
 
-  const ImageChip(
-      {super.key,
-      required this.image,
-      required this.backgroundColor,
-      required this.color});
+  const ImageChip({
+    super.key,
+    required this.image,
+    required this.backgroundColor,
+    required this.color,
+  });
 
   @override
   Widget build(BuildContext context) {

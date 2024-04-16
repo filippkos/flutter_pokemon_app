@@ -18,6 +18,9 @@ class TwinColumnCell extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final mediaQuery = MediaQuery.of(context);
+    final textTheme = Theme.of(context).textTheme;
+
     return InkWell(
       onTap: () {
         Navigator.pushNamed(
@@ -45,38 +48,18 @@ class TwinColumnCell extends StatelessWidget {
               alignment: Alignment.topRight,
               child: Text(
                 '#' + '${snapshot.data[index].id}'.padLeft(3, '0'),
-                style: Theme.of(context)
-                    .textTheme
-                    .labelSmall
-                    ?.copyWith(color: ColorConstants.heather),
+                style: textTheme.labelSmall?.copyWith(
+                  color: ColorConstants.heather,
+                ),
               ),
             ),
-            Stack(
-              children: [
-                Container(
-                  height: MediaQuery.of(context).size.height * 0.123,
-                  width: MediaQuery.of(context).size.height * 0.123,
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                    color: _modelList(snapshot.data[index].types)
-                        .first
-                        .backgroundColor,
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(
-                          MediaQuery.of(context).size.height * 0.0615),
-                    ),
-                  ),
-                ),
-                Image(
-                  image:
-                      NetworkImage(snapshot.data[index].sprites.frontDefault),
-                  alignment: Alignment.center,
-                ),
-              ],
-            ),
+            imageSection(mediaQuery),
             Spacer(),
-            Text('${snapshot.data[index].name}'.capitalizeFirst(),
-                maxLines: 1, style: Theme.of(context).textTheme.titleLarge),
+            Text(
+              '${snapshot.data[index].name}'.capitalizeFirst(),
+              maxLines: 1,
+              style: textTheme.titleLarge,
+            ),
             Spacer(),
             ChipView(
               format: ChipViewFormat.imageOnly,
@@ -86,6 +69,28 @@ class TwinColumnCell extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+
+  Widget imageSection(MediaQueryData mediaQuery) {
+    return Stack(
+      children: [
+        Container(
+          height: mediaQuery.size.height * 0.12,
+          width: mediaQuery.size.height * 0.12,
+          alignment: Alignment.center,
+          decoration: BoxDecoration(
+            color: _modelList(snapshot.data[index].types).first.backgroundColor,
+            borderRadius: BorderRadius.all(
+              Radius.circular(mediaQuery.size.height * 0.06),
+            ),
+          ),
+        ),
+        Image(
+          image: NetworkImage(snapshot.data[index].sprites.frontDefault),
+          alignment: Alignment.center,
+        ),
+      ],
     );
   }
 
